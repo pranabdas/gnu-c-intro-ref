@@ -18,7 +18,7 @@ c.doc:
 c.html:
 	makeinfo --html c.texi
 c.txt:
-	makeinfo --plaintext c.texi
+	makeinfo --plaintext c.texi > $@
 
 clean:
 	rm -f c-manual.tgz c.dvi c.pdf c c-1 c-2 c.doc c.html c.txt
