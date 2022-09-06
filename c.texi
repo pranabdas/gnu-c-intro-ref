@@ -11,7 +11,6 @@ licensed to the FSF.)
 @settitle GNU C Language Manual
 @documentencoding UTF-8
 
-@smallbook
 @synindex vr fn
 
 @copying
