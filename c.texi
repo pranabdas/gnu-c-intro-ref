@@ -57,10 +57,12 @@ modify this GNU manual.''
 @insertcopying
 
 @sp 2
+@ignore
 WILL BE Published by the Free Software Foundation @*
 51 Franklin Street, Fifth Floor @*
 Boston, MA 02110-1301 USA @*
 ISBN ?-??????-??-?
+@ignore
 
 @ignore
 @sp 1
