@@ -144,6 +144,8 @@ compatibility or meant for very special situations.  We have left them
 to a companion manual, the GNU C Obscurities Manual, which will be
 published digitally later.
 
+Please report errors and suggestions to c-manual@@gnu.org.
+
 @menu
 * The First Example::             Getting started with basic C code.
 * Complete Program::              A whole example program
