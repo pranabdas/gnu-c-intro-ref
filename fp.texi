@@ -1,6 +1,5 @@
 
-Copyright @copyright{} 2017,2019,2020 Free Software Foundation, Inc.
-@c Copyright @copyright{} 2020 Richard Stallman and Free Software Foundation, Inc.
+@c Copyright @copyright{} 2022 Richard Stallman and Free Software Foundation, Inc.
 
 This is part of the GNU C Intro and Reference Manual
 and covered by its license.
