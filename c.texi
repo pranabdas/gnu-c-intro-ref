@@ -6942,7 +6942,7 @@ To declare a place to store a non-constant string, declare an array of
 for the terminating null.  For instance,
 
 @example
-char text = @{ 'H', 'e', 'l', 'l', 'o', 0 @};
+char text[] = @{ 'H', 'e', 'l', 'l', 'o', 0 @};
 @end example
 
 @noindent
@@ -6951,7 +6951,7 @@ and the terminating null character.  An equivalent way to get the same
 result is this,
 
 @example
-char text = "Hello";
+char text[] = "Hello";
 @end example
 
 @noindent
