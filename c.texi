@@ -115,14 +115,21 @@ language with the convenience of assembler language.''  However, C is
 far more portable, and much easier to read and write, than assembler
 language.
 
-This manual focuses on the GNU C language supported by the GNU
-Compiler Collection, version ???.  When a construct may be absent or
-work differently in other C compilers, we say so.  When it is not part
-of ISO standard C, we say it is a ``GNU C extension,'' because it is
-useful to know that; however, other dialects and standards are not the
-focus of this manual.  We keep those notes short, unless it is vital
-to say more.  For the same reason, we hardly mention C@t{++} or other
-languages that the GNU Compiler Collection supports.
+This manual describes the GNU C language supported by the GNU Compiler
+Collection, as of roughly 2017.  Please inform us of any changes
+needed to match the current version of GNU C.
+
+When a construct may be absent or work differently in other C
+compilers, we say so.  When it is not part of ISO standard C, we say
+it is a ``GNU C extension,'' because it is useful to know that.
+However, standards and other dialects are secondary topics for this
+manual.  For simplicity's sake, we keep those notes short, unless it
+is vital to say more.
+
+Likewise, we hardly mention C@t{++} or other languages that the GNU
+Compiler Collection supports.  We hope this manual will serve as a
+base for writing manuals for those languages, but languages so
+different can't share one common manual.
 
 Some aspects of the meaning of C programs depend on the target
 platform: which computer, and which operating system, the compiled
