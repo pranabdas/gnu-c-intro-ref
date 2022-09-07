@@ -1,9 +1,9 @@
 \input texinfo
 
-@c Copyright @copyright{} 2022 Richard Stallman and Free Software Foundation, Inc.
+@c Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
 
-(The work of Trevis Rothwell and Nelson Beebe has been assigned or
-licensed to the FSF.)
+@c (The work of Trevis Rothwell and Nelson Beebe has been assigned or
+@c licensed to the FSF.)
 
 @c move alignment later?
 
@@ -42,7 +42,8 @@ modify this GNU manual.''
 
 @titlepage
 @sp 6
-@center @titlefont{GNU C Language Intro and Reference Manual}
+@center @titlefont{GNU C Language Introduction}
+@center @titlefont{and Reference Manual}
 @sp 4
 @c @center @value{EDITION} Edition
 @sp 5
@@ -62,7 +63,7 @@ WILL BE Published by the Free Software Foundation @*
 51 Franklin Street, Fifth Floor @*
 Boston, MA 02110-1301 USA @*
 ISBN ?-??????-??-?
-@ignore
+@end ignore
 
 @ignore
 @sp 1
