@@ -1,9 +1,8 @@
 
-@ignore
 @c Copyright @copyright{} 2020 Richard Stallman and Free Software Foundation, Inc.
 
-DRAFT --- DO NOT REDISTRIBUTE --- DRAFT --- DO NOT REDISTRIBUTE --- DRAFT 
-@end ignore
+This is part of the GNU C Intro and Reference Manual
+and covered by its license.
 
 @node Preprocessing
 @chapter Preprocessing
