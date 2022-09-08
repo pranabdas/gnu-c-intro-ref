@@ -927,15 +927,16 @@ Executing @var{body}.
 Advancing the loop (executing @code{++i}, which increments @code{i}).
 @end itemize
 
-The net result is to execute @var{body} with 0 in @code{i},
-then with 1 in @code{i}, and so on, stopping just before the repetition
-where @code{i} would equal @code{n}.
+The net result is to execute @var{body} with 1 in @code{i},
+then with 2 in @code{i}, and so on, stopping just before the repetition
+where @code{i} would equal @code{n}.  If @code{n} is less than 1,
+the loop will execute the body zero times.
 
 The body of the @code{for} statement must be one and only one
 statement.  You can't write two statements in a row there; if you try
 to, only the first of them will be treated as part of the loop.
 
-The way to put multiple statements in those places is to group them
+The way to put multiple statements in such a place is to group them
 with a block, and that's what we do in this example.
 @end table
 
