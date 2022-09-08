@@ -11,7 +11,7 @@ c.pdf: c.dvi
 	dvipdf c.dvi
 
 c.dvi: c.texi cpp.texi fp.texi fdl.texi
-	tex c.texi
+	texi2dvi c.texi
 
 c.doc:
 	makeinfo --docbook c.texi
