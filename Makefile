@@ -14,12 +14,12 @@ c.dvi: c.texi cpp.texi fp.texi fdl.texi
 	texi2dvi c.texi
 
 c.doc: c.texi cpp.texi fp.texi fdl.texi
-	makeinfo --docbook c.texi
+	makeinfo --docbook c.texi -o $@
 c.html: c.texi cpp.texi fp.texi fdl.texi
-	makeinfo --html c.texi
+	makeinfo --html c.texi -o $@
 c.txt: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --plaintext c.texi > $@
 
 clean:
-	rm -f c-manual.tgz c.dvi c.pdf c c-1 c-2 c.doc c.html c.txt
+	rm -f c-manual.tgz c.dvi c.pdf c.info* c.doc c.html c.txt
 	rm -f c.aux c.cp c.fn c.ky c.log c.pg c.tmp c.toc c.tp c.vr
