@@ -12126,20 +12126,29 @@ that value.  Its definition is written to avoid overflow.
 @cindex object file
 @cindex compilation module
 @cindex make rules
+@cindex link
 
 Early in the manual we explained how to compile a simple C program
 that consists of a single source file (@pxref{Compile Example}).
 However, we handle only short programs that way.  A typical C program
-consists of many source files, each of which is a separate
+consists of many source files, each of which is usually a separate
 @dfn{compilation module}---meaning that it has to be compiled
-separately.
+separately.  (The source files that are not separate compilation
+modules are those that are used via @code{#include}; see @ref{Header
+Files}.)
 
-The full details of how to compile with GCC are documented in xxxx.
+To compile a multi-module program, you compile each of the program's
+compilation modules, making an @dfn{object file} for that module.  The
+last step is to @dfn{link} the many object files together into a
+single executable for the whole program.
+
+The full details of how to compile C programs (and other programs)
+with GCC are documented in xxxx.
 @c ??? ref
 Here we give only a simple introduction.
 
-These are the commands to compile two compilation modules,
-@file{foo.c} and @file{bar.c}, with a command for each module:
+These commands compile two compilation modules, @file{foo.c} and
+@file{bar.c}, running the compiler for each module:
 
 @example
 gcc -c -O -g foo.c
@@ -12149,28 +12158,17 @@ gcc -c -O -g bar.c
 @noindent
 In these commands, @option{-g} says to generate debugging information,
 @option{-O} says to do some optimization, and @option{-c} says to put
-the compiled code for that module into a corresponding @dfn{object
-file} and go no further.  The object file for @file{foo.c} is called
-@file{foo.o}, and so on.
+the compiled code for that module into a corresponding object file and
+go no further.  The object file for @file{foo.c} is automatically
+called @file{foo.o}, and so on.
 
-If you wish, you can specify the additional options @option{-Wformat
--Wparenthesis -Wstrict-prototypes}, which request additional warnings.
-
-One reason to divide a large program into multiple compilation modules
-is to control how each module can access the internals of the others.
-When a module declares a function or variable @code{extern}, other
-modules can access it.  The other functions and variables in
-a module can't be accessed from outside that module.
-
-The other reason for using multiple modules is so that changing
-one source file does not require recompiling all of them in order
-to try the modified program.  Dividing a large program into many
-substantial modules in this way typically makes recompilation much faster.
+If you wish, you can specify the additional compilation options.  For
+instance, @option{-Wformat -Wparenthesis -Wstrict-prototypes} request
+additional warnings.
 
 @cindex linking object files
-After you compile all the program's modules, in order to run the
-program you must @dfn{link} the object files into a combined
-executable, like this:
+After you compile all the program's modules, you link the object files
+into a combined executable, like this:
 
 @example
 gcc -o foo foo.o bar.o
@@ -12182,12 +12180,24 @@ executable file, and the other arguments are the object files to link.
 Always specify the executable file name in a command that generates
 one.
 
+One reason to divide a large program into multiple compilation modules
+is to control how each module can access the internals of the others.
+When a module declares a function or variable @code{extern}, other
+modules can access it.  The other functions and variables defined in a
+module can't be accessed from outside that module.
+
+The other reason for using multiple modules is so that changing one
+source file does not require recompiling all of them in order to try
+the modified program.  It is sufficient to recompile the source file
+that you changed, then link them all again.  Dividing a large program
+into many substantial modules in this way typically makes
+recompilation much faster.
+
 Normally we don't run any of these commands directly.  Instead we
 write a set of @dfn{make rules} for the program, then use the
 @command{make} program to recompile only the source files that need to
-be recompiled.
-
-@c ??? ref to make manual
+be recompiled, by following those rules.  @xref{Top, The GNU Make
+Mamual, , Make, The GNU Make Manual}).
 
 @node Directing Compilation
 @chapter Directing Compilation
