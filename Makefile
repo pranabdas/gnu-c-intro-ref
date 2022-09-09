@@ -13,11 +13,11 @@ c.pdf: c.dvi
 c.dvi: c.texi cpp.texi fp.texi fdl.texi
 	texi2dvi c.texi
 
-c.doc:
+c.doc: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --docbook c.texi
-c.html:
+c.html: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --html c.texi
-c.txt:
+c.txt: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --plaintext c.texi > $@
 
 clean:
