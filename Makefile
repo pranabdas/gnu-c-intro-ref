@@ -21,5 +21,6 @@ c.txt: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --plaintext c.texi > $@
 
 clean:
-	rm -f c-manual.tgz c.dvi c.pdf c.info* c.doc c.html c.txt
+	rm -f c-manual.tgz c.dvi c.pdf c c-* c.doc c.html c.txt
 	rm -f c.aux c.cp c.fn c.ky c.log c.pg c.tmp c.toc c.tp c.vr
+	rm -f c.cps c.fns
