@@ -3438,8 +3438,8 @@ combined in any order.  Thus, given four functions that return
 @noindent
 may add up the results in any order.
 
-By contrast, arithmetic on signed integers, with overflow significant,
-is not really associative (@pxref{Integer Overflow}).  Thus, the
+By contrast, arithmetic on signed integers, in which overflow is significant,
+is not always associative (@pxref{Integer Overflow}).  Thus, the
 additions must be done in the order specified, obeying parentheses and
 left-association.  That means computing @code{(foo () + bar ())} and
 @code{(baz () + quux ())} first (in either order), then adding the
@@ -9567,7 +9567,7 @@ constantness of the variable propagates into pointers, too.
 
 A pointer type can specify that the @emph{target} is constant.  For
 example, the pointer type @code{const double *} stands for a pointer
-to a constant @code{double}.  That's the typethat results from taking
+to a constant @code{double}.  That's the type that results from taking
 the address of @code{pi}.  Such a pointer can't be dereferenced in the
 left side of an assignment.
 
@@ -9797,7 +9797,7 @@ the compiled code for @code{null_left} must read @code{a->left}
 again from memory when executing the second assignment statement.
 
 We can enable optimization, so that it does not need to read
-@code{a->left} again, by writing @code{null_left} this in a less
+@code{a->left} again, by writing @code{null_left} in a less
 obvious way.
 
 @example
@@ -12197,7 +12197,7 @@ Normally we don't run any of these commands directly.  Instead we
 write a set of @dfn{make rules} for the program, then use the
 @command{make} program to recompile only the source files that need to
 be recompiled, by following those rules.  @xref{Top, The GNU Make
-Mamual, , Make, The GNU Make Manual}).
+Mamual, , Make, The GNU Make Manual}.
 
 @node Directing Compilation
 @chapter Directing Compilation
