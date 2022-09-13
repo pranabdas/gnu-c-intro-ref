@@ -93,7 +93,7 @@ If you understand basic concepts of programming but know nothing about
 C, you can read this manual sequentially from the beginning to learn
 the C language.
 
-If you are a beginner to programming, we recommend you first learn a
+If you are a beginner in programming, we recommend you first learn a
 language with automatic garbage collection and no explicit pointers,
 rather than starting with C@.  Good choices include Lisp, Scheme,
 Python and Java.  C's explicit pointers mean that programmers must be
@@ -137,13 +137,23 @@ code will run on.  Where this is the case, we say so.
 
 The C language provides no built-in facilities for performing such
 common operations as input/output, memory management, string
-manipulation, and the like.  Instead, these facilities are defined in
-a standard library, which is automatically available in every C
-program.  @xref{Top, The GNU C Library, , libc, The GNU C Library
-Reference Manual}.
+manipulation, and the like.  Instead, these facilities are provided by
+functions defined in the standard library, which is automatically
+available in every C program.  @xref{Top, The GNU C Library, , libc,
+The GNU C Library Reference Manual}.
+
+GNU/Linux systems use the GNU C Library to do this job.  It is itself
+a C program, so once you know C you can read its source code and see
+how its library functions do their jobs.  Some fraction of the
+functions are implemented as @dfn{system calls}, which means they
+contain a special instruction that asks the system kernel (Linux) to
+do a specific task.  To understand how those are implemented, you'd
+need to read Linux source code instead.  Whether a library function is
+a system call is an internal implementation detail that makes no
+difference for how to call the function.
 
 This manual incorporates the former GNU C Preprocessor Manual, which
-was among the earliest GNU Manuals.  It also uses some text from the
+was among the earliest GNU manuals.  It also uses some text from the
 earlier GNU C Manual that was written by Trevis Rothwell and James
 Youngman.
 
@@ -490,6 +500,10 @@ uses it to explain a few features of the language.  If you already
 know the basic points of C presented in this chapter, you can skim it
 or skip it.
 
+We present examples of C source code (other than comments) using a
+fixed-width typeface, since that's the way they look when you edit
+them in an editor such as GNU Emacs.
+
 @menu
 * Recursive Fibonacci:: Writing a simple function recursively.
 * Stack::               Each function call uses space in the stack.
@@ -556,6 +570,12 @@ comments in the code is tremendously important---they provide
 background information so others can understand the code more quickly.
 @xref{Comments}.
 
+In this manual, we present comment text in the variable-width typeface
+used for the text of the chapters, not in the fixed-width typeface
+used for the rest of the code.  That is to make comments easier to
+read.  This distinction of typeface does not exist in a real file of C
+source code.
+
 @item
 Two kinds of statements, the @code{return} statement and the
 @code{if}@dots{}@code{else} statement.  @xref{Statements}.
@@ -565,8 +585,8 @@ Recursion.  The function @code{fib} calls itself; that is called a
 @dfn{recursive call}.  These are valid in C, and quite common.
 
 The @code{fib} function would not be useful if it didn't return.
-Thus, recursive definitions, to be of any use, must avoid infinite
-recursion.
+Thus, recursive definitions, to be of any use, must avoid
+@dfn{infinite recursion}.
 
 This function definition prevents infinite recursion by specially
 handling the case where @code{n} is two or less.  Thus the maximum
@@ -716,8 +736,8 @@ in the space for the value.  @xref{Integer Overflow}.
 @cindex recursion, drawbacks of
 
 @cindex stack frame
-Recursion has a drawback: there are limits to how many nested function
-calls a program can make.  In C, each function call allocates a block
+Recursion has a drawback: there are limits to how many nested levels of
+function calls a program can make.  In C, each function call allocates a block
 of memory which it uses until the call returns.  C allocates these
 blocks consecutively within a large area of memory known as the
 @dfn{stack}, so we refer to the blocks as @dfn{stack frames}.
@@ -1028,7 +1048,10 @@ certain numeric @dfn{failure codes}.  @xref{Values from main}.
 
 @cindex @code{printf}
 The simplest way to print text in C is by calling the @code{printf}
-function, so here we explain what that does.
+function, so here we explain very briefly what that function does.
+For a full explanation of @code{printf} and the other standard I/O
+functions, see @ref{I/O on Streams, The GNU C Library, , libc, The GNU
+C Library Reference Manual}.
 
 @cindex standard output
 The first argument to @code{printf} is a @dfn{string constant}
@@ -1065,10 +1088,6 @@ Don't worry about header files for now; we'll explain them later in
 The first argument of @code{printf} does not have to be a string
 constant; it can be any string (@pxref{Strings}).  However, using a
 constant is the most common case.
-
-To learn more about @code{printf} and other facilities of the C
-library, see @ref{Top, The GNU C Library, , libc, The GNU C Library
-Reference Manual}.
 
 @node Complete Line-by-Line
 @section Complete Program, Line by Line
@@ -1146,6 +1165,13 @@ which starts the GDB debugger (@pxref{Sample Session, Sample Session,
 A Sample GDB Session, gdb, Debugging with GDB}) so you can run and
 debug the executable program @code{fib1}.
 
+Richard Stallman's advice, from personal experience, is to turn to the
+debugger as soon as you can reproduce the problem.  Don't try to avoid
+it by using other methods instead---occasionally they are shortcuts,
+but usually they waste an unbounded amount of time.  With the
+debugger, you will surely find the bug in a reasonable time; overall,
+you will get your work done faster.  The sooner you get serious and
+start the debugger, the sooner you are likely to find the bug.
 
 @xref{Compilation}, for an introduction to compiling more complex
 programs which consist of more than one source file.
@@ -8016,6 +8042,7 @@ the expressions between them may be missing.  A missing expression
 means this loop doesn't use that particular feature of the @code{for}
 statement.
 
+@c ??? You can't do this if START is a declaration.
 Instead of using @var{start}, you can do the loop preparation
 before the @code{for} statement: the effect is the same.  So we
 could have written the beginning of the previous example this way:
@@ -8643,8 +8670,8 @@ This could also be written using a statement expression
 
 Ordinary labels are visible throughout the function where they are
 defined, and only in that function.  However, explicitly declared
-local labels of a block are visible in nested functions declared
-within that block.  @xref{Nested Functions}, for details.
+local labels of a block are visible in nested function definitions
+inside that block.  @xref{Nested Functions}, for details.
 
 @xref{goto Statement}.
 
@@ -11094,9 +11121,10 @@ another.
 @cindex thunks
 
 A @dfn{nested function} is a function defined inside another function.
-The nested function's name is local to the block where it is defined.
-For example, here we define a nested function named @code{square}, and
-call it twice:
+(The ability to do this indispensable for automatic translation of
+certain programming languages into C.)  The nested function's name is
+local to the block where it is defined.  For example, here we define a
+nested function named @code{square}, then call it twice:
 
 @example
 @group
@@ -11109,7 +11137,7 @@ foo (double a, double b)
 @end group
 @end example
 
-The nested function can access all the variables of the containing
+The nested function definition can access all the variables of the containing
 function that are visible at the point of its definition.  This is
 called @dfn{lexical scoping}.  For example, here we show a nested
 function that uses an inherited variable named @code{offset}:
@@ -12958,7 +12986,7 @@ attribute.  @xref{Inline Function Definitions}.
 
 @item gnu_inline
 The @code{gnu_inline} attribute, in a function's declaration or
-definition, specifies to handle the @code{inline} keywprd the way GNU
+definition, specifies to handle the @code{inline} keyword the way GNU
 C originally implemented it, many years before ISO C said anything
 about inlining.  @xref{Inline Function Definitions}.
 @end table
