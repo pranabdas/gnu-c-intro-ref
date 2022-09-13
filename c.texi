@@ -2776,7 +2776,7 @@ again @samp{4}.
 
 Using @samp{++} or @samp{--} @emph{after} an lvalue does something
 peculiar: it gets the value directly out of the lvalue and @emph{then}
-increments or decrement it.  Thus, the value of @code{i++} is the same
+increments or decrements it.  Thus, the value of @code{i++} is the same
 as the value of @code{i}, but @code{i++} also increments @code{i} ``a
 little later.''  This is called @dfn{postincrement} or
 @dfn{postdecrement}.
@@ -2999,10 +2999,10 @@ if (r && x % r == 0)
 @end example
 
 @noindent
-A truth value is simply a number, so @code{r}
-as a truth value tests whether it is nonzero.
-But @code{r}'s meaning is not a truth value---it is a number to divide by.
-So it is better style to write the explicit @code{!= 0}.
+A truth value is simply a number, so using @code{r} as a truth value
+tests whether it is nonzero.  But @code{r}'s meaning as en expression
+is not a truth value---it is a number to divide by.  So it is better
+style to write the explicit @code{!= 0}.
 
 Here's another equivalent way to write it:
 
@@ -3021,7 +3021,7 @@ There are cases where assignments nested inside the condition can
 actually make a program @emph{easier} to read.  Here is an example
 using a hypothetical type @code{list} which represents a list; it
 tests whether the list has at least two links, using hypothetical
-functions, @code{nonempty} which is true of the argument is a nonempty
+functions, @code{nonempty} which is true if the argument is a nonempty
 list, and @code{list_next} which advances from one list link to the
 next.  We assume that a list is never a null pointer, so that the
 assignment expressions are always ``true.''
@@ -3035,8 +3035,8 @@ if (nonempty (list)
 @end example
 
 @noindent
-Here we get the benefit of the @samp{&&} operator, to avoid executing
-the rest of the code if a call to @code{nonempty} says ``false.''  The
+Here we take advantage of the @samp{&&} operator to avoid executing
+the rest of the code if a call to @code{nonempty} returns ``false.''  The
 only natural place to put the assignments is among those calls.
 
 It would be possible to rewrite this as several statements, but that
@@ -3071,7 +3071,7 @@ to compute and get the value from.  It looks like this:
 @end menu
 
 @node Conditional Rules
-@subsection Rules for Conditional Operator
+@subsection Rules for the Conditional Operator
 
 The first operand, @var{condition}, should be a value that can be
 compared with zero---a number or a pointer.  If it is true (nonzero),
@@ -3147,7 +3147,7 @@ next_element () ? : default_pointer
 
 @noindent
 is a way to advance the pointer and use its new value if it isn't
-null, but use @code{default_pointer} if that is null.  We must not do
+null, but use @code{default_pointer} if that is null.  We cannot do
 it this way,
 
 @example
@@ -3155,7 +3155,7 @@ next_element () ? next_element () : default_pointer
 @end example
 
 @noindent
-because it would advance the pointer a second time.
+because that would advance the pointer a second time.
 
 @node Comma Operator
 @section Comma Operator
@@ -3243,7 +3243,7 @@ which uses the comma operator and passes just one argument
 (with value 6).
 
 @strong{Warning:} don't use the comma operator around an argument
-of a function unless it helps understand the code.  When you do so,
+of a function unless it makes the code more readable.  When you do so,
 don't put part of another argument on the same line.  Instead, add a
 line break to make the parentheses around the comma operator easier to
 see, like this.
