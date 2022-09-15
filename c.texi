@@ -11,6 +11,7 @@
 @settitle GNU C Language Manual
 @documentencoding UTF-8
 
+@c Merge variable index into the function index.
 @synindex vr fn
 
 @copying
@@ -37,8 +38,6 @@ modify this GNU manual.''
 @direntry
 * C: (c).       GNU C Language Intro and Reference Manual
 @end direntry
-
-@documentencoding UTF-8
 
 @titlepage
 @sp 6
