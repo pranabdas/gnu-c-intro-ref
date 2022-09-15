@@ -186,7 +186,7 @@ Please report errors and suggestions to c-manual@@gnu.org.
 * Arrays::                        Creating and manipulating arrays.
 * Enumeration Types::             Sets of integers with named values.
 * Defining Typedef Names::        Using @code{typedef} to define type names.
-* Statements::                    Controling program flow.
+* Statements::                    Controlling program flow.
 * Variables::                     Details about declaring, initializing,
                                     and using variables.
 * Type Qualifiers::               Mark variables for certain intended uses.
@@ -281,7 +281,7 @@ Order of Execution
 * Associativity and Ordering::   Some associative operations are performed
                                    in a particular order; others are not.     
 * Sequence Points::              Some guarantees about the order of operations.
-* Postincrement and Ordering::   Ambiguous excution order with postincrement.
+* Postincrement and Ordering::   Ambiguous execution order with postincrement.
 * Ordering of Operands::         Evaluation order of operands
                                    and function arguments.
 * Optimization and Ordering::    Compiler optimizations can reorder operations
@@ -355,7 +355,7 @@ Structures
 * Structure Constructors::       Building new structure objects.
 * Unnamed Types as Fields::      Fields' types do not always need names.
 * Incomplete Types::             Types which have not been fully defined.
-* Intertwined Incomplete Types:: Defining mutually-recursive structue types.
+* Intertwined Incomplete Types:: Defining mutually-recursive structure types.
 * Type Tags::                    Scope of structure and union type tags.
 
 Arrays
@@ -392,7 +392,7 @@ Statements
 Variables
 
 * Variable Declarations::        Name a variable and and reserve space for it.
-* Initializers::                 Assigning inital values to variables.
+* Initializers::                 Assigning initial values to variables.
 * Designated Inits::             Assigning initial values to array elements
                                    at particular array indices.
 * Auto Type::                    Obtaining the type of a variable.
@@ -446,7 +446,7 @@ Preprocessing
 * Preprocessing Tokens::         The lexical elements of preprocessing.
 * Header Files::                 Including one source file in another.
 * Macros::                       Macro expansion by the preprocessor.
-* Conditionals::                 Controling whether to compile some lines
+* Conditionals::                 Controlling whether to compile some lines
                                    or ignore them.
 * Diagnostics::                  Reporting warnings and errors.
 * Line Control::                 Reporting source line numbers.
@@ -486,7 +486,7 @@ Floating Point in Depth
 
 Directing Compilation
 
-* Pragmas::                      Controling compilation of some constructs.
+* Pragmas::                      Controlling compilation of some constructs.
 * Static Assertions::            Compile-time tests for conditions.    
 
 @end detailmenu
@@ -1110,7 +1110,7 @@ fib (int n)             /* @r{Its name is @code{fib};}  */
   if (n <= 2)           /* @r{If @code{n} is 1 or 2,}  */
     return 1;           /*   @r{make @code{fib} return 1.}  */
   else                  /* @r{otherwise, add the two previous}  */
-                        /* @r{fibonacci numbers.}  */
+                        /* @r{Fibonacci numbers.}  */
     return fib (n - 1) + fib (n - 2);
 @}
 
@@ -1925,7 +1925,7 @@ nonnegative numbers; its range starts with zero and runs upward.
 
 The most basic integer types are @code{int}, which normally can hold
 numbers from @minus{}2,147,483,648 to 2,147,483,647, and @code{unsigned
-int}, which normally can hold numbers from 0 to 4,294.967,295.  (This
+int}, which normally can hold numbers from 0 to 4,294,967,295.  (This
 assumes @code{int} is 32 bits wide, always true for GNU C on real
 computers but not always on embedded controllers.)  @xref{Integer
 Types}, for full information about integer types.
@@ -1979,8 +1979,8 @@ Depth}).  Thus, the unary @samp{-} operator on a signed integer can
 overflow.
 
 @menu
-* Unsigned Overflow::           Overlow in unsigned integer arithmetic.
-* Signed Overflow::             Overlow in signed integer arithmetic.
+* Unsigned Overflow::           Overflow in unsigned integer arithmetic.
+* Signed Overflow::             Overflow in signed integer arithmetic.
 @end menu
 
 @node Unsigned Overflow
@@ -3305,7 +3305,7 @@ This means that @w{@code{a @var{op} b @var{op} c}} means @w{@code{(a
 @var{op} b) @var{op} c}}.  However, the only operators you should
 repeat in this way without parentheses are @samp{+}, @samp{-},
 @samp{*} and @samp{/}, because those cases are clear from algebra.  So
-it is ok to write @code{a + b + c} or @code{a - b - c}, but never
+it is OK to write @code{a + b + c} or @code{a - b - c}, but never
 @code{a == b == c} or @code{a % b % c}.  For those operators, use
 explicit parentheses to show how the operations nest.
 
@@ -3406,7 +3406,7 @@ necessarily predictable.  This chapter describes what you can count on.
 * Associativity and Ordering::   Some associative operations are performed
                                    in a particular order; others are not.     
 * Sequence Points::              Some guarantees about the order of operations.
-* Postincrement and Ordering::   Ambiguous excution order with postincrement.
+* Postincrement and Ordering::   Ambiguous execution order with postincrement.
 * Ordering of Operands::         Evaluation order of operands
                                    and function arguments.
 * Optimization and Ordering::    Compiler optimizations can reorder operations
@@ -5776,7 +5776,7 @@ GNU C does not require this.
 * Structure Constructors::       Building new structure objects.
 * Unnamed Types as Fields::      Fields' types do not always need names.
 * Incomplete Types::             Types which have not been fully defined.
-* Intertwined Incomplete Types:: Defining mutually-recursive structue types.
+* Intertwined Incomplete Types:: Defining mutually-recursive structure types.
 * Type Tags::                    Scope of structure and union type tags.
 @end menu
 
@@ -8905,7 +8905,7 @@ their values for the whole execution of the program.
 
 @menu
 * Variable Declarations::        Name a variable and and reserve space for it.
-* Initializers::                 Assigning inital values to variables.
+* Initializers::                 Assigning initial values to variables.
 * Designated Inits::             Assigning initial values to array elements
                                    at particular array indices.
 * Auto Type::                    Obtaining the type of a variable.
@@ -10735,7 +10735,7 @@ Since the data type of @code{binary_op} explicitly specifies type
 
 The call conceptually dereferences the pointer @code{binary_op} to
 ``get'' the function it points to, and calls that function.  If you
-wish, you can explicitly represent the derefence by writing the
+wish, you can explicitly represent the dereference by writing the
 @code{*} operator:
 
 @example
@@ -11196,7 +11196,7 @@ other declarations and statements in the block.
 The nested function's name is visible only within the parent block;
 the name's scope starts from its definition and continues to the end
 of the containing block.  If the nested function's name
-is the same as the parent function's name, there wil be
+is the same as the parent function's name, there will be
 no way to refer to the parent function inside the scope of the
 name of the nested function.
 
@@ -12258,7 +12258,7 @@ Normally we don't run any of these commands directly.  Instead we
 write a set of @dfn{make rules} for the program, then use the
 @command{make} program to recompile only the source files that need to
 be recompiled, by following those rules.  @xref{Top, The GNU Make
-Mamual, , Make, The GNU Make Manual}.
+Manual, , Make, The GNU Make Manual}.
 
 @node Directing Compilation
 @chapter Directing Compilation
@@ -12268,7 +12268,7 @@ meaning @emph{as such}, but rather direct the compiler how to treat
 some aspects of the program.
 
 @menu
-* Pragmas::                      Controling compilation of some constructs.
+* Pragmas::                      Controlling compilation of some constructs.
 * Static Assertions::            Compile-time tests for conditions.
 @end menu
 
@@ -12884,7 +12884,7 @@ A type compatible with @var{t}.  @xref{Compatible Types}.
 A signed or unsigned version of one of the above.
 
 @item
-A qualifed version of one of the above.
+A qualified version of one of the above.
 @xref{Type Qualifiers}.
 
 @item
@@ -13055,7 +13055,7 @@ arithmetic errors, including division by zero and overflow.
 
 @item SIGBUS
 This signal is generated when an invalid pointer is dereferenced,
-typically the result of dereferencing an uninintalized pointer.  It is
+typically the result of dereferencing an uninitialized pointer.  It is
 similar to @code{SIGSEGV}, except that @code{SIGSEGV} indicates
 invalid access to valid memory, while @code{SIGBUS} indicates an
 attempt to access an invalid address.
