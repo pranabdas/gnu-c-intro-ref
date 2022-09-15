@@ -914,11 +914,11 @@ the other.
 In GNU C, you can create a value of negative Infinity in software like
 this:
 
-@verbatim
+@example
 double x;
 
 x = -1.0 / 0.0;
-@end verbatim
+@end example
 
 GNU C supplies the @code{__builtin_inf}, @code{__builtin_inff}, and
 @code{__builtin_infl} macros, and the GNU C Library provides the
@@ -1303,13 +1303,14 @@ eps_pos = nextafter (x, +inf() - x);
 @noindent
 In such cases, if @var{x} is Infinity, then @emph{the @code{nextafter}
 functions return @var{y} if @var{x} equals @var{y}}.  Our two
-assignments then produce @code{+0x1.fffffffffffffp+1023} (about
-1.798e+308) for @var{eps_neg} and Infinity for @var{eps_pos}.  Thus,
-the call @code{nextafter (INFINITY, -INFINITY)} can be used to find
-the largest representable finite number, and with the call
-@code{nextafter (0.0, 1.0)}, the smallest representable number (here,
-@code{0x1p-1074} (about 4.491e-324), a number that we saw before as
-the output from @code{macheps (0.0)}).
+assignments then produce @code{+0x1.fffffffffffffp+1023} (that is a
+hexadecimal floating point constant and its value is around
+1.798e+308; see @ref{Floating Constants}) for @var{eps_neg}, and
+Infinity for @var{eps_pos}.  Thus, the call @code{nextafter (INFINITY,
+-INFINITY)} can be used to find the largest representable finite
+number, and with the call @code{nextafter (0.0, 1.0)}, the smallest
+representable number (here, @code{0x1p-1074} (about 4.491e-324), a
+number that we saw before as the output from @code{macheps (0.0)}).
 
 @c =====================================================================
 
@@ -1657,7 +1658,7 @@ a substantial portion of the functions described in the famous
 @cite{NIST Handbook of Mathematical Functions}, Cambridge (2018),
 ISBN 0-521-19225-0.
 See
-@uref{http://www.math.utah.edu/pub/mathcw}
+@uref{https://www.math.utah.edu/pub/mathcw}
 for compilers and libraries.
 
 @item   @c sort-key: Clinger-1990
@@ -1669,13 +1670,13 @@ See also the papers by Steele & White.
 @item   @c sort-key: Clinger-2004
 William D. Clinger, @cite{Retrospective: How to read floating
 point numbers accurately}, ACM SIGPLAN Notices @b{39}(4) 360--371 (April 2004),
-@uref{http://doi.acm.org/10.1145/989393.989430}.  Reprint of 1990 paper,
+@uref{https://doi.acm.org/10.1145/989393.989430}.  Reprint of 1990 paper,
 with additional commentary.
 
 @item   @c sort-key: Goldberg-1967
 I. Bennett Goldberg, @cite{27  Bits Are Not Enough For 8-Digit Accuracy},
 Communications of the ACM @b{10}(2) 105--106 (February 1967),
-@uref{http://doi.acm.org/10.1145/363067.363112}.  This paper,
+@uref{https://doi.acm.org/10.1145/363067.363112}.  This paper,
 and its companions by David Matula, address the base-conversion
 problem, and show that the naive formulas are wrong by one or
 two digits.
@@ -1692,7 +1693,7 @@ and then rereading from time to time.
 @item   @c sort-key: Juffa
 Norbert Juffa and Nelson H. F. Beebe, @cite{A Bibliography of
 Publications on Floating-Point Arithmetic},
-@uref{http://www.math.utah.edu/pub/tex/bib/fparith.bib}.
+@uref{https://www.math.utah.edu/pub/tex/bib/fparith.bib}.
 This is the largest known bibliography of publications about
 floating-point, and also integer, arithmetic.  It is actively
 maintained, and in mid 2019, contains more than 6400 references to
@@ -1708,7 +1709,7 @@ base-conversion problem.
 @item   @c sort-key: Kahan
 William Kahan, @cite{Branch Cuts for Complex Elementary Functions, or
 Much Ado About Nothing's Sign Bit}, (1987),
-@uref{http://people.freebsd.org/~das/kahan86branch.pdf}.
+@uref{https://people.freebsd.org/~das/kahan86branch.pdf}.
 This Web document about the fine points of complex arithmetic
 also appears in the volume edited by A. Iserles and
 M. J. D. Powell, @cite{The State of the Art in Numerical
@@ -1775,7 +1776,7 @@ Michael Overton, @cite{Numerical Computing with IEEE Floating
 Point Arithmetic, Including One Theorem, One Rule of Thumb, and
 One Hundred and One Exercises}, SIAM (2001), ISBN 0-89871-482-6
 (xiv + 104 pages),
-@uref{http://www.ec-securehost.com/SIAM/ot76.html}.
+@uref{https://www.ec-securehost.com/SIAM/ot76.html}.
 This is a small volume that can be covered in a few hours.
 
 @item   @c sort-key: Steele-1990
@@ -1789,7 +1790,7 @@ See also the papers by Clinger.
 Guy L. Steele Jr. and Jon L. White, @cite{Retrospective: How to
 Print Floating-Point Numbers Accurately}, ACM SIGPLAN Notices
 @b{39}(4) 372--389 (April 2004),
-@uref{http://doi.acm.org/10.1145/989393.989431}.  Reprint of 1990
+@uref{https://doi.acm.org/10.1145/989393.989431}.  Reprint of 1990
 paper, with additional commentary.
 
 @item   @c sort-key: Sterbenz
