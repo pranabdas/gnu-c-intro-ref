@@ -1797,7 +1797,7 @@ the expressions that are substituted for @code{a} and @code{b}.
 Underscore followed by a lower case letter won't be predefined by the
 system in any way.
 
-@c We hope someday to extend C with a new form of declaration syntax 
+@c We hope someday to extend C with a new form of declaration syntax
 @c which all the newly declared variables' scopes would begin at the end
 @c of the entire declaration, rather than as soon as each variable's
 @c declaration begins.  This way, all the variables' initializers would
