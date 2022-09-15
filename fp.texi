@@ -866,7 +866,7 @@ numbers have to be converted to that base, and then converted
 back again at output time.  The two base conversions are rarely
 exact, and unwanted rounding errors are introduced.
 
-@cindex hexademical floating-point constants
+@cindex hexadecimal floating-point constants
 As computers usually represent numbers in a base other than 10,
 numbers often must be converted to and from different bases, and
 rounding errors can occur during conversion.  This problem is solved
