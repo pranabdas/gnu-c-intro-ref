@@ -1829,9 +1829,9 @@ Arithmetic operators in C attempt to be as similar as possible to the
 abstract arithmetic operations, but it is impossible to do this
 perfectly.  Numbers in a computer have a finite range of possible
 values, and non-integer values have a limit on their possible
-accuracy.  Nonetheless, in most cases you will encounter no surprises
-in using @samp{+} for addition, @samp{-} for subtraction, and @samp{*}
-for multiplication.
+accuracy.  Nonetheless, except when results are out of range, you will
+encounter no surprises in using @samp{+} for addition, @samp{-} for
+subtraction, and @samp{*} for multiplication.
 
 Each C operator has a @dfn{precedence}, which is its rank in the
 grammatical order of the various operators.  The operators with the
@@ -2102,19 +2102,19 @@ But sometimes it matters precisely where the conversion occurs.
 
 If @code{i} and @code{j} are integers, @code{(i + j) * 2.0} adds them
 as an integer, then converts the sum to floating point for the
-multiplication.  If the addition gets an overflow, that is not
-equivalent to converting both integers to floating point and then
-adding them.  You can get the latter result by explicitly converting
-the integers, as in @code{((double) i + (double) j) * 2.0}.
-@xref{Explicit Type Conversion}.
+multiplication.  If the addition causes an overflow, that is not
+equivalent to converting each integer to floating point and then
+adding the two floating point numbers.  You can get the latter result
+by explicitly converting the integers, as in @code{((double) i +
+(double) j) * 2.0}.  @xref{Explicit Type Conversion}.
 
 @c Eggert's report
 Adding or multiplying several values, including some integers and some
-floating point, does the operations left to right.  Thus, @code{3.0 +
+floating point, performs the operations left to right.  Thus, @code{3.0 +
 i + j} converts @code{i} to floating point, then adds 3.0, then
 converts @code{j} to floating point and adds that.  You can specify a
 different order using parentheses: @code{3.0 + (i + j)} adds @code{i}
-and @code{j} first and then adds that result (converting to floating
+and @code{j} first and then adds that sum (converted to floating
 point) to 3.0.  In this respect, C differs from other languages, such
 as Fortran.
 
@@ -2271,7 +2271,7 @@ The left operand is the value to be shifted, and the right operand
 says how many bits to shift it (the @dfn{shift count}).  The left
 operand is promoted (@pxref{Operand Promotions}), so shifting never
 operates on a narrow integer type; it's always either @code{int} or
-wider.  The value of the shift operator has the same type as the
+wider.  The result of the shift operation has the same type as the
 promoted left operand.
 
 @menu
@@ -2322,12 +2322,12 @@ number of bits gives machine-dependent results.
 @subsection Caveats for Shift Operations
 
 @strong{Warning:} If the shift count is greater than or equal to the
-width in bits of the first operand, the results are machine-dependent.
-Logically speaking, the ``correct'' value would be either -1 (for
-right shift of a negative number) or 0 (in all other cases), but what
-it really generates is whatever the machine's shift instruction does in
-that case.  So unless you can prove that the second operand is not too
-large, write code to check it at run time.
+width in bits of the promoted first operand, the results are
+machine-dependent.  Logically speaking, the ``correct'' value would be
+either @minus{}1 (for right shift of a negative number) or 0 (in all other
+cases), but the actual result is whatever the machine's shift
+instruction does in that case.  So unless you can prove that the
+second operand is not too large, write code to check it at run time.
 
 @strong{Warning:} Never rely on how the shift operators relate in
 precedence to other arithmetic binary operators.  Programmers don't
@@ -3302,11 +3302,12 @@ on the left and one on the right.
 
 All the binary operators in C are syntactically left-associative.
 This means that @w{@code{a @var{op} b @var{op} c}} means @w{@code{(a
-@var{op} b) @var{op} c}}.  However, you should only write repeated
-operators without parentheses using @samp{+}, @samp{-}, @samp{*} and
-@samp{/}, because those cases are clear from algebra.  So it is ok to
-write @code{a + b + c} or @code{a - b - c}, but never @code{a == b ==
-c} or @code{a % b % c}.
+@var{op} b) @var{op} c}}.  However, the only operators you should
+repeat in this way without parentheses are @samp{+}, @samp{-},
+@samp{*} and @samp{/}, because those cases are clear from algebra.  So
+it is ok to write @code{a + b + c} or @code{a - b - c}, but never
+@code{a == b == c} or @code{a % b % c}.  For those operators, use
+explicit parentheses to show how the operations nest.
 
 Each C operator has a @dfn{precedence}, which is its rank in the
 grammatical order of the various operators.  The operators with the
@@ -3522,7 +3523,7 @@ carried out before calling the function.
 The ordering imposed by a sequence point applies locally to a limited
 range of code, as stated above in each case.  For instance, the
 ordering imposed by the comma operator does not apply to code outside
-that comma operator.  Thus, in this code,
+the operands of that comma operator.  Thus, in this code,
 
 @example
 (x = 5, foo (x)) + x * x
@@ -3538,11 +3539,11 @@ them.
 @cindex postincrement and ordering
 @cindex ordering and postincrement
 
-Ordering requirements are loose with the postincrement and
-postdecrement operations (@pxref{Postincrement/Postdecrement}), which
-specify side effects to happen ``a little later.''  They must happen
-before the next sequence point, but that still leaves room for various
-meanings.  In this expression,
+The ordering requirements for the postincrement and postdecrement
+operations (@pxref{Postincrement/Postdecrement}) are loose: those side
+effects must happen ``a little later,'' before the next sequence
+point.  That still leaves room for various orders that give different
+results.  In this expression,
 
 @example
 z = x++ - foo ()
@@ -3561,11 +3562,16 @@ x = x++
 
 @noindent
 @code{x} will certainly be incremented but the incremented value may
-not stick.  If the incrementation of @code{x} happens after the
-assignment to @code{x}, the incremented value will remain in place.
-But if the incrementation happens first, the assignment will overwrite
-that with the not-yet-incremented value, so the expression as a whole
-will leave @code{x} unchanged.
+be replaced with the old value.  That's because the incrementation and
+the assignment may occur in either oder.  If the incrementation of
+@code{x} occurs after the assignment to @code{x}, the incremented
+value will remain in place.  But if the incrementation happens first,
+the assignment will put the not-yet-incremented value back into
+@code{x}, so the expression as a whole will leave @code{x} unchanged.
+
+The conclusion: @strong{avoid such expressions}.  Take care, when you
+use postincrement and postdecrement, that the specific expression you
+use is not ambiguous as to order of execution.
 
 @node Ordering of Operands
 @section Ordering of Operands
@@ -3583,14 +3589,15 @@ followed by the other.  Any side effects in the operand that's computed
 first are executed before the other operand is computed.
 
 @item
-That applies to assignment operators too, except that in simple assignment
+That applies to assignment operators too, except that, in simple assignment,
 the previous value of the left operand is unused.
 
 @item
 The arguments in a function call can be computed in any order, but
 they can't be intermixed.  Thus, one argument is fully computed, then
-another, and so on until they are all done.  Any side effects in one argument
-are executed before computation of another argument begins.
+another, and so on until they have all been done.  Any side effects in
+one argument are executed before computation of another argument
+begins.
 @end itemize
 
 These rules don't cover side effects caused by postincrement and
@@ -3598,11 +3605,11 @@ postdecrement operators---those can be deferred up to the next
 sequence point.
 
 If you want to get pedantic, the fact is that GCC can reorder the
-computations in many other ways provided that doesn't alter the result
-of running the program.  However, because they don't alter the result
-of running the program, they are negligible, unless you are concerned
+computations in many other ways provided that it doesn't alter the result
+of running the program.  However, because it doesn't alter the result
+of running the program, it is negligible, unless you are concerned
 with the values in certain variables at various times as seen by other
-processes.  In those cases, you can use @code{volatile} to prevent
+processes.  In those cases, you should use @code{volatile} to prevent
 optimizations that would make them behave strangely.  @xref{volatile}.
 
 @node Optimization and Ordering
@@ -3694,8 +3701,8 @@ represent both positive and negative numbers, in a range spread almost
 equally on both sides of zero.
 
 Aside from signedness, the integer data types vary in size: how many
-bytes long they are.  The size determines how many different integer
-values the type can hold.
+bytes long they are.  The size determines the range of integer values
+the type can hold.
 
 Here's a list of the signed integer data types, with the sizes they
 have on most computers.  Each has a corresponding unsigned type; see
@@ -3704,7 +3711,8 @@ have on most computers.  Each has a corresponding unsigned type; see
 @table @code
 @item signed char
 One byte (8 bits).  This integer type is used mainly for integers that
-represent characters, as part of arrays or other data structures.
+represent characters, usually as elements of arrays or fields of other
+data structures.
 
 @item short
 @itemx short int
@@ -3775,8 +3783,8 @@ In particular, if the value is really a character, you should declare
 the variable @code{int}.  Not @code{char}!  Using that narrow type can
 force the compiler to truncate values for conversion, which is a
 waste.  Furthermore, some functions return either a character value,
-or @minus{}1 for ``no character.''  Using @code{int} keeps those
-values distinct.
+or @minus{}1 for ``no character.''  Using @code{int} makes it possible
+to distinguish @minus{}1 from a character by sign.
 
 The narrow integer types are useful as parts of other objects, such as
 arrays and structures.  Compare these array declarations, whose sizes
@@ -3867,10 +3875,11 @@ given previously (@pxref{Basic Integers}).
 
 To be completely sure of the size of an integer type,
 use the types @code{int16_t}, @code{int32_t} and @code{int64_t}.
-Their corresponding unsigned types add @samp{u} at the front.
-To define these, include the header file @file{stdint.h}.
+Their corresponding unsigned types add @samp{u} at the front:
+@code{uint16_t}, @code{uint32_t} and @code{uint64_t}.
+To define all these types, include the header file @file{stdint.h}.
 
-The GNU C Compiler compiles for some embedded controllers that use two
+The GNU C Compiler can compile for some embedded controllers that use two
 bytes for @code{int}.  On some, @code{int} is just one ``byte,'' and
 so is @code{short int}---but that ``byte'' may contain 16 bits or even
 32 bits.  These processors can't support an ordinary operating system
@@ -3886,8 +3895,11 @@ programs do not try to support them.
 @findex long double
 
 @dfn{Floating point} is the binary analogue of scientific notation:
-internally it represents a number as a fraction and a binary exponent; the
-value is that fraction multiplied by the specified power of 2.
+internally it represents a number as a fraction and a binary exponent;
+the value is that fraction multiplied by the specified power of 2.
+(The C standard nominally permits other bases, but in GNU C the base
+is always 2.)
+@c ???
 
 For instance, to represent 6, the fraction would be 0.75 and the
 exponent would be 3; together they stand for the value @math{0.75 * 2@sup{3}},
@@ -4025,8 +4037,9 @@ print_if_positive (double x, double y)
 @}
 @end example
 
-A @code{void}-returning function is comparable to what some other languages
-call a ``procedure'' instead of a ``function.''
+A @code{void}-returning function is comparable to what some other
+languages (for instance, Fortran and Pascal) call a ``procedure''
+instead of a ``function.''
 
 @c ??? Already presented
 @c @samp{%f} in an output template specifies to format a @code{double} value
@@ -4039,9 +4052,10 @@ Beyond the primitive types, C provides several ways to construct new
 data types.  For instance, you can define @dfn{pointers}, values that
 represent the addresses of other data (@pxref{Pointers}).  You can
 define @dfn{structures}, as in many other languages
-(@pxref{Structures}), and @dfn{unions}, which specify multiple ways
-to look at the same memory space (@pxref{Unions}).  @dfn{Enumerations}
-are collections of named integer codes (@pxref{Enumeration Types}).
+(@pxref{Structures}), and @dfn{unions}, which define multiple ways to
+interpret the contents of the same memory space (@pxref{Unions}).
+@dfn{Enumerations} are collections of named integer codes
+(@pxref{Enumeration Types}).
 
 @dfn{Array types} in C are used for allocating space for objects,
 but C does not permit operating on an array value as a whole.  @xref{Arrays}.
@@ -4053,7 +4067,7 @@ but C does not permit operating on an array value as a whole.  @xref{Arrays}.
 Some C constructs require a way to designate a specific data type
 independent of any particular variable or expression which has that
 type.  The way to do this is with a @dfn{type designator}.  The
-constucts that need one include casts (@pxref{Explicit Type
+constructs that need one include casts (@pxref{Explicit Type
 Conversion}) and @code{sizeof} (@pxref{Type Size}).
 
 We also use type designators to talk about the type of a value in C,
