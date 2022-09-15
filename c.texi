@@ -3906,11 +3906,11 @@ exponent would be 3; together they stand for the value @math{0.75 * 2@sup{3}},
 meaning 0.75 * 8.  The value 1.5 would use 0.75 as the fraction and 1
 as the exponent.  The value 0.75 would use 0.75 as the fraction and 0
 as the exponent.  The value 0.375 would use 0.75 as the fraction and
--1 as the exponent.
+@minus{}1 as the exponent.
 
 These binary exponents are used by machine instructions.  You can
 write a floating-point constant this way if you wish, using
-hexadecimal; but normally we write floating-point numbers in decimal.
+hexadecimal; but normally we write floating-point numbers in decimal (base 10).
 @xref{Floating Constants}.
 
 C has three floating-point data types:
@@ -4155,7 +4155,7 @@ constant cannot start with the character @samp{0} (zero) because
 that makes the constant octal.
 
 You can get the effect of a negative integer constant by putting a
-minus sign at the beginning.  Grammatically speaking, that is an
+minus sign at the beginning.  In grammatical terms, that is an
 arithmetic expression rather than a constant, but it behaves just like
 a true constant.
 
@@ -4192,6 +4192,7 @@ by bits (each represented by the characters @samp{0} or @samp{1}):
 0b101  // @r{5}
 @end example
 
+@noindent
 Binary constants are a GNU C extension, not part of the C standard.
 
 Sometimes a space is needed after an integer constant to avoid
@@ -4235,8 +4236,8 @@ first four types (non-@code{long long}).
 If the constant has @samp{u} or @samp{U} as a suffix, that excludes
 the signed types.
 
-Otherwise, if the constant is decimal, that excludes the unsigned
-types.
+Otherwise, if the constant is decimal (not binary, octal, or
+hexadecimal), that excludes the unsigned types.
 @c ### This said @code{unsigned int} is excluded.
 @c ### See 17 April 2016
 
@@ -4314,7 +4315,7 @@ You can use exponents in hexadecimal floating constants, but since
 @samp{e} would be interpreted as a hexadecimal digit, the character
 @samp{p} or @samp{P} (for ``power'') indicates an exponent.
 
-The exponent in a hexadecimal floating constant is a possibly-signed
+The exponent in a hexadecimal floating constant is an optionally signed
 decimal integer that specifies a power of 2 (@emph{not} 10 or 16) to
 multiply into the number.
 
@@ -4343,11 +4344,11 @@ Here are some examples:
 @cindex complex constants
 @cindex constants, imaginary
 
-A complex number consists of a real part plus an imaginary part.
-(Either or both parts may be zero.)  This section explains how to
-write numeric constants with imaginary values.  By adding these to
-ordinary real-valued numeric constants, we can make constants with
-complex values.
+A complex number consists of a real part plus an imaginary part.  (You
+may omit one part if it is zero.)  This section explains how to write
+numeric constants with imaginary values.  By adding these to ordinary
+real-valued numeric constants, we can make constants with complex
+values.
 
 The simple way to write an imaginary-number constant is to attach the
 suffix @samp{i} or @samp{I}, or @samp{j} or @samp{J}, to an integer or
@@ -4359,7 +4360,7 @@ The four alternative suffix letters are all equivalent.
 The other way to write an imaginary constant is to multiply a real
 constant by @code{_Complex_I}, which represents the imaginary number
 i.  Standard C doesn't support suffixing with @samp{i} or @samp{j}, so
-this clunky way is needed.
+this clunky method is needed.
 
 To write a complex constant with a nonzero real part and a nonzero
 imaginary part, write the two separately and add them, like this:
@@ -4396,7 +4397,7 @@ Sometimes we need to insert spaces to separate tokens so that they
 won't be combined into a single number-like construct.  For example,
 @code{0xE+12} is a preprocessing number that is not a valid numeric
 constant, so it is a syntax error.  If what we want is the three
-tokens @code{@w{0xE + 12}}, we have to use those spaces as separators.
+tokens @code{@w{0xE + 12}}, we have to insert two spaces as separators.
 
 @node Character Constants
 @section Character Constants
@@ -4412,13 +4413,13 @@ For instance, @code{'a'} represents the character code for the letter
 @samp{a}: 97, that is.
 
 To put the @samp{'} character (single quote) in the character
-constant, @dfn{quote} it with a backslash (@samp{\}).  This character
-constant looks like @code{'\''}.  This sort of sequence, starting with
-@samp{\}, is called an @dfn{escape sequence}---the backslash character
-here functions as a kind of @dfn{escape character}.
+constant, @dfn{escape} it with a backslash (@samp{\}).  This character
+constant looks like @code{'\''}.  The backslash character here
+functions as an @dfn{escape character}, and such a sequence,
+starting with @samp{\}, is called an @dfn{escape sequence}.
 
 To put the @samp{\} character (backslash) in the character constant,
-quote it likewise with @samp{\} (another backslash).  This character
+escape it with @samp{\} (another backslash).  This character
 constant looks like @code{'\\'}.
 
 @cindex bell character
@@ -4451,12 +4452,15 @@ the corresponding ASCII character codes, as decimal numbers.
 '\r' @result{} 13      /* @r{carriage return, @key{RET}, @kbd{CTRL-m}} */
 '\e' @result{} 27      /* @r{escape character, @key{ESC}, @kbd{CTRL-[}} */
 '\\' @result{} 92      /* @r{backslash character, @kbd{\}} */
-'\'' @result{} 39      /* @r{singlequote character, @kbd{'}} */
-'\"' @result{} 34      /* @r{doublequote character, @kbd{"}} */
+'\'' @result{} 39      /* @r{single quote character, @kbd{'}} */
+'\"' @result{} 34      /* @r{double quote character, @kbd{"}} */
 '\?' @result{} 63      /* @r{question mark, @kbd{?}} */
 @end example
 
-@samp{\e} is a GNU C extension; to stick to standard C, write @samp{\33}.
+@samp{\e} is a GNU C extension; to stick to standard C, write
+@samp{\33}.  (The number after @samp{backslash} is octal.)  To specify
+a character constant using decimal, use a cast; for instance,
+@code{(unsigned char) 27}.
 
 You can also write octal and hex character codes as
 @samp{\@var{octalcode}} or @samp{\x@var{hexcode}}.  Decimal is not an
@@ -4482,8 +4486,9 @@ constants.  In a string constant, @samp{'} does not need to be quoted.
 A string constant defines an array of characters which contains the
 specified characters followed by the null character (code 0).  Using
 the string constant is equivalent to using the name of an array with
-those contents.  In simple cases, the length in bytes of the string
-constant is one greater than the number of characters written in it.
+those contents.  In simple cases, where there are no backslash escape
+sequences, the length in bytes of the string constant is one greater
+than the number of characters written in it.
 
 As with any array in C, using the string constant in an expression
 converts the array to a pointer (@pxref{Pointers}) to the array's
@@ -4735,8 +4740,8 @@ Consecutive wide string constants of the same kind concatenate, just
 like ordinary string constants.  A wide string constant concatenated
 with an ordinary string constant results in a wide string constant.
 You can't concatenate two wide string constants of different kinds.
-You also can't concatenate a wide string constant (of any kind) with a
-UTF-8 string constant.
+In addition, you can't concatenate a wide string constant (of any
+kind) with a UTF-8 string constant.
 
 @node Type Size
 @chapter Type Size
