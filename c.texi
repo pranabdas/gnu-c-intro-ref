@@ -324,7 +324,7 @@ Pointers
 * Pointer Comparison::           Comparing memory address values.
 * Pointer Arithmetic::           Computing memory address values.
 * Pointers and Arrays::          Using pointer syntax instead of array syntax.
-* Pointer Arithmetic Low Level:: More about computing memory address values.
+* Low-Level Pointer Arithmetic:: More about computing memory address values.
 * Pointer Increment/Decrement::  Incrementing and decrementing pointers.
 * Pointer Arithmetic Drawbacks:: A common pointer bug to watch out for.
 * Pointer-Integer Conversion::   Converting pointer types to integer types.
@@ -4845,12 +4845,17 @@ Names}.
 @chapter Pointers
 @cindex pointers
 
-Among high-level languages, C is rather low level, close to the
+Among high-level languages, C is rather low-level, close to the
 machine.  This is mainly because it has explicit @dfn{pointers}.  A
 pointer value is the numeric address of data in memory.  The type of
 data to be found at that address is specified by the data type of the
-pointer itself.  The unary operator @samp{*} gets the data that a
-pointer points to---this is called @dfn{dereferencing the pointer}.
+pointer itself.  Nothing in C can determine the ``correct'' data type
+of data in memory; it can only blindly follow the data type of the
+pointer you use to access the data.
+
+The unary operator @samp{*} gets the data that a pointer points
+to---this is called @dfn{dereferencing the pointer}.  Its value
+always has the type that the pointer points to.
 
 C also allows pointers to functions, but since there are some
 differences in how they work, we treat them later.  @xref{Function
@@ -4868,7 +4873,7 @@ Pointers}.
 * Pointer Comparison::           Comparing memory address values.
 * Pointer Arithmetic::           Computing memory address values.
 * Pointers and Arrays::          Using pointer syntax instead of array syntax.
-* Pointer Arithmetic Low Level:: More about computing memory address values.
+* Low-Level Pointer Arithmetic:: More about computing memory address values.
 * Pointer Increment/Decrement::  Incrementing and decrementing pointers.
 * Pointer Arithmetic Drawbacks:: A common pointer bug to watch out for.
 * Pointer-Integer Conversion::   Converting pointer types to integer types.
@@ -4960,9 +4965,11 @@ double *aptrd[5];     /* @r{Array of five pointers to @code{double}.} */
 @end example
 
 @noindent
-Because @samp{*} has higher syntactic precedence than subscripting,
-you would subscript @code{aptrd} then dereference it.  Therefore, it
-declares an array of pointers, not a pointer.
+Because @samp{*} has lower syntactic precedence than subscripting,
+@samp{double *aptrd[5]} means, ``if you subscript @code{aptrd} by an
+integer less than 5, then dereference it, you get a @code{double}.''
+Therefore, @code{*aptrd[5]} declares an array of pointers, not a
+pointer to an array.
 
 @node Pointer Type Designators
 @section Pointer-Type Designators
@@ -4979,10 +4986,12 @@ double (*)[5]   /* @r{Pointer to @code{double[5]}.} */
 @end example
 
 Remember, to understand what type a designator stands for, imagine the
-variable name that would be in the declaration, and figure out what
-type it would declare that variable with.  @code{double (*)[5]} can
-only come from @code{double (*@var{variable})[5]}, so it's a pointer
+corresponding variable declaration with a variable name in it, and
+figure out what type that variable would have.  Thus, the type
+designator @code{double (*)[5]} corresponds to the variable declaration
+@code{double (*@var{variable})[5]}.  That deciares a pointer variable
 which, when dereferenced, gives an array of 5 @code{double}s.
+So the type designator means, ``pointer to an array of 5 @code{double}s.''
 
 @node Pointer Dereference
 @section Dereferencing Pointers
@@ -5232,10 +5241,10 @@ If one of the operands is @code{void *} (@pxref{Void Pointers}) and
 the other is another pointer type, the comparison operator converts
 the @code{void *} pointer to the other type so as to compare them.
 (In standard C, this is not allowed if the other type is a function
-pointer type, but that works in GNU C@.)
+pointer type, but it works in GNU C@.)
 
 Comparison operators also allow comparing the integer 0 with a pointer
-value.  Thus works by converting 0 to a null pointer of the same type
+value.  This works by converting 0 to a null pointer of the same type
 as the other operand.
 
 @node Pointer Arithmetic
@@ -5331,10 +5340,10 @@ subtract_pointers ()
 @}
 @end example
 
-The addition operation does not know where arrays are.  All it does is
-add the integer (multiplied by object size) to the value of the
-pointer.  When the initial pointer and the result point into a single
-array, the result is well-defined.
+The addition operation does not know where arrays begin or end in
+memory.  All it does is add the integer (multiplied by target object
+size) to the numeric value of the pointer.  When the initial pointer
+and the result point into the same array, the result is well-defined.
 
 @strong{Warning:} Only experts should do pointer arithmetic involving pointers
 into different memory objects.
@@ -5344,15 +5353,18 @@ The difference between two pointers has type @code{int}, or
 declare it is to use the typedef name @code{ptrdiff_t} defined in the
 file @file{stddef.h}.
 
-This definition of pointer subtraction is consistent with
-pointer-integer addition, in that @code{(p3 - p1) + p1} equals
-@code{p3}, as in ordinary algebra.
+C defines pointer subtraction to be consistent with pointer-integer
+addition, so that @code{(p3 - p1) + p1} equals @code{p3}, as in
+ordinary algebra.  Pointer subtraction works by subtracting
+@code{p1}'s numeric value from @code{p3}'s, and dividing by target
+object size.  The two pointer arguments should point into the same
+array.
 
 In standard C, addition and subtraction are not allowed on @code{void
 *}, since the target type's size is not defined in that case.
 Likewise, they are not allowed on pointers to function types.
 However, these operations work in GNU C, and the ``size of the target
-type'' is taken as 1.
+type'' is taken as 1 byte.
 
 @node Pointers and Arrays
 @section Pointers and Arrays
@@ -5374,26 +5386,26 @@ symmetrically, so one must be a pointer and the other an integer; it
 does not matter which comes first.
 
 Since indexing with square brackets is defined in terms of addition
-and dereference, that too is symmetrical.  Thus, you can write
+and dereferencing, that too is symmetrical.  Thus, you can write
 @code{3[array]} and it is equivalent to @code{array[3]}.  However, it
 would be foolish to write @code{3[array]}, since it has no advantage
 and could confuse people who read the code.
 
 It may seem like a discrepancy that the definition @code{*(@var{a} +
-@var{b})} requires a pointer, but @code{array[3]} uses an array value
+@var{b})} requires a pointer, while @code{array[3]} uses an array value
 instead.  Why is this valid?  The name of the array, when used by
 itself as an expression (other than in @code{sizeof}), stands for a
-pointer to the arrays's zeroth element.  Thus, @code{array + 3}
+pointer to the array's zeroth element.  Thus, @code{array + 3}
 converts @code{array} implicitly to @code{&array[0]}, and the result
 is a pointer to element 3, equivalent to @code{&array[3]}.
 
-Since square brackets are defined in terms of such addition,
+Since square brackets are defined in terms of such an addition,
 @code{array[3]} first converts @code{array} to a pointer.  That's why
 it works to use an array directly in that construct.
 
-@node Pointer Arithmetic Low Level
-@section Pointer Arithmetic at Low Level
-@cindex pointer arithmetic, low level
+@node Low-Level Pointer Arithmetic
+@section Pointer Arithmetic at Low-Level
+@cindex pointer arithmetic, low-level
 @cindex low level pointer arithmetic
 
 The behavior of pointer arithmetic is theoretically defined only when
@@ -5407,7 +5419,8 @@ address, which is in fact an integer---call it @var{pint}.  It treats
 @var{i} as a number of elements of the type that @var{p} points to.
 These elements' sizes add up to @code{@var{i} * sizeof (*@var{p})}.
 So the sum, as an integer, is @code{@var{pint} + @var{i} * sizeof
-(*@var{p})}.  This value is reinterpreted as a pointer like @var{p}.
+(*@var{p})}.  This value is reinterpreted as a pointer of the same
+type as @var{p}.
 
 If the starting pointer value @var{p} and the result do not point at
 parts of the same object, the operation is not officially legitimate,
@@ -5448,7 +5461,8 @@ long} would always work, but it is cleaner to use @code{intptr_t}.)
 The @samp{++} operator adds 1 to a variable.  We have seen it for
 integers (@pxref{Increment/Decrement}), but it works for pointers too.
 For instance, suppose we have a series of positive integers,
-terminated by a zero, and we want to add them all up.
+terminated by a zero, and we want to add them up.  Here is a simple
+way to step forward through the array by advancing a pointer.
 
 @example
 int
@@ -5481,12 +5495,12 @@ takes precedence over a prefix operator.  Therefore, it dereferences
 @code{p}, and increments @code{p} afterwards.  Incrementing a variable
 means adding 1 to it, as in @code{p = p + 1}.  Since @code{p} is a
 pointer, adding 1 to it advances it by the width of the datum it
-points to---in this case, one @code{int}.  Therefore, each iteration
+points to---in this case, @code{sizeof (int)}.  Therefore, each iteration
 of the loop picks up the next integer from the series and puts it into
 @code{next}.
 
 This @code{for}-loop has no initialization expression since @code{p}
-and @code{sum} are already initialized, it has no end-test since the
+and @code{sum} are already initialized, has no end-test since the
 @samp{break;} statement will exit it, and needs no expression to
 advance it since that's done within the loop by incrementing @code{p}
 and @code{sum}.  Thus, those three expressions after @code{for} are
@@ -5522,11 +5536,11 @@ and add it to @code{p}.  (Recall that @code{p[i]} means @code{*(p +
 i)}.)  Either way, it uses the same address to get the next integer.
 
 It makes no difference in this program whether we write @code{i++} or
-@code{++i}, because the value is not used.  All that matters is the
-effect, to increment @code{i}.
+@code{++i}, because the value @emph{of that expression} is not used.
+We use it for its effect, to increment @code{i}.
 
 The @samp{--} operator also works on pointers; it can be used
-to scan backwards through an array, like this:
+to step backwards through an array, like this:
 
 @example
 int
@@ -5561,10 +5575,10 @@ memory.  However, if you unintentionally adjust a pointer across the
 bounds of the object and into some other object, the system has no way
 to detect this error.
 
-A bug which does that can easily result in clobbering part of another
-object.  For example, with @code{array[-1]} you can read or write the
-nonexistent element before the beginning of an array---probably part
-of some other data.
+A bug which does that can easily result in clobbering (overwriting)
+part of another object.  For example, with @code{array[-1]} you can
+read or write the nonexistent element before the beginning of an
+array---probably part of some other data.
 
 Combining pointer arithmetic with casts between pointer types, you can
 create a pointer that fails to be properly aligned for its type.  For
