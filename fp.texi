@@ -218,7 +218,7 @@ mode.
 @end table
 
 @node Invalid Optimizations
-@section Invalid Optimizations 
+@section Invalid Optimizations
 @cindex invalid optimizations in floating-point arithmetic
 @cindex floating-point arithmetic invalid optimizations
 
@@ -997,7 +997,7 @@ exception flag, and that can fool some programs.
 Like Infinity, NaNs propagate in computations, but they are even
 stickier, because they never disappear in division. Thus, once a
 NaN appears in a chain of numerical operations, it is almost
-certain to pop out into the final results.  The programmer 
+certain to pop out into the final results.  The programmer
 has to decide whether that is expected, or whether there is a
 coding or algorithmic error that needs repair.
 
