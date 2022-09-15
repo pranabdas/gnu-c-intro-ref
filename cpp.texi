@@ -259,6 +259,12 @@ In C, the usual convention is to give header files names that end with
 @file{.h}.  It is most portable to use only letters, digits, dashes, and
 underscores in header file names, and at most one dot.
 
+The operation of including another source file isn't actually limited
+to the sort of code we put into header files.  You can put any sort of
+C code into a separate file, then use @code{#include} to copy it
+virtually into other C source files.  But that is a strange thing to
+do.
+
 @menu
 * include Syntax::
 * include Operation::
@@ -1335,7 +1341,7 @@ The rest of the predefined macros are GNU C extensions.
 @table @code
 @item __COUNTER__
 This macro expands to sequential integral values starting from 0.  In
-other words, each time the program uses this acro, it generates the
+other words, each time the program uses this macro, it generates the
 next successive integer.  This, with the @code{##} operator, provides
 a convenient means for macros to generate unique identifiers.
 
