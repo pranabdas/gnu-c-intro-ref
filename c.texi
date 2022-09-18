@@ -12257,7 +12257,7 @@ Normally we don't run any of these commands directly.  Instead we
 write a set of @dfn{make rules} for the program, then use the
 @command{make} program to recompile only the source files that need to
 be recompiled, by following those rules.  @xref{Top, The GNU Make
-Manual, , Make, The GNU Make Manual}.
+Manual, , make, The GNU Make Manual}.
 
 @node Directing Compilation
 @chapter Directing Compilation
