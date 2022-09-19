@@ -764,7 +764,7 @@ lang_init()
 There must be no space between the macro name and the following
 open-parenthesis in the the @code{#define} directive; that's what
 indicates you're defining a function-like macro.  However, you can add
-unnecessary spaces around the open-parenthesis (and around the
+unnecessary whitespace around the open-parenthesis (and around the
 close-parenthesis) when you @emph{call} the macro; they don't change
 anything.
 
