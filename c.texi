@@ -332,6 +332,7 @@ Pointers
 Structures
 
 * Referencing Fields::           Accessing field values in a structure object.
+* Arrays as Fields::             Accessing field values in a structure object.
 * Dynamic Memory Allocation::    Allocating space for objects
                                    while the program is running.
 * Field Offset::                 Memory layout of fields within a structure.
@@ -5776,6 +5777,7 @@ GNU C does not require this.
 
 @menu
 * Referencing Fields::           Accessing field values in a structure object.
+* Arrays as Fields::             Accessing field values in a structure object.
 * Dynamic Memory Allocation::    Allocating space for objects
                                    while the program is running.
 * Field Offset::                 Memory layout of fields within a structure.
@@ -5857,6 +5859,36 @@ struct @{ double d; struct intlistlink l; @} foo;
 
 @r{@dots{}}foo.l.next->next->datum@r{@dots{}}
 @end example
+
+@node Arrays as Fields
+@section Arrays as Fields
+
+When you declare field in a structure as an array, as here:
+
+@example
+struct record
+  @{
+    char *name;
+    int data[4];
+  @};
+@end example
+
+@noindent
+Each @code{struct record} object holds one string (a pointer, of
+course) and four integers, all part of a field called @code{data}.  If
+@code{recptr} is a pointer of type @code{struct record *}, then it
+points to a @code{struct record} which contains those things; you can
+access the second integer in that record with @code{recptr->data[1]}.
+
+If you have two objects of type @code{struct record}, each one contains
+an array.  With this declaration,
+
+@example
+struct record r1, r2;
+@end example
+
+@code{r1.data} holds space for 4 @code{int}s, and @code{r2.data} holds
+space for another 4 @code{int}s,
 
 @node Dynamic Memory Allocation
 @section Dynamic Memory Allocation
@@ -6396,6 +6428,36 @@ a = b;            /* @r{Error!} */
 @end example
 
 @xref{Assignment Expressions}.
+
+When a structure type has a field which is an array, as here,
+
+@example
+struct record
+  @{
+    char *name;
+    int data[4];
+  @};
+
+struct record r1, r2;
+@end example
+
+@noindent
+structure assigment such as @code{r1 = r2} copies array fields'
+contents just as it copies all the other fields.
+
+This is the only way in C that you can operate on the whole contents
+of a array with one operation: when the array is contained in a
+@code{struct}.  You can't copy the contents of the @code{data} field
+as an array, because
+
+@example
+r1.data = r2.data;
+@end data
+
+@noindent
+would convert the array objects (as always) to pointers to the initial
+elements of the arrays (of type @code{struct record *}), and the
+assignment would be invalid because the left operand is not an lvalue.
 
 @node Unions
 @section Unions
