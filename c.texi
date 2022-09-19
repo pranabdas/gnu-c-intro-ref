@@ -1479,19 +1479,20 @@ kind.
 
 In principle, you can write the function and variable names in a
 program, and the comments, in any human language.  C allows any kinds
-of characters in comments, and you can put non-ASCII characters into
-identifiers with a special prefix.  However, to enable programmers in
-all countries to understand and develop the program, it is best given
-today's circumstances to write identifiers and comments in
-English.
+of Unicode characters in comments, and you can put them into
+identifiers with a special prefix (@pxref{Unicode Character Codes}).
+However, to enable programmers in all countries to understand and
+develop the program, it is best under today's circumstances to write
+all identifiers and comments in English.
 
-English is the one language that programmers in all countries
-generally study.  If a program's names are in English, most
-programmers in Bangladesh, Belgium, Bolivia, Brazil, and Bulgaria can
-understand them.  Most programmers in those countries can speak
-English, or at least read it, but they do not read each other's
-languages at all.  In India, with so many languages, two programmers
-may have no common language other than English.
+English is the common language of programmers; in all countries,
+programmers generally learn English.  If names and comments in a
+program are written in English, most programmers in Bangladesh,
+Belgium, Bolivia, Brazil, Bulgaria and Burundi can understand them.
+In all those countries, most programmers can speak English, or at least
+read it, but they do not read each other's languages at all.  In
+India, with so many languages, two programmers may have no common
+language other than English.
 
 If you don't feel confident in writing English, do the best you can,
 and follow each English comment with a version in a language you
@@ -1500,7 +1501,7 @@ Someone will eventually do that.
 
 The program's user interface is a different matter.  We don't need to
 choose one language for that; it is easy to support multiple languages
-and let each user choose the language to use.  This requires writing
+and let each user choose the language for display.  This requires writing
 the program to support localization of its interface.  (The
 @code{gettext} package exists to support this; @pxref{Message
 Translation, The GNU C Library, , libc, The GNU C Library Reference
@@ -4631,11 +4632,11 @@ contains character codes 128 and up, the results cannot be relied on.
 
 You can specify Unicode characters, for individual character constants
 or as part of string constants (@pxref{String Constants}), using
-escape sequences.  Use the @samp{\u} escape sequence with a 16-bit
-hexadecimal Unicode character code.  If the code value is too big for
-16 bits, use the @samp{\U} escape sequence with a 32-bit hexadecimal
-Unicode character code.  (These codes are called @dfn{universal
-character names}.)  For example,
+escape sequences; and even in C identifiers.  Use the @samp{\u} escape
+sequence with a 16-bit hexadecimal Unicode character code.  If the
+code value is too big for 16 bits, use the @samp{\U} escape sequence
+with a 32-bit hexadecimal Unicode character code.  (These codes are
+called @dfn{universal character names}.)  For example,
 
 @example
 \u6C34      /* @r{16-bit code (UTF-16)} */
@@ -4665,6 +4666,13 @@ this:
 @example
 u"\u6C34\u6C33"  /* @r{16-bit code} */
 U"\U0010ABCD"    /* @r{32-bit code} */
+@end example
+
+@noindent
+And in an identifier:
+
+@example
+int foo\u6C34bar = 0;
 @end example
 
 Codes in the range of @code{D800} through @code{DFFF} are not valid
