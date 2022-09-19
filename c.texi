@@ -2815,6 +2815,28 @@ the increment nests inside:
 That's the only order that makes sense; @code{-a} is not an lvalue, so
 it can't be incremented.
 
+The most common use of postincrement is with arrays.  Here's
+an example of using postincrement to access one element of an
+array and advance the index for the next access.  Compare
+this with the example @code{avg_of_double}, which is almost
+the same but doesn't use postincrement (@pxref{Array Example}).
+
+@example
+double
+avg_of_double_alt (int length, double input_data[])
+@{
+  double sum = 0;
+  int i;
+
+  /* @r{Fetch each element and add it into @code{sum}.}  */
+  for (i = 0; i < length;)
+    /* @r{Use the index @code{i}, then increment it.}  */
+    sum += input_data[i++];
+
+  return sum / length;
+@}
+@end example
+
 @node Assignment in Subexpressions
 @section Pitfall: Assignment in Subexpressions
 @cindex assignment in subexpressions
@@ -5491,12 +5513,13 @@ Statement}).  Used in this way, it immediately exits the surrounding
 
 @code{*p++} parses as @code{*(p++)}, because a postfix operator always
 takes precedence over a prefix operator.  Therefore, it dereferences
-@code{p}, and increments @code{p} afterwards.  Incrementing a variable
-means adding 1 to it, as in @code{p = p + 1}.  Since @code{p} is a
-pointer, adding 1 to it advances it by the width of the datum it
-points to---in this case, @code{sizeof (int)}.  Therefore, each iteration
-of the loop picks up the next integer from the series and puts it into
-@code{next}.
+the entering value of @code{p}, then increments @code{p} afterwards.
+
+Incrementing a variable means adding 1 to it, as in @code{p = p + 1}.
+Since @code{p} is a pointer, adding 1 to it advances it by the width
+of the datum it points to---in this case, @code{sizeof (int)}.
+Therefore, each iteration of the loop picks up the next integer from
+the series and puts it into @code{next}.
 
 This @code{for}-loop has no initialization expression since @code{p}
 and @code{sum} are already initialized, has no end-test since the
