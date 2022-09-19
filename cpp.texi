@@ -752,10 +752,21 @@ These are called @dfn{function-like macros}.  To define one, use the
 the macro name.  For example,
 
 @example
-#define lang_init()  c_init()
+#define lang_init()  c_init ()
+lang_init ()
+     @expansion{} c_init ()
+lang_init     ()
+     @expansion{} c_init ()
 lang_init()
-     @expansion{} c_init()
+     @expansion{} c_init ()
 @end example
+
+There must be no space between the macro name and the following
+open-parenthesis in the the @code{#define} directive; that's what
+indicates you're defining a function-like macro.  However, you can add
+unnecessary spaces around the open-parenthesis (and around the
+close-parenthesis) when you @emph{call} the macro; they don't change
+anything.
 
 A function-like macro is expanded only when its name appears with a
 pair of parentheses after it.  If you write just the name, without
@@ -1171,7 +1182,7 @@ an extra comma in the expansion:
 
 @example
 eprintf ("success!\n")
-     @expansion{} fprintf(stderr, "success!\n", );
+     @expansion{} fprintf(stderr, "success!\n", )
 @end example
 
 @noindent
@@ -1192,7 +1203,7 @@ then use the macro @code{eprintf} with empty variable arguments,
 
 @example
 eprintf ("success!\n")
-     @expansion{} fprintf(stderr, "success!\n");
+     @expansion{} fprintf(stderr, "success!\n")
 @end example
 
 @noindent
