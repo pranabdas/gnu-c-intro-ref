@@ -6687,6 +6687,14 @@ expression (@pxref{Statement Exprs}):
 @})
 @end example
 
+You can also use field labels in the structure constructor to indicate
+which fields you're specifying values for, instead of using the order
+of the fields to specify that:
+
+@example
+(struct foo) {.a = x + y, .b = {'a', 0}}
+@end example
+
 You can also create a union value this way, but it is not especially
 useful since that is equivalent to doing a cast:
 
