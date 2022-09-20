@@ -2623,7 +2623,7 @@ compute the same value (assuming @code{x} is a number).
 
 An array can be an lvalue (the rules above determine whether it is
 one), but using the array in an expression converts it automatically
-to a pointer to the first element.  The result of this conversion is
+to a pointer to the zeroth element.  The result of this conversion is
 not an lvalue.  Thus, if the variable @code{a} is an array, you can't
 use @code{a} by itself as the left operand of an assignment.  But you
 can assign to an element of @code{a}, such as @code{a[0]}.  That is an
@@ -4520,7 +4520,7 @@ than the number of characters written in it.
 
 As with any array in C, using the string constant in an expression
 converts the array to a pointer (@pxref{Pointers}) to the array's
-first element (@pxref{Accessing Array Elements}).  This pointer will
+zeroth element (@pxref{Accessing Array Elements}).  This pointer will
 have type @code{char *} because it points to an element of type
 @code{char}.  @code{char *} is an example of a type designator for a
 pointer type (@pxref{Pointer Type Designators}).  That type is used
@@ -4737,7 +4737,7 @@ There are three kinds of wide string constants, which differ in the
 data type used for each character in the string.  Each wide string
 constant is equivalent to an array of integers, but the data type of
 those integers depends on the kind of wide string.  Using the constant
-in an expression will convert the array to a pointer to its first
+in an expression will convert the array to a pointer to its zeroth
 element, as usual for arrays in C (@pxref{Accessing Array Elements}).
 For each kind of wide string constant, we state here what type that
 pointer will be.
@@ -4929,8 +4929,9 @@ double a[5];
 
 Now, @code{&i} gives the address of the variable @code{i}---a pointer
 value that points to @code{i}'s location---and @code{&a[3]} gives the
-address of the element 3 of @code{a}.  (It is actually the fourth
-element in the array, since the first element has index 0.)
+address of the element 3 of @code{a}.  (By the usual 1-origin
+numbering convention of ordinary English, it is actually the fourth
+element in the array, since the element at the start has index 0.)
 
 The address-of operator is unusual because it operates on a place to
 store a value (an lvalue, @pxref{Lvalues}), not on the value currently
@@ -6291,7 +6292,7 @@ fields, one by one.
 @cindex zero-length arrays
 @cindex length-zero arrays
 
-GNU C allows zero-length arrays.  They are useful as the last element
+GNU C allows zero-length arrays.  They are useful as the last field
 of a structure that is really a header for a variable-length object.
 Here's an example, where we construct a variable-size structure
 to hold a line which is @code{this_length} characters long:
@@ -6468,7 +6469,7 @@ r1.data = r2.data;
 @end data
 
 @noindent
-would convert the array objects (as always) to pointers to the initial
+would convert the array objects (as always) to pointers to the zeroth
 elements of the arrays (of type @code{struct record *}), and the
 assignment would be invalid because the left operand is not an lvalue.
 
