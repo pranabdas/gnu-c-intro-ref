@@ -2803,9 +2803,14 @@ prints lines containing 5, again 5, and 6.  The expression @code{i++}
 has the value 5, which is the value of @code{i} at the time,
 but it increments @code{i} from 5 to 6 just a little later.
 
-How much later is ``just a little later''?  That is flexible.  The
-increment has to happen by the next @dfn{sequence point}.  In simple cases,
-that means by the end of the statement.  @xref{Sequence Points}.
+How much later is ``just a little later''?  The compiler has some
+flexibility in deciding that.  The rule is that the increment has to
+happen by the next @dfn{sequence point}; in simple cases, that means
+by the end of the statement.  @xref{Sequence Points}.
+
+Regardless of precisely where the compiled code increments the value
+of @code{i}, the crucial thing is that the value of @code{i++} is the
+value that @code{i} has @emph{before} incrementing it.
 
 If a unary operator precedes a postincrement or postincrement expression,
 the increment nests inside:
@@ -2817,11 +2822,11 @@ the increment nests inside:
 That's the only order that makes sense; @code{-a} is not an lvalue, so
 it can't be incremented.
 
-The most common use of postincrement is with arrays.  Here's
-an example of using postincrement to access one element of an
-array and advance the index for the next access.  Compare
-this with the example @code{avg_of_double}, which is almost
-the same but doesn't use postincrement (@pxref{Array Example}).
+The most common use of postincrement is with arrays.  Here's an
+example of using postincrement to access one element of an array and
+advance the index for the next access.  Compare this with the example
+@code{avg_of_double} (@pxref{Array Example}), which is almost the same
+but doesn't use postincrement.
 
 @example
 double
