@@ -6466,7 +6466,7 @@ as an array, because
 
 @example
 r1.data = r2.data;
-@end data
+@end example
 
 @noindent
 would convert the array objects (as always) to pointers to the zeroth
