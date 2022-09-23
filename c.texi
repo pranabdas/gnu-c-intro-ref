@@ -7,7 +7,7 @@
 
 @c move alignment later?
 
-@setfilename ./c
+@setfilename ./c.info
 @settitle GNU C Language Manual
 @documentencoding UTF-8
 
