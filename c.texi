@@ -1194,8 +1194,8 @@ is the data type's @dfn{size}.  @xref{Type Size}, for details.  The
 types @code{signed char} and @code{unsigned char} are one byte long;
 use those types to operate on data byte by byte.  @xref{Signed and
 Unsigned Types}.  You can refer to a series of consecutive bytes as an
-array of @code{char} elements; that's what an ASCII string looks like
-in memory.  @xref{String Constants}.
+array of @code{char} elements; that's what a character string looks
+like in memory.  @xref{String Constants}.
 
 @node Beyond Integers
 @chapter Beyond Integers
@@ -1756,7 +1756,7 @@ The characters @samp{;@{@}[]()} are used for punctuation and grouping.
 Semicolon (@samp{;}) ends a statement.  Braces (@samp{@{} and
 @samp{@}}) begin and end a block at the statement level
 (@pxref{Blocks}), and surround the initializer (@pxref{Initializers})
-for a variable with multiple elements or components (such as arrays or
+for a variable with multiple elements or fields (such as arrays or
 structures).
 
 Square brackets (@samp{[} and @samp{]}) do array indexing, as in
@@ -3347,25 +3347,24 @@ combination of operations leads to a well-defined nesting.  We state
 only part of the full precedence ordering here because it is bad
 practice for C code to depend on the other cases.  For cases not
 specified in this chapter, always use parentheses to make the nesting
-explicit.@footnote{Personal note from Richard Stallman: I wrote GCC without
-remembering anything about the C precedence order beyond what's stated
-here.  I studied the full precedence table to write the parser, and
-promptly forgot it again.  If you need to look up the full precedence order
-to understand some C code, fix the code with parentheses so nobody else
-needs to do that.}
+explicit.@footnote{Personal note from Richard Stallman: I wrote GCC
+without remembering anything about the C precedence order beyond
+what's stated here.  I studied the full precedence table to write the
+parser, and promptly forgot it again.  If you need to look up the full
+precedence order to understand some C code, add enough parentheses so
+nobody else needs to do that.}
 
 You can depend on this subsequence of the precedence ordering
 (stated from highest precedence to lowest):
 
 @enumerate
 @item
-Component access (@samp{.} and @samp{->}).
+Postfix operations: access to a field or alternative (@samp{.} and
+@samp{->}), array subscripting, function calls, and unary postfix
+operators.
 
 @item
 Unary prefix operators.
-
-@item
-Unary postfix operators.
 
 @item
 Multiplication, division, and remainder (they have the same precedence).
@@ -4795,6 +4794,7 @@ does not calculate the value of @var{expression}, only its size, so if
 @var{expression} includes side effects or function calls, they do not
 happen.  Therefore, @code{sizeof} is always a compile-time operation
 that has zero run-time cost.
+@c ??? What about variable-length arrays
 
 A value that is a bit field (@pxref{Bit Fields}) is not allowed as an
 operand of @code{sizeof}.
@@ -5180,10 +5180,15 @@ declares a function @code{numbered_slot_pointer} that takes an
 integer parameter and returns a pointer, but we don't say what type of
 data it points to.
 
+The functions for dynamic memory allocation (@pxref{Dynamic Memory
+Allocation}) use type @code{void *} to refer to blocks of memory,
+regardless of what sort of data the program stores in those blocks.
+
 With type @code{void *}, you can pass the pointer around and test
 whether it is null.  However, dereferencing it gives a @code{void}
 value that can't be used (@pxref{The Void Type}).  To dereference the
 pointer, first convert it to some other pointer type.
+
 
 Assignments convert @code{void *} automatically to any other pointer
 type, if the left operand has a pointer type; for instance,
@@ -5526,7 +5531,9 @@ The statement @samp{break;} will be explained further on (@pxref{break
 Statement}).  Used in this way, it immediately exits the surrounding
 @code{for} statement.
 
-@code{*p++} parses as @code{*(p++)}, because a postfix operator always
+@code{*p++} uses postincrement (@code{++};
+@pxref{Postincrement/Postdecrement}) on the pointer @code{p}.  that
+expression parses as @code{*(p++)}, because a postfix operator always
 takes precedence over a prefix operator.  Therefore, it dereferences
 the entering value of @code{p}, then increments @code{p} afterwards.
 
@@ -6693,7 +6700,7 @@ which fields you're specifying values for, instead of using the order
 of the fields to specify that:
 
 @example
-(struct foo) {.a = x + y, .b = {'a', 0}}
+(struct foo) @{.a = x + y, .b = @{'a', 0@}@}
 @end example
 
 You can also create a union value this way, but it is not especially
