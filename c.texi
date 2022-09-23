@@ -1182,12 +1182,15 @@ programs which consist of more than one source file.
 @cindex storage organization
 @cindex memory organization
 
-Storage in C programs is made up of units called @dfn{bytes}.  On
-nearly all computers, a byte consists of 8 bits, but there are a few
+Storage in C programs is made up of units called @dfn{bytes}.  A byte
+is the smallest unit of storage that can be used in a first-class
+manner.
+
+On nearly all computers, a byte consists of 8 bits.  There are a few
 peculiar computers (mostly ``embedded controllers'' for very small
-systems) where a byte is longer than that.  This manual does not try
-to explain the peculiarity of those computers; we assume that a byte
-is 8 bits.
+systems) where a byte is longer than that, but this manual does not
+try to explain the peculiarity of those computers; we assume that a
+byte is 8 bits.
 
 Every C data type is made up of a certain number of bytes; that number
 is the data type's @dfn{size}.  @xref{Type Size}, for details.  The
@@ -1247,7 +1250,7 @@ printf ("Average is %f\n",
 
 The code that calls @code{printf} must pass a @code{double} for
 printing with @samp{%f} and an @code{int} for printing with @samp{%d}.
-If the argument has the wrong type, @code{printf} will produce garbage
+If the argument has the wrong type, @code{printf} will produce meaningless
 output.
 
 Here's a complete program that computes the average of three
@@ -1417,7 +1420,8 @@ This declares @code{nums_to_average} so each of its elements is a
 However, while you @emph{can} combine them, that doesn't mean you
 @emph{should}.  If it is useful to write comments about the variables,
 and usually it is, then it's clearer to keep the declarations separate
-so you can put a comment on each one.
+so you can put a comment on each one.  That also helps with using
+textual tools to find occurrences of a variable in source files.
 
 We set all of the elements of the array @code{nums_to_average} with
 assignments, but it is more convenient to use an initializer in the
@@ -1710,12 +1714,12 @@ You can also include other characters, even non-ASCII characters, in
 identifiers by writing their Unicode character names, which start with
 @samp{\u} or @samp{\U}, in the identifier name.  @xref{Unicode
 Character Codes}.  However, it is usually a bad idea to use non-ASCII
-characters in identifiers, and when they are written in English, they
-never need non-ASCII characters.  @xref{English}.
+characters in identifiers, and when the names are written in English,
+they never need non-ASCII characters.  @xref{English}.
 
-Whitespace is required to separate two consecutive identifiers, or to
-separate an identifier from a preceding or following numeric
-constant.
+As stated above, whitespace is required to separate two consecutive
+identifiers, or to separate an identifier from a preceding or
+following numeric constant.
 
 @node Operators/Punctuation
 @section Operators and Punctuation
