@@ -4303,7 +4303,9 @@ the constant's value by ten to the @var{n}th power.
 Thus, @samp{1500.0}, @samp{15e2}, @samp{15e+2}, @samp{15.0e2},
 @samp{1.5e+3}, @samp{.15e4}, and @samp{15000e-1} are six ways of
 writing a floating-point number whose value is 1500.  They are all
-equivalent.
+equivalent in principle.
+@c ??? Are the resulting valus guaranteed to be equal
+@c ??? in GCC for the targets that we describe in this manual?
 
 Here are more examples with decimal points:
 
