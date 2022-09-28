@@ -4358,8 +4358,8 @@ Here are some examples:
 @group
 0xAp2        // @r{40 in decimal}
 0xAp-1       // @r{5 in decimal}
-0x2.0Bp4     // @r{16.75 decimal}
-0xE.2p3      // @r{121 decimal}
+0x2.0Bp4     // @r{32.6875 decimal}
+0xE.2p3      // @r{113 decimal}
 0x123.ABCp0  // @r{291.6708984375 in decimal}
 0x123.ABCp4  // @r{4666.734375 in decimal}
 0x100p-8     // @r{1}
@@ -11450,7 +11450,7 @@ any call to it.  This is called @emph{inlining} the function.  It
 makes the code that contains the call run faster, significantly so if
 the inline function is small.
 
-Here's a function that uses @code{pair_second}:
+Here's a function that uses @code{list_second}:
 
 @example
 int
@@ -11460,13 +11460,13 @@ pairlist_length (struct list *l)
   while (l)
     @{
       length++;
-      l = pair_second (l);
+      l = list_second (l);
     @}
   return length;
 @}
 @end example
 
-Substituting the code of @code{pair_second} into the definition of
+Substituting the code of @code{list_second} into the definition of
 @code{pairlist_length} results in this code, in effect:
 
 @example
@@ -11483,7 +11483,7 @@ pairlist_length (struct list *l)
 @}
 @end example
 
-Since the definition of @code{pair_second} does not say @code{extern}
+Since the definition of @code{list_second} does not say @code{extern}
 or @code{static}, that definition is used only for inlining.  It
 doesn't generate code that can be called at run time.  If not all the
 calls to the function are inlined, there must be a definition of the
