@@ -17,6 +17,8 @@ c.doc: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --docbook c.texi -o $@
 c.html: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --html --no-split c.texi -o $@
+c.html.d: c.texi cpp.texi fp.texi fdl.texi
+	makeinfo --html c.texi -o $@
 c.txt: c.texi cpp.texi fp.texi fdl.texi
 	makeinfo --plaintext c.texi > $@
 
