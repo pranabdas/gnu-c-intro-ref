@@ -1198,7 +1198,7 @@ the constant @code{1.0} with a user-supplied value:
 double
 macheps (double x)
 @{ /* @r{Return machine epsilon for @var{x},}  */
-      @r{such that @var{x} + macheps (@var{x}) > @var{x}.}  */
+   /* @r{such that @var{x} + macheps (@var{x}) > @var{x}.}  */
   static const double base = 2.0;
   double eps;
 
