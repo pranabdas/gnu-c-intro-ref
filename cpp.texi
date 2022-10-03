@@ -587,10 +587,7 @@ keyword.  In the preprocessing stage, GCC does not know anything about
 keywords.  This can be useful if you wish to hide a keyword such as
 @code{const} from an older compiler that does not understand it.
 However, the preprocessing operator @code{defined} (@pxref{defined})
-can never be defined as a macro, and C@code{++}'s named operators
-(@pxref{C++ Named Operators, C++ Named Operators, C++ Named Operators,
-gcc, Using the GNU Compiler Collection}) cannot be macros when
-compiling C@code{++} code.
+can never be defined as a macro.
 
 The operator @code{#} is used in macros for stringification of an
 argument (@pxref{Stringification}), and @code{##} is used for
@@ -2178,7 +2175,7 @@ Here are some samples.
 @itemize @bullet
 @item
 Some macros are predefined on each kind of machine
-(@pxref{System-specific Predefined Macros, System-specific Predefined
+(@pxref{System specific Predefined Macros, System specific Predefined
 Macros, System-specific Predefined Macros, gcc, Using the GNU Compiler
 Collection}).  This allows you to provide code specially tuned for a
 particular machine.
