@@ -1,0 +1,68 @@
+name: Build docs, deploy and mirror
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install TeX packages
+        run: |
+          sudo apt update
+          sudo apt install -y --no-install-recommends \
+          texlive-latex-recommended \
+          texlive-latex-extra \
+          texlive-fonts-extra \
+          texlive-science \
+          texlive-pictures \
+          texlive-luatex \
+          texinfo
+
+      - name: Clone repo
+        run: git clone --depth 1 https://git.savannah.gnu.org/git/c-intro-and-ref.git
+
+      - name: Build docs
+        run: |
+          cd c-intro-and-ref
+          texi2pdf c.texi
+          make c.html
+          cd ..
+          mkdir build
+          cp c-intro-and-ref/c.pdf build/
+          cp c-intro-and-ref/c.html build/
+
+      - name: Deploy on gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+  mirror:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Keep upstream up to date
+        run: |
+          cd ${{ github.RUNNER_TEMP }}
+          git clone https://git.savannah.gnu.org/git/c-intro-and-ref.git
+          cd c-intro-and-ref
+          git remote add mirror https://${{ github.repository_owner }}:${{ github.token }}@github.com/${{ github.repository }}
+          git branch -m upstream
+          git push mirror upstream
