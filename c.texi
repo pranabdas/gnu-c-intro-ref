@@ -7,6 +7,8 @@
 
 @c move alignment later?
 
+@c ??? alloca
+
 @setfilename ./c.info
 @settitle GNU C Language Manual
 @documentencoding UTF-8
