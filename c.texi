@@ -2365,7 +2365,7 @@ integer @code{date}:
 unsigned int d = 12;
 unsigned int m = 6;
 unsigned int y = 1983;
-unsigned int date = ((y << 4) + m) << 5) + d;
+unsigned int date = (((y << 4) + m) << 5) + d;
 @end example
 
 @noindent
