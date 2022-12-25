@@ -2634,7 +2634,7 @@ integer <code>date</code>:
 <pre class="example">unsigned int d = 12;
 unsigned int m = 6;
 unsigned int y = 1983;
-unsigned int date = ((y &lt;&lt; 4) + m) &lt;&lt; 5) + d;
+unsigned int date = (((y &lt;&lt; 4) + m) &lt;&lt; 5) + d;
 </pre></div>
 
 <p>To extract the original day, month, and year out of
