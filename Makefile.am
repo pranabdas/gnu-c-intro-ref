@@ -1,2 +1,2 @@
 info_TEXINFOS = c.texi
-c_TEXINFOS = cpp.texi fp.texi fdl.texi
+c_TEXINFOS = cpp.texi fp.texi fdl.texi gpl.texi

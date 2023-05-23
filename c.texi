@@ -210,6 +210,7 @@ Appendices
                                     in a declaration.
 * Signals::                       Fatal errors triggered in various scenarios.
 * GNU Free Documentation License::      The license for this manual.
+* GNU General Public License::
 * Symbol Index::                  Keyword and symbol index.
 * Concept Index::                 Detailed topical index.
 
@@ -13197,6 +13198,11 @@ Manual}).
 @appendix GNU Free Documentation License
 
 @include fdl.texi
+
+@node GNU General Public License
+@appendix GNU General Public License
+
+@include gpl.texi
 
 @node Symbol Index
 @unnumbered Index of Symbols and Keywords
