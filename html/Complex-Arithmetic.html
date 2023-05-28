@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Complex Arithmetic (GNU C Language Manual)</title>
+
+<meta name="description" content="Complex Arithmetic (GNU C Language Manual)">
+<meta name="keywords" content="Complex Arithmetic (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Floating-Point-in-Depth.html" rel="up" title="Floating Point in Depth">
+<link href="Round_002dTrip-Base-Conversion.html" rel="next" title="Round-Trip Base Conversion">
+<link href="Machine-Epsilon.html" rel="prev" title="Machine Epsilon">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Complex-Arithmetic">
+<div class="header">
+<p>
+Next: <a href="Round_002dTrip-Base-Conversion.html" accesskey="n" rel="next">Round-Trip Base Conversion</a>, Previous: <a href="Machine-Epsilon.html" accesskey="p" rel="prev">Machine Epsilon</a>, Up: <a href="Floating-Point-in-Depth.html" accesskey="u" rel="up">Floating Point in Depth</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Complex-Arithmetic-1"></span><h3 class="section">28.19 Complex Arithmetic</h3>
+<span id="index-complex-arithmetic-in-floating_002dpoint-calculations"></span>
+<span id="index-floating_002dpoint-arithmetic-with-complex-numbers"></span>
+
+<p>We&rsquo;ve already looked at defining and referring to complex numbers
+(see <a href="Complex-Data-Types.html">Complex Data Types</a>).  What is important to discuss here are
+some issues that are unlikely to be obvious to programmers without
+extensive experience in both numerical computing, and in complex
+arithmetic in mathematics.
+</p>
+<p>The first important point is that, unlike real arithmetic, in complex
+arithmetic, the danger of significance loss is <em>pervasive</em>, and
+affects <em>every one</em> of the basic operations, and <em>almost
+all</em> of the math-library functions.  To understand why, recall the
+rules for complex multiplication and division:
+</p>
+<div class="example">
+<pre class="example">a = u + I*v              /* <span class="roman">First operand.</span> */
+b = x + I*y              /* <span class="roman">Second operand.</span> */
+
+prod = a * b
+     = (u + I*v) * (x + I*y)
+     = (u * x - v * y) + I*(v * x + u * y)
+
+quo  = a / b
+     = (u + I*v) / (x + I*y)
+     = [(u + I*v) * (x - I*y)] / [(x + I*y) * (x - I*y)]
+     = [(u * x + v * y) + I*(v * x - u * y)] / (x**2 + y**2)
+</pre></div>
+
+<p>There are four critical observations about those formulas:
+</p>
+<ul>
+<li> the multiplications on the right-hand side introduce the
+possibility of premature underflow or overflow;
+
+</li><li> the products must be accurate to twice working precision;
+
+</li><li> there is <em>always</em> one subtraction on the right-hand sides
+that is subject to catastrophic significance loss; and
+
+</li><li> complex multiplication has up to <em>six</em> rounding errors, and
+complex division has <em>ten</em> rounding errors.
+
+</li></ul>
+
+<span id="index-branch-cuts"></span>
+<p>Another point that needs careful study is the fact that many functions
+in complex arithmetic have <em>branch cuts</em>.  You can view a
+function with a complex argument, <code>f (z)</code>, as <code>f (x + I*y)</code>,
+and thus, it defines a relation between a point <code>(x, y)</code> on the
+complex plane with an elevation value on a surface.  A branch cut
+looks like a tear in that surface, so approaching the cut from one
+side produces a particular value, and from the other side, a quite
+different value.  Great care is needed to handle branch cuts properly,
+and even small numerical errors can push a result from one side to the
+other, radically changing the returned value.  As we reported earlier,
+correct handling of the sign of zero is critically important for
+computing near branch cuts.
+</p>
+<p>The best advice that we can give to programmers who need complex
+arithmetic is to always use the <em>highest precision available</em>,
+and then to carefully check the results of test calculations to gauge
+the likely accuracy of the computed results.  It is easy to supply
+test values of real and imaginary parts where all five basic
+operations in complex arithmetic, and almost all of the complex math
+functions, lose <em>all</em> significance, and fail to produce even a
+single correct digit.
+</p>
+<p>Even though complex arithmetic makes some programming tasks
+easier, it may be numerically preferable to rework the algorithm
+so that it can be carried out in real arithmetic.  That is
+commonly possible in matrix algebra.
+</p>
+<p>GNU C can perform code optimization on complex number multiplication and
+division if certain boundary checks will not be needed.  The
+command-line option <samp>-fcx-limited-range</samp> tells the compiler that
+a range reduction step is not needed when performing complex division,
+and that there is no need to check if a complex multiplication or
+division results in the value <code>Nan + I*NaN</code>.  By default these
+checks are enabled.  You can explicitly enable them with the
+<samp>-fno-cx-limited-range</samp> option.
+</p>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Round_002dTrip-Base-Conversion.html">Round-Trip Base Conversion</a>, Previous: <a href="Machine-Epsilon.html">Machine Epsilon</a>, Up: <a href="Floating-Point-in-Depth.html">Floating Point in Depth</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Bit Field Packing (GNU C Language Manual)</title>
+
+<meta name="description" content="Bit Field Packing (GNU C Language Manual)">
+<meta name="keywords" content="Bit Field Packing (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Structures.html" rel="up" title="Structures">
+<link href="const-Fields.html" rel="next" title="const Fields">
+<link href="Bit-Fields.html" rel="prev" title="Bit Fields">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Bit-Field-Packing">
+<div class="header">
+<p>
+Next: <a href="const-Fields.html" accesskey="n" rel="next"><code>const</code> Fields</a>, Previous: <a href="Bit-Fields.html" accesskey="p" rel="prev">Bit Fields</a>, Up: <a href="Structures.html" accesskey="u" rel="up">Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Bit-Field-Packing-1"></span><h3 class="section">15.8 Bit Field Packing</h3>
+
+<p>Programs to communicate with low-level hardware interfaces need to
+define bit fields laid out to match the hardware data.  This section
+explains how to do that.
+</p>
+<p>Consecutive bit fields are packed together, but each bit field must
+fit within a single object of its specified type.  In this example,
+</p>
+<div class="example">
+<pre class="example">unsigned short a : 3, b : 3, c : 3, d : 3, e : 3;
+</pre></div>
+
+<p>all five fields fit consecutively into one two-byte <code>short</code>.
+They need 15 bits, and one <code>short</code> provides 16.  By contrast,
+</p>
+<div class="example">
+<pre class="example">unsigned char a : 3, b : 3, c : 3, d : 3, e : 3;
+</pre></div>
+
+<p>needs three bytes.  It fits <code>a</code> and <code>b</code> into one
+<code>char</code>, but <code>c</code> won&rsquo;t fit in that <code>char</code> (they would
+add up to 9 bits).  So <code>c</code> and <code>d</code> go into a second
+<code>char</code>, leaving a gap of two bits between <code>b</code> and <code>c</code>.
+Then <code>e</code> needs a third <code>char</code>.  By contrast,
+</p>
+<div class="example">
+<pre class="example">unsigned char a : 3, b : 3;
+unsigned int c : 3;
+unsigned char d : 3, e : 3;
+</pre></div>
+
+<p>needs only two bytes: the type <code>unsigned int</code>
+allows <code>c</code> to straddle bytes that are in the same word.
+</p>
+<p>You can leave a gap of a specified number of bits by defining a
+nameless bit field.  This looks like <code><var>type</var> : <var>nbits</var>;</code>.
+It is allocated space in the structure just as a named bit field would
+be allocated.
+</p>
+<p>You can force the following bit field to advance to the following
+aligned memory object with <code><var>type</var> : 0;</code>.
+</p>
+<p>Both of these constructs can syntactically share <var>type</var> with
+ordinary bit fields.  This example illustrates both:
+</p>
+<div class="example">
+<pre class="example">unsigned int a : 5, : 3, b : 5, : 0, c : 5, : 3, d : 5;
+</pre></div>
+
+<p>It puts <code>a</code> and <code>b</code> into one <code>int</code>, with a 3-bit gap
+between them.  Then <code>: 0</code> advances to the next <code>int</code>,
+so <code>c</code> and <code>d</code> fit into that one.
+</p>
+<p>These rules for packing bit fields apply to most target platforms,
+including all the usual real computers.  A few embedded controllers
+have special layout rules.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="const-Fields.html"><code>const</code> Fields</a>, Previous: <a href="Bit-Fields.html">Bit Fields</a>, Up: <a href="Structures.html">Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

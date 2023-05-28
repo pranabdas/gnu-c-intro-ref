@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>goto Statement (GNU C Language Manual)</title>
+
+<meta name="description" content="goto Statement (GNU C Language Manual)">
+<meta name="keywords" content="goto Statement (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Statements.html" rel="up" title="Statements">
+<link href="Local-Labels.html" rel="next" title="Local Labels">
+<link href="Null-Statement.html" rel="prev" title="Null Statement">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="goto-Statement">
+<div class="header">
+<p>
+Next: <a href="Local-Labels.html" accesskey="n" rel="next">Locally Declared Labels</a>, Previous: <a href="Null-Statement.html" accesskey="p" rel="prev">Null Statement</a>, Up: <a href="Statements.html" accesskey="u" rel="up">Statements</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="goto-Statement-and-Labels"></span><h3 class="section">19.12 <code>goto</code> Statement and Labels</h3>
+<span id="index-goto-statement"></span>
+<span id="index-statement_002c-goto"></span>
+<span id="index-label"></span>
+<span id="index-goto"></span>
+
+<p>The <code>goto</code> statement looks like this:
+</p>
+<div class="example">
+<pre class="example">goto <var>label</var>;
+</pre></div>
+
+<p>Its effect is to transfer control immediately to another part of the
+current function&mdash;where the label named <var>label</var> is defined.
+</p>
+<p>An ordinary label definition looks like this:
+</p>
+<div class="example">
+<pre class="example"><var>label</var>:
+</pre></div>
+
+<p>and it can appear before any statement.  You can&rsquo;t use <code>default</code>
+as a label, since that has a special meaning for <code>switch</code>
+statements.
+</p>
+<p>An ordinary label doesn&rsquo;t need a separate declaration; defining it is
+enough.
+</p>
+<p>Here&rsquo;s an example of using <code>goto</code> to implement a loop
+equivalent to <code>do</code>&ndash;<code>while</code>:
+</p>
+<div class="example">
+<pre class="example">{
+ loop_restart:
+  <var>body</var>
+  if (<var>condition</var>)
+    goto loop_restart;
+}
+</pre></div>
+
+<p>The name space of labels is separate from that of variables and functions.
+Thus, there is no error in using a single name in both ways:
+</p>
+<div class="example">
+<pre class="example">{
+  int foo;    // <span class="roman">Variable <code>foo</code>.</span>
+ foo:         // <span class="roman">Label <code>foo</code>.</span>
+  <var>body</var>
+  if (foo &gt; 0)  // <span class="roman">Variable <code>foo</code>.</span>
+    goto foo;   // <span class="roman">Label <code>foo</code>.</span>
+}
+</pre></div>
+
+<p>Blocks have no effect on ordinary labels; each label name is defined
+throughout the whole of the function it appears in.  It looks strange to
+jump into a block with <code>goto</code>, but it works.  For example,
+</p>
+<div class="example">
+<pre class="example">if (x &lt; 0)
+  goto negative;
+if (y &lt; 0)
+  {
+   negative:
+    printf (&quot;Negative\n&quot;);
+    return;
+  }
+</pre></div>
+
+<p>If the goto jumps into the scope of a variable, it does not
+initialize the variable.  For example, if <code>x</code> is negative,
+</p>
+<div class="example">
+<pre class="example">if (x &lt; 0)
+  goto negative;
+if (y &lt; 0)
+  {
+    int i = 5;
+   negative:
+    printf (&quot;Negative, and i is %d\n&quot;, i);
+    return;
+  }
+</pre></div>
+
+<p>prints junk because <code>i</code> was not initialized.
+</p>
+<p>If the block declares a variable-length automatic array, jumping into
+it gives a compilation error.  However, jumping out of the scope of a
+variable-length array works fine, and deallocates its storage.
+</p>
+<p>A label can&rsquo;t come directly before a declaration, so the code can&rsquo;t
+jump directly to one.  For example, this is not allowed:
+</p>
+<div class="example">
+<pre class="example">{
+  goto foo;
+foo:
+  int x = 5;
+  bar(&amp;x);
+}
+</pre></div>
+
+<p>The workaround is to add a statement, even an empty statement,
+directly after the label.  For example:
+</p>
+<div class="example">
+<pre class="example">{
+  goto foo;
+foo:
+  ;
+  int x = 5;
+  bar(&amp;x);
+}
+</pre></div>
+
+<p>Likewise, a label can&rsquo;t be the last thing in a block.  The workaround
+solution is the same: add a semicolon after the label.
+</p>
+<p>These unnecessary restrictions on labels make no sense, and ought in
+principle to be removed; but they do only a little harm since labels
+and <code>goto</code> are rarely the best way to write a program.
+</p>
+<p>These examples are all artificial; it would be more natural to
+write them in other ways, without <code>goto</code>.  For instance,
+the clean way to write the example that prints &lsquo;<samp>Negative</samp>&rsquo; is this:
+</p>
+<div class="example">
+<pre class="example">if (x &lt; 0 || y &lt; 0)
+  {
+    printf (&quot;Negative\n&quot;);
+    return;
+  }
+</pre></div>
+
+<p>It is hard to construct simple examples where <code>goto</code> is actually
+the best way to write a program.  Its rare good uses tend to be in
+complex code, thus not apt for the purpose of explaining the meaning
+of <code>goto</code>.
+</p>
+<p>The only good time to use <code>goto</code> is when it makes the code
+simpler than any alternative.  Jumping backward is rarely desirable,
+because usually the other looping and control constructs give simpler
+code.  Using <code>goto</code> to jump forward is more often desirable, for
+instance when a function needs to do some processing in an error case
+and errors can occur at various different places within the function.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Local-Labels.html">Locally Declared Labels</a>, Previous: <a href="Null-Statement.html">Null Statement</a>, Up: <a href="Statements.html">Statements</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Array Example Call (GNU C Language Manual)</title>
+
+<meta name="description" content="Array Example Call (GNU C Language Manual)">
+<meta name="keywords" content="Array Example Call (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Beyond-Integers.html" rel="up" title="Beyond Integers">
+<link href="Array-Example-Variations.html" rel="next" title="Array Example Variations">
+<link href="Array-Example.html" rel="prev" title="Array Example">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Array-Example-Call">
+<div class="header">
+<p>
+Next: <a href="Array-Example-Variations.html" accesskey="n" rel="next">Variations for Array Example</a>, Previous: <a href="Array-Example.html" accesskey="p" rel="prev">An Example with Arrays</a>, Up: <a href="Beyond-Integers.html" accesskey="u" rel="up">Beyond Integers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Calling-the-Array-Example"></span><h3 class="section">4.3 Calling the Array Example</h3>
+
+<p>To call the function <code>avg_of_double</code> requires making an
+array and then passing it as an argument.  Here is an example.
+</p>
+<div class="example">
+<pre class="example">{
+  /* <span class="roman">The array of values to average.</span>  */
+  double nums_to_average[5];
+  /* <span class="roman">The average, once we compute it.</span>  */
+  double average;
+
+  /* <span class="roman">Fill in elements of <code>nums_to_average</code>.</span>  */
+
+  nums_to_average[0] = 58.7;
+  nums_to_average[1] = 5.1;
+  nums_to_average[2] = 7.7;
+  nums_to_average[3] = 105.2;
+  nums_to_average[4] = -3.14159;
+
+  average = avg_of_double (5, nums_to_average);
+
+  /* <span class="roman">&hellip;now make use of <code>average</code>&hellip;</span> */
+}
+</pre></div>
+
+<p>This shows an array subscripting expression again, this time
+on the left side of an assignment, storing a value into an
+element of an array.
+</p>
+<p>It also shows how to declare a local variable that is an array:
+<code>double nums_to_average[5];</code>.  Since this declaration allocates the
+space for the array, it needs to know the array&rsquo;s length.  You can
+specify the length with any expression whose value is an integer, but
+in this declaration the length is a constant, the integer 5.
+</p>
+<p>The name of the array, when used by itself as an expression, stands
+for the address of the array&rsquo;s data, and that&rsquo;s what gets passed to
+the function <code>avg_of_double</code> in <code>avg_of_double (5,
+nums_to_average)</code>.
+</p>
+<p>We can make the code easier to maintain by avoiding the need to write
+5, the array length, when calling <code>avg_of_double</code>.  That way, if
+we change the array to include more elements, we won&rsquo;t have to change
+that call.  One way to do this is with the <code>sizeof</code> operator:
+</p>
+<div class="example">
+<pre class="example">  average = avg_of_double ((sizeof (nums_to_average)
+                            / sizeof (nums_to_average[0])),
+                           nums_to_average);
+</pre></div>
+
+<p>This computes the number of elements in <code>nums_to_average</code> by dividing
+its total size by the size of one element.  See <a href="Type-Size.html">Type Size</a>, for more
+details of using <code>sizeof</code>.
+</p>
+<p>We don&rsquo;t show in this example what happens after storing the result of
+<code>avg_of_double</code> in the variable <code>average</code>.  Presumably
+more code would follow that uses that result somehow.  (Why compute
+the average and not use it?)  But that isn&rsquo;t part of this topic.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Array-Example-Variations.html">Variations for Array Example</a>, Previous: <a href="Array-Example.html">An Example with Arrays</a>, Up: <a href="Beyond-Integers.html">Beyond Integers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

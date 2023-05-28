@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Attributes (GNU C Language Manual)</title>
+
+<meta name="description" content="Attributes (GNU C Language Manual)">
+<meta name="keywords" content="Attributes (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Signals.html" rel="next" title="Signals">
+<link href="Digraphs.html" rel="prev" title="Digraphs">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="appendix" id="Attributes">
+<div class="header">
+<p>
+Next: <a href="Signals.html" accesskey="n" rel="next">Signals</a>, Previous: <a href="Digraphs.html" accesskey="p" rel="prev">Digraphs</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Attributes-in-Declarations"></span><h2 class="appendix">Appendix D Attributes in Declarations</h2>
+<span id="index-attributes"></span>
+<span id="index-_005f_005fattribute_005f_005f"></span>
+
+<p>You can specify certain additional requirements in a declaration, to
+get fine-grained control over code generation, and helpful
+informational messages during compilation.  We use a few attributes in
+code examples throughout this manual, including
+</p>
+<dl compact="compact">
+<dt><span><code>aligned</code></span></dt>
+<dd><p>The <code>aligned</code> attribute specifies a minimum alignment for a
+variable or structure field, measured in bytes:
+</p>
+<div class="example">
+<pre class="example">int foo __attribute__ ((aligned (8))) = 0;
+</pre></div>
+
+<p>This directs GNU C to allocate <code>foo</code> at an address that is a
+multiple of 8 bytes.  However, you can&rsquo;t force an alignment bigger
+than the computer&rsquo;s maximum meaningful alignment.
+</p>
+</dd>
+<dt><span><code>packed</code></span></dt>
+<dd><p>The <code>packed</code> attribute specifies to compact the fields of a
+structure by not leaving gaps between fields.  For example,
+</p>
+<div class="example">
+<pre class="example">struct __attribute__ ((packed)) bar
+{
+  char a;
+  int b;
+};
+</pre></div>
+
+<p>allocates the integer field <code>b</code> at byte 1 in the structure,
+immediately after the character field <code>a</code>.  The packed structure
+is just 5 bytes long (assuming <code>int</code> is 4 bytes) and its
+alignment is 1, that of <code>char</code>.
+</p>
+</dd>
+<dt><span><code>deprecated</code></span></dt>
+<dd><p>Applicable to both variables and functions, the <code>deprecated</code>
+attribute tells the compiler to issue a warning if the variable or
+function is ever used in the source file.
+</p>
+<div class="example">
+<pre class="example">int old_foo __attribute__ ((deprecated));
+
+int old_quux () __attribute__ ((deprecated));
+</pre></div>
+
+</dd>
+<dt><span><code>__noinline__</code></span></dt>
+<dd><p>The <code>__noinline__</code> attribute, in a function&rsquo;s declaration or
+definition, specifies never to inline calls to that function.  All
+calls to that function, in a compilation unit where it has this
+attribute, will be compiled to invoke the separately compiled
+function.  See <a href="Inline-Function-Definitions.html">Inline Function Definitions</a>.
+</p>
+</dd>
+<dt><span><code>__noclone__</code></span></dt>
+<dd><p>The <code>__noclone__</code> attribute, in a function&rsquo;s declaration or
+definition, specifies never to clone that function.  Thus, there will
+be only one compiled version of the function.  See <a href="Label-Value-Caveats.html">Label Value Caveats</a>, for more information about cloning.
+</p>
+</dd>
+<dt><span><code>always_inline</code></span></dt>
+<dd><p>The <code>always_inline</code> attribute, in a function&rsquo;s declaration or
+definition, specifies to inline all calls to that function (unless
+something about the function makes inlining impossible).  This applies
+to all calls to that function in a compilation unit where it has this
+attribute.  See <a href="Inline-Function-Definitions.html">Inline Function Definitions</a>.
+</p>
+</dd>
+<dt><span><code>gnu_inline</code></span></dt>
+<dd><p>The <code>gnu_inline</code> attribute, in a function&rsquo;s declaration or
+definition, specifies to handle the <code>inline</code> keyword the way GNU
+C originally implemented it, many years before ISO C said anything
+about inlining.  See <a href="Inline-Function-Definitions.html">Inline Function Definitions</a>.
+</p></dd>
+</dl>
+
+<p>For full documentation of attributes, see the GCC manual.
+See <a data-manual="gcc" href="https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html#Attribute-Syntax">System Headers</a> in <cite>Using
+the GNU Compiler Collection</cite>.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Signals.html">Signals</a>, Previous: <a href="Digraphs.html">Digraphs</a>, Up: <a href="index.html">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

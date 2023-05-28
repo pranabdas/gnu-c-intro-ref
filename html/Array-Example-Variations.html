@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Array Example Variations (GNU C Language Manual)</title>
+
+<meta name="description" content="Array Example Variations (GNU C Language Manual)">
+<meta name="keywords" content="Array Example Variations (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Beyond-Integers.html" rel="up" title="Beyond Integers">
+<link href="Array-Example-Call.html" rel="prev" title="Array Example Call">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Array-Example-Variations">
+<div class="header">
+<p>
+Previous: <a href="Array-Example-Call.html" accesskey="p" rel="prev">Calling the Array Example</a>, Up: <a href="Beyond-Integers.html" accesskey="u" rel="up">Beyond Integers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Variations-for-Array-Example"></span><h3 class="section">4.4 Variations for Array Example</h3>
+
+<p>The code to call <code>avg_of_double</code> has two declarations that
+start with the same data type:
+</p>
+<div class="example">
+<pre class="example">  /* <span class="roman">The array of values to average.</span>  */
+  double nums_to_average[5];
+  /* <span class="roman">The average, once we compute it.</span>  */
+  double average;
+</pre></div>
+
+<p>In C, you can combine the two, like this:
+</p>
+<div class="example">
+<pre class="example">  double nums_to_average[5], average;
+</pre></div>
+
+<p>This declares <code>nums_to_average</code> so each of its elements is a
+<code>double</code>, and <code>average</code> so that it simply is a
+<code>double</code>.
+</p>
+<p>However, while you <em>can</em> combine them, that doesn&rsquo;t mean you
+<em>should</em>.  If it is useful to write comments about the variables,
+and usually it is, then it&rsquo;s clearer to keep the declarations separate
+so you can put a comment on each one.  That also helps with using
+textual tools to find occurrences of a variable in source files.
+</p>
+<p>We set all of the elements of the array <code>nums_to_average</code> with
+assignments, but it is more convenient to use an initializer in the
+declaration:
+</p>
+<div class="example">
+<pre class="example">{
+  /* <span class="roman">The array of values to average.</span>  */
+  double nums_to_average[]
+    = { 58.7, 5.1, 7.7, 105.2, -3.14159 };
+
+  /* <span class="roman">The average, once we compute it.</span>  */
+  average = avg_of_double ((sizeof (nums_to_average)
+                            / sizeof (nums_to_average[0])),
+                           nums_to_average);
+
+  /* <span class="roman">&hellip;now make use of <code>average</code>&hellip;</span> */
+}
+</pre></div>
+
+<p>The array initializer is a comma-separated list of values, delimited
+by braces.  See <a href="Initializers.html">Initializers</a>.
+</p>
+<p>Note that the declaration does not specify a size for
+<code>nums_to_average</code>, so the size is determined from the
+initializer.  There are five values in the initializer, so
+<code>nums_to_average</code> gets length 5.  If we add another element to
+the initializer, <code>nums_to_average</code> will have six elements.
+</p>
+<p>Because the code computes the number of elements from the size of
+the array, using <code>sizeof</code>, the program will operate on all the
+elements in the initializer, regardless of how many those are.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Array-Example-Call.html">Calling the Array Example</a>, Up: <a href="Beyond-Integers.html">Beyond Integers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

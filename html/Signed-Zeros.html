@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Signed Zeros (GNU C Language Manual)</title>
+
+<meta name="description" content="Signed Zeros (GNU C Language Manual)">
+<meta name="keywords" content="Signed Zeros (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Floating-Point-in-Depth.html" rel="up" title="Floating Point in Depth">
+<link href="Scaling-by-the-Base.html" rel="next" title="Scaling by the Base">
+<link href="Handling-NaN.html" rel="prev" title="Handling NaN">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Signed-Zeros">
+<div class="header">
+<p>
+Next: <a href="Scaling-by-the-Base.html" accesskey="n" rel="next">Scaling by Powers of the Base</a>, Previous: <a href="Handling-NaN.html" accesskey="p" rel="prev">Handling NaN</a>, Up: <a href="Floating-Point-in-Depth.html" accesskey="u" rel="up">Floating Point in Depth</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Signed-Zeros-1"></span><h3 class="section">28.15 Signed Zeros</h3>
+<span id="index-signed-zeros-in-floating_002dpoint-arithmetic"></span>
+<span id="index-floating_002dpoint-signed-zeros"></span>
+
+<p>The sign of zero is significant, and important, because it records the
+creation of a value that is too small to represent, but came from
+either the negative axis, or from the positive axis.  Such fine
+distinctions are essential for proper handling of <em>branch cuts</em>
+in complex arithmetic (see <a href="Complex-Arithmetic.html">Complex Arithmetic</a>).
+</p>
+<p>The key point about signed zeros is that in comparisons, their sign
+does not matter: <code>0.0 == -0.0</code> must <em>always</em> evaluate to
+<code>1</code> (true).  However, they are not <em>the same number</em>, and
+<code>-0.0</code> in C code stands for a negative zero.
+</p>
+
+</div>
+
+
+
+</body>
+</html>

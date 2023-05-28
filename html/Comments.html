@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Comments (GNU C Language Manual)</title>
+
+<meta name="description" content="Comments (GNU C Language Manual)">
+<meta name="keywords" content="Comments (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Lexical-Syntax.html" rel="up" title="Lexical Syntax">
+<link href="Identifiers.html" rel="next" title="Identifiers">
+<link href="Whitespace.html" rel="prev" title="Whitespace">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Comments">
+<div class="header">
+<p>
+Next: <a href="Identifiers.html" accesskey="n" rel="next">Identifiers</a>, Previous: <a href="Whitespace.html" accesskey="p" rel="prev">Whitespace</a>, Up: <a href="Lexical-Syntax.html" accesskey="u" rel="up">Lexical Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Comments-1"></span><h3 class="section">5.4 Comments</h3>
+<span id="index-comments"></span>
+
+<p>A comment encapsulates text that has no effect on the program&rsquo;s
+execution or meaning.
+</p>
+<p>The purpose of comments is to explain the code to people that read it.
+Writing good comments for your code is tremendously important&mdash;they
+should provide background information that helps programmers
+understand the reasons why the code is written the way it is.  You,
+returning to the code six months from now, will need the help of these
+comments to remember why you wrote it this way.
+</p>
+<p>Outdated comments that become incorrect are counterproductive, so part
+of the software developer&rsquo;s responsibility is to update comments as
+needed to correspond with changes to the program code.
+</p>
+<p>C allows two kinds of comment syntax, the traditional style and the
+C<tt>++</tt> style.  A traditional C comment starts with &lsquo;<samp>/*</samp>&rsquo; and ends
+with &lsquo;<samp>*/</samp>&rsquo;.  For instance,
+</p>
+<div class="example">
+<pre class="example">/* <span class="roman">This is a comment in traditional C syntax.</span> */
+</pre></div>
+
+<p>A traditional comment can contain &lsquo;<samp>/*</samp>&rsquo;, but these delimiters do
+not nest as pairs.  The first &lsquo;<samp>*/</samp>&rsquo; ends the comment regardless of
+whether it contains &lsquo;<samp>/*</samp>&rsquo; sequences.
+</p>
+<div class="example">
+<pre class="example">/* <span class="roman">This</span> /* <span class="roman">is a comment</span> */ But this is not! */
+</pre></div>
+
+<p>A <em>line comment</em> starts with &lsquo;<samp>//</samp>&rsquo; and ends at the end of the line.
+For instance,
+</p>
+<div class="example">
+<pre class="example">// <span class="roman">This is a comment in C<tt>++</tt> style.</span>
+</pre></div>
+
+<p>Line comments do nest, in effect, because &lsquo;<samp>//</samp>&rsquo; inside a line
+comment is part of that comment:
+</p>
+<div class="example">
+<pre class="example">// <span class="roman">this whole line is</span> // <span class="roman">one comment</span>
+This is code, not comment.
+</pre></div>
+
+<p>It is safe to put line comments inside block comments, or vice versa.
+</p>
+<div class="example">
+<pre class="example">/* <span class="roman">traditional comment</span>
+   // <span class="roman">contains line comment</span>
+   <span class="roman">more traditional comment</span>
+ */ text here is not a comment
+
+// <span class="roman">line comment</span> /* <span class="roman">contains traditional comment</span> */
+</pre></div>
+
+<p>But beware of commenting out one end of a traditional comment with a line
+comment.  The delimiter &lsquo;<samp>/*</samp>&rsquo; doesn&rsquo;t start a comment if it occurs
+inside an already-started comment.
+</p>
+<div class="example">
+<pre class="example"> // <span class="roman">line comment</span>  /* <span class="roman">That would ordinarily begin a block comment.</span>
+    Oops! The line comment has ended;
+    this isn't a comment any more.  */
+</pre></div>
+
+<p>Comments are not recognized within string constants.  <tt>&quot;/*&nbsp;blah&nbsp;*/&quot;<!-- /@w --></tt> is the string constant &lsquo;<samp>/*&nbsp;blah&nbsp;*/<!-- /@w --></samp>&rsquo;, not an empty
+string.
+</p>
+<p>In this manual we show the text in comments in a variable-width font,
+for readability, but this font distinction does not exist in source
+files.
+</p>
+<p>A comment is syntactically equivalent to whitespace, so it always
+separates tokens.  Thus,
+</p>
+<div class="example">
+<pre class="example">  int/* <span class="roman">comment</span> */foo;
+<span class="roman">is equivalent to</span>
+  int foo;
+</pre></div>
+
+<p>but clean code always uses real whitespace to separate the comment
+visually from surrounding code.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Identifiers.html">Identifiers</a>, Previous: <a href="Whitespace.html">Whitespace</a>, Up: <a href="Lexical-Syntax.html">Lexical Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

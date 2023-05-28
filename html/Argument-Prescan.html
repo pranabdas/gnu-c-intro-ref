@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Argument Prescan (GNU C Language Manual)</title>
+
+<meta name="description" content="Argument Prescan (GNU C Language Manual)">
+<meta name="keywords" content="Argument Prescan (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Macro-Pitfalls.html" rel="up" title="Macro Pitfalls">
+<link href="Self_002dReferential-Macros.html" rel="prev" title="Self-Referential Macros">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection" id="Argument-Prescan">
+<div class="header">
+<p>
+Previous: <a href="Self_002dReferential-Macros.html" accesskey="p" rel="prev">Self-Referential Macros</a>, Up: <a href="Macro-Pitfalls.html" accesskey="u" rel="up">Macro Pitfalls</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Argument-Prescan-1"></span><h4 class="subsubsection">26.5.10.7 Argument Prescan</h4>
+<span id="index-expansion-of-arguments"></span>
+<span id="index-macro-argument-expansion"></span>
+<span id="index-prescan-of-macro-arguments"></span>
+
+<p>Macro arguments are completely macro-expanded before they are
+substituted into a macro body, unless they are stringified or pasted
+with other tokens.  After substitution, the entire macro body, including
+the substituted arguments, is scanned again for macros to be expanded.
+The result is that the arguments are scanned <em>twice</em> to expand
+macro calls in them.
+</p>
+<p>Most of the time, this has no effect.  If the argument contained any
+macro calls, they were expanded during the first scan.  The result
+therefore contains no macro calls, so the second scan does not change
+it.  If the argument were substituted as given, with no prescan, the
+single remaining scan would find the same macro calls and produce the
+same results.
+</p>
+<p>You might expect the double scan to change the results when a
+self-referential macro is used in an argument of another macro
+(see <a href="Self_002dReferential-Macros.html">Self-Referential Macros</a>): the self-referential macro would be
+expanded once in the first scan, and a second time in the second scan.
+However, this is not what happens.  The self-references that do not
+expand in the first scan are marked so that they will not expand in the
+second scan either.
+</p>
+<p>You might wonder, &ldquo;Why mention the prescan, if it makes no difference?
+And why not skip it and make preprocessing go faster?&rdquo;  The answer is
+that the prescan does make a difference in three special cases:
+</p>
+<ul>
+<li> Nested calls to a macro.
+
+<p>We say that <em>nested</em> calls to a macro occur when a macro&rsquo;s argument
+contains a call to that very macro.  For example, if <code>f</code> is a macro
+that expects one argument, <code>f (f (1))</code> is a nested pair of calls to
+<code>f</code>.  The desired expansion is made by expanding <code>f (1)</code> and
+substituting that into the definition of <code>f</code>.  The prescan causes
+the expected result to happen.  Without the prescan, <code>f (1)</code> itself
+would be substituted as an argument, and the inner use of <code>f</code> would
+appear during the main scan as an indirect self-reference and would not
+be expanded.
+</p>
+</li><li> Macros that call other macros that stringify or concatenate.
+
+<p>If an argument is stringified or concatenated, the prescan does not
+occur.  If you <em>want</em> to expand a macro, then stringify or
+concatenate its expansion, you can do that by causing one macro to call
+another macro that does the stringification or concatenation.  For
+instance, if you have
+</p>
+<div class="example">
+<pre class="example">#define AFTERX(x) X_ ## x
+#define XAFTERX(x) AFTERX(x)
+#define TABLESIZE 1024
+#define BUFSIZE TABLESIZE
+</pre></div>
+
+<p>then <code>AFTERX(BUFSIZE)</code> expands to <code>X_BUFSIZE</code>, and
+<code>XAFTERX(BUFSIZE)</code> expands to <code>X_1024</code>.  (Not to
+<code>X_TABLESIZE</code>.  Prescan always does a complete expansion.)
+</p>
+</li><li> Macros used in arguments, whose expansions contain unshielded commas.
+
+<p>This can cause a macro expanded on the second scan to be called with the
+wrong number of arguments.  Here is an example:
+</p>
+<div class="example">
+<pre class="example">#define foo  a,b
+#define bar(x) lose(x)
+#define lose(x) (1 + (x))
+</pre></div>
+
+<p>We would like <code>bar(foo)</code> to turn into <code>(1 + (foo))</code>, which
+would then turn into <code>(1 + (a,b))</code>.  Instead, <code>bar(foo)</code>
+expands into <code>lose(a,b)</code>, which gives an error because <code>lose</code>
+requires a single argument.  In this case, the problem is easily solved
+by the same parentheses that ought to be used to prevent misnesting of
+arithmetic operations:
+</p>
+<div class="example">
+<pre class="example">#define foo (a,b)
+</pre><pre class="example">or
+</pre><pre class="example">#define bar(x) lose((x))
+</pre></div>
+
+<p>The extra pair of parentheses prevents the comma in <code>foo</code>&rsquo;s
+definition from being interpreted as an argument separator.
+</p></li></ul>
+
+
+</div>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Self_002dReferential-Macros.html">Self-Referential Macros</a>, Up: <a href="Macro-Pitfalls.html">Macro Pitfalls</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

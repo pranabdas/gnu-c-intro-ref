@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Type Size (GNU C Language Manual)</title>
+
+<meta name="description" content="Type Size (GNU C Language Manual)">
+<meta name="keywords" content="Type Size (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Pointers.html" rel="next" title="Pointers">
+<link href="Constants.html" rel="prev" title="Constants">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter" id="Type-Size">
+<div class="header">
+<p>
+Next: <a href="Pointers.html" accesskey="n" rel="next">Pointers</a>, Previous: <a href="Constants.html" accesskey="p" rel="prev">Constants</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Type-Size-1"></span><h2 class="chapter">13 Type Size</h2>
+<span id="index-type-size"></span>
+<span id="index-size-of-type"></span>
+<span id="index-sizeof"></span>
+
+<p>Each data type has a <em>size</em>, which is the number of bytes
+(see <a href="Storage.html">Storage and Data</a>) that it occupies in memory.  To refer to the size in
+a C program, use <code>sizeof</code>.  There are two ways to use it:
+</p>
+<dl compact="compact">
+<dt><span><code>sizeof <var>expression</var></code></span></dt>
+<dd><p>This gives the size of <var>expression</var>, based on its data type.  It
+does not calculate the value of <var>expression</var>, only its size, so if
+<var>expression</var> includes side effects or function calls, they do not
+happen.  Therefore, <code>sizeof</code> is always a compile-time operation
+that has zero run-time cost.
+</p>
+<p>A value that is a bit field (see <a href="Bit-Fields.html">Bit Fields</a>) is not allowed as an
+operand of <code>sizeof</code>.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">double a;
+
+i = sizeof a + 10;
+</pre></div>
+
+<p>sets <code>i</code> to 18 on most computers because <code>a</code> occupies 8 bytes.
+</p>
+<p>Here&rsquo;s how to determine the number of elements in an array
+<code>array</code>:
+</p>
+<div class="example">
+<pre class="example">(sizeof array / sizeof array[0])
+</pre></div>
+
+<p>The expression <code>sizeof array</code> gives the size of the array, not
+the size of a pointer to an element.  However, if <var>expression</var> is
+a function parameter that was declared as an array, that
+variable really has a pointer type (see <a href="Array-Parm-Pointer.html">Array parameters are pointers</a>), so
+the result is the size of that pointer.
+</p>
+</dd>
+<dt><span><code>sizeof (<var>type</var>)</code></span></dt>
+<dd><p>This gives the size of <var>type</var>.
+For example,
+</p>
+<div class="example">
+<pre class="example">i = sizeof (double) + 10;
+</pre></div>
+
+<p>is equivalent to the previous example.
+</p>
+<p>You can&rsquo;t apply <code>sizeof</code> to an incomplete type (see <a href="Incomplete-Types.html">Incomplete Types</a>), nor <code>void</code>.  Using it on a function type gives 1 in GNU
+C, which makes adding an integer to a function pointer work as desired
+(see <a href="Pointer-Arithmetic.html">Pointer Arithmetic</a>).
+</p></dd>
+</dl>
+
+<p><strong>Warning</strong>: When you use <code>sizeof</code> with a type
+instead of an expression, you must write parentheses around the type.
+</p>
+<p><strong>Warning</strong>: When applying <code>sizeof</code> to the result of a cast
+(see <a href="Explicit-Type-Conversion.html">Explicit Type Conversion</a>), you must write parentheses around
+the cast expression to avoid an ambiguity in the grammar of C.
+Specifically,
+</p>
+<div class="example">
+<pre class="example">sizeof (int) -x
+</pre></div>
+
+<p>parses as
+</p>
+<div class="example">
+<pre class="example">(sizeof (int)) - x
+</pre></div>
+
+<p>If what you want is
+</p>
+<div class="example">
+<pre class="example">sizeof ((int) -x)
+</pre></div>
+
+<p>you must write it that way, with parentheses.
+</p>
+<p>The data type of the value of the <code>sizeof</code> operator is always one
+of the unsigned integer types; which one of those types depends on the
+machine.  The header file <code>stddef.h</code> defines the typedef name
+<code>size_t</code> as an alias for this type.  See <a href="Defining-Typedef-Names.html">Defining Typedef Names</a>.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Pointers.html">Pointers</a>, Previous: <a href="Constants.html">Constants</a>, Up: <a href="index.html">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

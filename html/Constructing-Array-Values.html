@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Constructing Array Values (GNU C Language Manual)</title>
+
+<meta name="description" content="Constructing Array Values (GNU C Language Manual)">
+<meta name="keywords" content="Constructing Array Values (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arrays.html" rel="up" title="Arrays">
+<link href="Arrays-of-Variable-Length.html" rel="next" title="Arrays of Variable Length">
+<link href="Multidimensional-Arrays.html" rel="prev" title="Multidimensional Arrays">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Constructing-Array-Values">
+<div class="header">
+<p>
+Next: <a href="Arrays-of-Variable-Length.html" accesskey="n" rel="next">Arrays of Variable Length</a>, Previous: <a href="Multidimensional-Arrays.html" accesskey="p" rel="prev">Multidimensional Arrays</a>, Up: <a href="Arrays.html" accesskey="u" rel="up">Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Constructing-Array-Values-1"></span><h3 class="section">16.8 Constructing Array Values</h3>
+<span id="index-constructing-array-values"></span>
+<span id="index-array-values_002c-constructing"></span>
+
+<p>You can construct an array from elements by writing them inside
+braces, and preceding all that with the array type&rsquo;s designator in
+parentheses.  There is no need to specify the array length, since the
+number of elements determines that.  The constructor looks like this:
+</p>
+<div class="example">
+<pre class="example">(<var>elttype</var>[]) { <var>elements</var> };
+</pre></div>
+
+<p>Here is an example, which constructs an array of string pointers:
+</p>
+<div class="example">
+<pre class="example">(char *[]) { &quot;x&quot;, &quot;y&quot;, &quot;z&quot; };
+</pre></div>
+
+<p>That&rsquo;s equivalent in effect to declaring an array with the same
+initializer, like this:
+</p>
+<div class="example">
+<pre class="example">char *array[] = { &quot;x&quot;, &quot;y&quot;, &quot;z&quot; };
+</pre></div>
+
+<p>and then using the array.
+</p>
+<p>If all the elements are simple constant expressions, or made up of
+such, then the compound literal can be coerced to a pointer to its
+zeroth element and used to initialize a file-scope variable
+(see <a href="File_002dScope-Variables.html">File-Scope Variables</a>), as shown here:
+</p>
+<div class="example">
+<pre class="example">char **foo = (char *[]) { &quot;x&quot;, &quot;y&quot;, &quot;z&quot; };
+</pre></div>
+
+<p>The data type of <code>foo</code> is <code>char **</code>, which is a pointer
+type, not an array type.  The declaration is equivalent to defining
+and then using an array-type variable:
+</p>
+<div class="example">
+<pre class="example">char *nameless_array[] = { &quot;x&quot;, &quot;y&quot;, &quot;z&quot; };
+char **foo = &amp;nameless_array[0];
+</pre></div>
+
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Ordering of Operands (GNU C Language Manual)</title>
+
+<meta name="description" content="Ordering of Operands (GNU C Language Manual)">
+<meta name="keywords" content="Ordering of Operands (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Order-of-Execution.html" rel="up" title="Order of Execution">
+<link href="Optimization-and-Ordering.html" rel="next" title="Optimization and Ordering">
+<link href="Postincrement-and-Ordering.html" rel="prev" title="Postincrement and Ordering">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Ordering-of-Operands">
+<div class="header">
+<p>
+Next: <a href="Optimization-and-Ordering.html" accesskey="n" rel="next">Optimization and Ordering</a>, Previous: <a href="Postincrement-and-Ordering.html" accesskey="p" rel="prev">Postincrement and Ordering</a>, Up: <a href="Order-of-Execution.html" accesskey="u" rel="up">Order of Execution</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Ordering-of-Operands-1"></span><h3 class="section">10.5 Ordering of Operands</h3>
+<span id="index-ordering-of-operands-1"></span>
+<span id="index-operand-ordering"></span>
+
+<p>Operands and arguments can be computed in any order, but there are limits to
+this intermixing in GNU C:
+</p>
+<ul>
+<li> The operands of a binary arithmetic operator can be computed in either
+order, but they can&rsquo;t be intermixed: one of them has to come first,
+followed by the other.  Any side effects in the operand that&rsquo;s computed
+first are executed before the other operand is computed.
+
+</li><li> That applies to assignment operators too, except that, in simple assignment,
+the previous value of the left operand is unused.
+
+</li><li> The arguments in a function call can be computed in any order, but
+they can&rsquo;t be intermixed.  Thus, one argument is fully computed, then
+another, and so on until they have all been done.  Any side effects in
+one argument are executed before computation of another argument
+begins.
+</li></ul>
+
+<p>These rules don&rsquo;t cover side effects caused by postincrement and
+postdecrement operators&mdash;those can be deferred up to the next
+sequence point.
+</p>
+<p>If you want to get pedantic, the fact is that GCC can reorder the
+computations in many other ways provided that it doesn&rsquo;t alter the result
+of running the program.  However, because it doesn&rsquo;t alter the result
+of running the program, it is negligible, unless you are concerned
+with the values in certain variables at various times as seen by other
+processes.  In those cases, you should use <code>volatile</code> to prevent
+optimizations that would make them behave strangely.  See <a href="volatile.html"><code>volatile</code> Variables and Fields</a>.
+</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Array Parm Pointer (GNU C Language Manual)</title>
+
+<meta name="description" content="Array Parm Pointer (GNU C Language Manual)">
+<meta name="keywords" content="Array Parm Pointer (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arrays-as-Parameters.html" rel="up" title="Arrays as Parameters">
+<link href="Passing-Array-Args.html" rel="next" title="Passing Array Args">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection" id="Array-Parm-Pointer">
+<div class="header">
+<p>
+Next: <a href="Passing-Array-Args.html" accesskey="n" rel="next">Passing array arguments</a>, Up: <a href="Arrays-as-Parameters.html" accesskey="u" rel="up">Arrays as Parameters</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Array-parameters-are-pointers"></span><h4 class="subsubsection">22.1.4.1 Array parameters are pointers</h4>
+
+<p>Declaring a function parameter variable as an array really gives it a
+pointer type.  C does this because an expression with array type, if
+used as an argument in a function call, is converted automatically to
+a pointer (to the zeroth element of the array).  If you declare the
+corresponding parameter as an &ldquo;array&rdquo;, it will work correctly with
+the pointer value that really gets passed.
+</p>
+<p>This relates to the fact that C does not check array bounds in access
+to elements of the array (see <a href="Accessing-Array-Elements.html">Accessing Array Elements</a>).
+</p>
+<p>For example, in this function,
+</p>
+<div class="example">
+<pre class="example">void
+clobber4 (int array[20])
+{
+  array[4] = 0;
+}
+</pre></div>
+
+<p>the parameter <code>array</code>&rsquo;s real type is <code>int *</code>; the specified
+length, 20, has no effect on the program.  You can leave out the length
+and write this:
+</p>
+<div class="example">
+<pre class="example">void
+clobber4 (int array[])
+{
+  array[4] = 0;
+}
+</pre></div>
+
+<p>or write the parameter declaration explicitly as a pointer:
+</p>
+<div class="example">
+<pre class="example">void
+clobber4 (int *array)
+{
+  array[4] = 0;
+}
+</pre></div>
+
+<p>They are all equivalent.
+</p>
+</div>
+
+
+
+</body>
+</html>

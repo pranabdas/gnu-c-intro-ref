@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Arithmetic (GNU C Language Manual)</title>
+
+<meta name="description" content="Arithmetic (GNU C Language Manual)">
+<meta name="keywords" content="Arithmetic (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Assignment-Expressions.html" rel="next" title="Assignment Expressions">
+<link href="Lexical-Syntax.html" rel="prev" title="Lexical Syntax">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter" id="Arithmetic">
+<div class="header">
+<p>
+Next: <a href="Assignment-Expressions.html" accesskey="n" rel="next">Assignment Expressions</a>, Previous: <a href="Lexical-Syntax.html" accesskey="p" rel="prev">Lexical Syntax</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Arithmetic-1"></span><h2 class="chapter">6 Arithmetic</h2>
+<span id="index-arithmetic-operators"></span>
+<span id="index-operators_002c-arithmetic"></span>
+
+
+<p>Arithmetic operators in C attempt to be as similar as possible to the
+abstract arithmetic operations, but it is impossible to do this
+perfectly.  Numbers in a computer have a finite range of possible
+values, and non-integer values have a limit on their possible
+accuracy.  Nonetheless, except when results are out of range, you will
+encounter no surprises in using &lsquo;<samp>+</samp>&rsquo; for addition, &lsquo;<samp>-</samp>&rsquo; for
+subtraction, and &lsquo;<samp>*</samp>&rsquo; for multiplication.
+</p>
+<p>Each C operator has a <em>precedence</em>, which is its rank in the
+grammatical order of the various operators.  The operators with the
+highest precedence grab adjoining operands first; these expressions
+then become operands for operators of lower precedence.  We give some
+information about precedence of operators in this chapter where we
+describe the operators; for the full explanation, see <a href="Binary-Operator-Grammar.html">Binary Operator Grammar</a>.
+</p>
+<p>The arithmetic operators always <em>promote</em> their operands before
+operating on them.  This means converting narrow integer data types to
+a wider data type (see <a href="Operand-Promotions.html">Operand Promotions</a>).  If you are just
+learning C, don&rsquo;t worry about this yet.
+</p>
+<p>Given two operands that have different types, most arithmetic
+operations convert them both to their <em>common type</em>.  For
+instance, if one is <code>int</code> and the other is <code>double</code>, the
+common type is <code>double</code>.  (That&rsquo;s because <code>double</code> can
+represent all the values that an <code>int</code> can hold, but not vice
+versa.)  For the full details, see <a href="Common-Type.html">Common Type</a>.
+</p>
+
+<ul class="section-toc">
+<li><a href="Basic-Arithmetic.html" accesskey="1">Basic Arithmetic</a></li>
+<li><a href="Integer-Arithmetic.html" accesskey="2">Integer Arithmetic</a></li>
+<li><a href="Integer-Overflow.html" accesskey="3">Integer Overflow</a></li>
+<li><a href="Mixed-Mode.html" accesskey="4">Mixed-Mode Arithmetic</a></li>
+<li><a href="Division-and-Remainder.html" accesskey="5">Division and Remainder</a></li>
+<li><a href="Numeric-Comparisons.html" accesskey="6">Numeric Comparisons</a></li>
+<li><a href="Shift-Operations.html" accesskey="7">Shift Operations</a></li>
+<li><a href="Bitwise-Operations.html" accesskey="8">Bitwise Operations</a></li>
+</ul>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Assignment-Expressions.html">Assignment Expressions</a>, Previous: <a href="Lexical-Syntax.html">Lexical Syntax</a>, Up: <a href="index.html">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

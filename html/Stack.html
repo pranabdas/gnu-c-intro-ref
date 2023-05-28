@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Stack (GNU C Language Manual)</title>
+
+<meta name="description" content="Stack (GNU C Language Manual)">
+<meta name="keywords" content="Stack (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="The-First-Example.html" rel="up" title="The First Example">
+<link href="Iterative-Fibonacci.html" rel="next" title="Iterative Fibonacci">
+<link href="Recursive-Fibonacci.html" rel="prev" title="Recursive Fibonacci">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Stack">
+<div class="header">
+<p>
+Next: <a href="Iterative-Fibonacci.html" accesskey="n" rel="next">Example: Iterative Fibonacci</a>, Previous: <a href="Recursive-Fibonacci.html" accesskey="p" rel="prev">Example: Recursive Fibonacci</a>, Up: <a href="The-First-Example.html" accesskey="u" rel="up">The First Example</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="The-Stack_002c-And-Stack-Overflow"></span><h3 class="section">1.2 The Stack, And Stack Overflow</h3>
+<span id="index-stack"></span>
+<span id="index-stack-frame"></span>
+<span id="index-stack-overflow"></span>
+<span id="index-recursion_002c-drawbacks-of"></span>
+
+<span id="index-stack-frame-1"></span>
+<p>Recursion has a drawback: there are limits to how many nested levels of
+function calls a program can make.  In C, each function call allocates a block
+of memory which it uses until the call returns.  C allocates these
+blocks consecutively within a large area of memory known as the
+<em>stack</em>, so we refer to the blocks as <em>stack frames</em>.
+</p>
+<p>The size of the stack is limited; if the program tries to use too
+much, that causes the program to fail because the stack is full.  This
+is called <em>stack overflow</em>.
+</p>
+<span id="index-crash"></span>
+<span id="index-segmentation-fault"></span>
+<p>Stack overflow on GNU/Linux typically manifests itself as the
+<em>signal</em> named <code>SIGSEGV</code>, also known as a &ldquo;segmentation
+fault.&rdquo;  By default, this signal terminates the program immediately,
+rather than letting the program try to recover, or reach an expected
+ending point.  (We commonly say in this case that the program
+&ldquo;crashes&rdquo;).  See <a href="Signals.html">Signals</a>.
+</p>
+<p>It is inconvenient to observe a crash by passing too large
+an argument to recursive Fibonacci, because the program would run a
+long time before it crashes.  This algorithm is simple but
+ridiculously slow: in calculating <code>fib (<var>n</var>)</code>, the number of
+(recursive) calls <code>fib (1)</code> or <code>fib (2)</code> that it makes equals
+the final result.
+</p>
+<p>However, you can observe stack overflow very quickly if you use
+this function instead:
+</p>
+<div class="example">
+<pre class="example">int
+fill_stack (int n)
+{
+  if (n &lt;= 1)  /* <span class="roman">This limits the depth of recursion.</span>  */
+    return 1;
+  else
+    return fill_stack (n - 1);
+}
+</pre></div>
+
+<p>Under gNewSense GNU/Linux on the Lemote Yeeloong, without optimization
+and using the default configuration, an experiment showed there is
+enough stack space to do 261906 nested calls to that function.  One
+more, and the stack overflows and the program crashes.  On another
+platform, with a different configuration, or with a different
+function, the limit might be bigger or smaller.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Iterative-Fibonacci.html">Example: Iterative Fibonacci</a>, Previous: <a href="Recursive-Fibonacci.html">Example: Recursive Fibonacci</a>, Up: <a href="The-First-Example.html">The First Example</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

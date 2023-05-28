@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Function Body (GNU C Language Manual)</title>
+
+<meta name="description" content="Function Body (GNU C Language Manual)">
+<meta name="keywords" content="Function Body (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Recursive-Fibonacci.html" rel="up" title="Recursive Fibonacci">
+<link href="Function-Header.html" rel="prev" title="Function Header">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Function-Body">
+<div class="header">
+<p>
+Previous: <a href="Function-Header.html" accesskey="p" rel="prev">Function Header</a>, Up: <a href="Recursive-Fibonacci.html" accesskey="u" rel="up">Example: Recursive Fibonacci</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Function-Body-1"></span><h4 class="subsection">1.1.2 Function Body</h4>
+<span id="index-function-body"></span>
+<span id="index-recursion"></span>
+
+<p>The rest of the function definition is called the <em>function body</em>.
+Like every function body, this one starts with &lsquo;<samp>{</samp>&rsquo;, ends with
+&lsquo;<samp>}</samp>&rsquo;, and contains zero or more <em>statements</em> and
+<em>declarations</em>.  Statements specify actions to take, whereas
+declarations define names of variables, functions, and so on.  Each
+statement and each declaration ends with a semicolon (&lsquo;<samp>;</samp>&rsquo;).
+</p>
+<p>Statements and declarations often contain <em>expressions</em>; an
+expression is a construct whose execution produces a <em>value</em> of
+some data type, but may also take actions through &ldquo;side effects&rdquo;
+that alter subsequent execution.  A statement, by contrast, does not
+have a value; it affects further execution of the program only through
+the actions it takes.
+</p>
+<p>This function body contains no declarations, and just one statement,
+but that one is a complex statement in that it contains nested
+statements.  This function uses two kinds of statements:
+</p>
+<dl compact="compact">
+<dt><span><code>return</code></span></dt>
+<dd><p>The <code>return</code> statement makes the function return immediately.
+It looks like this:
+</p>
+<div class="example">
+<pre class="example">return <var>value</var>;
+</pre></div>
+
+<p>Its meaning is to compute the expression <var>value</var> and exit the
+function, making it return whatever value that expression produced.
+For instance,
+</p>
+<div class="example">
+<pre class="example">return 1;
+</pre></div>
+
+<p>returns the integer 1 from the function, and
+</p>
+<div class="example">
+<pre class="example">return fib (n - 1) + fib (n - 2);
+</pre></div>
+
+<p>returns a value computed by performing two function calls
+as specified and adding their results.
+</p>
+</dd>
+<dt><span><code><code>if</code>&hellip;<code>else</code></code></span></dt>
+<dd><p>The <code>if</code>&hellip;<code>else</code> statement is a <em>conditional</em>.
+Each time it executes, it chooses one of its two substatements to execute
+and ignores the other.  It looks like this:
+</p>
+<div class="example">
+<pre class="example">if (<var>condition</var>)
+  <var>if-true-statement</var>
+else
+  <var>if-false-statement</var>
+</pre></div>
+
+<p>Its meaning is to compute the expression <var>condition</var> and, if it&rsquo;s
+&ldquo;true,&rdquo; execute <var>if-true-statement</var>.  Otherwise, execute
+<var>if-false-statement</var>.  See <a href="if_002delse-Statement.html"><code>if-else</code> Statement</a>.
+</p>
+<p>Inside the <code>if</code>&hellip;<code>else</code> statement, <var>condition</var> is
+simply an expression.  It&rsquo;s considered &ldquo;true&rdquo; if its value is
+nonzero.  (A comparison operation, such as <code>n &lt;= 2</code>, produces the
+value 1 if it&rsquo;s &ldquo;true&rdquo; and 0 if it&rsquo;s &ldquo;false.&rdquo;  See <a href="Numeric-Comparisons.html">Numeric Comparisons</a>.)  Thus,
+</p>
+<div class="example">
+<pre class="example">if (n &lt;= 2)
+  return 1;
+else
+  return fib (n - 1) + fib (n - 2);
+</pre></div>
+
+<p>first tests whether the value of <code>n</code> is less than or equal to 2.
+If so, the expression <code>n &lt;= 2</code> has the value 1.  So execution
+continues with the statement
+</p>
+<div class="example">
+<pre class="example">return 1;
+</pre></div>
+
+<p>Otherwise, execution continues with this statement:
+</p>
+<div class="example">
+<pre class="example">return fib (n - 1) + fib (n - 2);
+</pre></div>
+
+<p>Each of these statements ends the execution of the function and
+provides a value for it to return.  See <a href="return-Statement.html"><code>return</code> Statement</a>.
+</p></dd>
+</dl>
+
+<p>Calculating <code>fib</code> using ordinary integers in C works only for
+<var>n</var> &lt; 47, because the value of <code>fib (47)</code> is too large to fit
+in type <code>int</code>.  The addition operation that tries to add
+<code>fib (46)</code> and <code>fib (45)</code> cannot deliver the correct result.
+This occurrence is called <em>integer overflow</em>.
+</p>
+<p>Overflow can manifest itself in various ways, but one thing that can&rsquo;t
+possibly happen is to produce the correct value, since that can&rsquo;t fit
+in the space for the value.  See <a href="Integer-Overflow.html">Integer Overflow</a>.
+</p>
+<p>See <a href="Functions.html">Functions</a>, for a full explanation about functions.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Function-Header.html">Function Header</a>, Up: <a href="Recursive-Fibonacci.html">Example: Recursive Fibonacci</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

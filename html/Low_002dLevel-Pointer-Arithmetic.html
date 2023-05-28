@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Low-Level Pointer Arithmetic (GNU C Language Manual)</title>
+
+<meta name="description" content="Low-Level Pointer Arithmetic (GNU C Language Manual)">
+<meta name="keywords" content="Low-Level Pointer Arithmetic (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Pointers.html" rel="up" title="Pointers">
+<link href="Pointer-Increment_002fDecrement.html" rel="next" title="Pointer Increment/Decrement">
+<link href="Pointers-and-Arrays.html" rel="prev" title="Pointers and Arrays">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Low_002dLevel-Pointer-Arithmetic">
+<div class="header">
+<p>
+Next: <a href="Pointer-Increment_002fDecrement.html" accesskey="n" rel="next">Pointer Increment and Decrement</a>, Previous: <a href="Pointers-and-Arrays.html" accesskey="p" rel="prev">Pointers and Arrays</a>, Up: <a href="Pointers.html" accesskey="u" rel="up">Pointers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Pointer-Arithmetic-at-Low_002dLevel"></span><h3 class="section">14.12 Pointer Arithmetic at Low-Level</h3>
+<span id="index-pointer-arithmetic_002c-low_002dlevel"></span>
+<span id="index-low-level-pointer-arithmetic"></span>
+
+<p>The behavior of pointer arithmetic is theoretically defined only when
+the pointer values all point within one object allocated in memory.
+But the addition and subtraction operators can&rsquo;t tell whether the
+pointer values are all within one object.  They don&rsquo;t know where
+objects start and end.  So what do they really do?
+</p>
+<p>Adding pointer <var>p</var> to integer <var>i</var> treats <var>p</var> as a memory
+address, which is in fact an integer&mdash;call it <var>pint</var>.  It treats
+<var>i</var> as a number of elements of the type that <var>p</var> points to.
+These elements&rsquo; sizes add up to <code><var>i</var> * sizeof (*<var>p</var>)</code>.
+So the sum, as an integer, is <code><var>pint</var> + <var>i</var> * sizeof
+(*<var>p</var>)</code>.  This value is reinterpreted as a pointer of the same
+type as <var>p</var>.
+</p>
+<p>If the starting pointer value <var>p</var> and the result do not point at
+parts of the same object, the operation is not officially legitimate,
+and C code is not &ldquo;supposed&rdquo; to do it.  But you can do it anyway,
+and it gives precisely the results described by the procedure above.
+In some special situations it can do something useful, but non-wizards
+should avoid it.
+</p>
+<p>Here&rsquo;s a function to offset a pointer value <em>as if</em> it pointed to
+an object of any given size, by explicitly performing that calculation:
+</p>
+<div class="example">
+<pre class="example">#include &lt;stdint.h&gt;
+
+void *
+ptr_add (void *p, int i, int objsize)
+{
+  intptr_t p_address = (long) p;
+  intptr_t totalsize = i * objsize;
+  intptr_t new_address = p_address + totalsize;
+  return (void *) new_address;
+}
+</pre></div>
+
+<p><span id="index-intptr_005ft"></span>
+This does the same job as <code><var>p</var> + <var>i</var></code> with the proper
+pointer type for <var>p</var>.  It uses the type <code>intptr_t</code>, which is
+defined in the header file <samp>stdint.h</samp>.  (In practice, <code>long
+long</code> would always work, but it is cleaner to use <code>intptr_t</code>.)
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Pointer-Increment_002fDecrement.html">Pointer Increment and Decrement</a>, Previous: <a href="Pointers-and-Arrays.html">Pointers and Arrays</a>, Up: <a href="Pointers.html">Pointers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

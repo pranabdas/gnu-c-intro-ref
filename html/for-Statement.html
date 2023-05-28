@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>for Statement (GNU C Language Manual)</title>
+
+<meta name="description" content="for Statement (GNU C Language Manual)">
+<meta name="keywords" content="for Statement (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Loop-Statements.html" rel="up" title="Loop Statements">
+<link href="Example-of-for.html" rel="next" title="Example of for">
+<link href="break-Statement.html" rel="prev" title="break Statement">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="for-Statement">
+<div class="header">
+<p>
+Next: <a href="Example-of-for.html" accesskey="n" rel="next">Example of <code>for</code></a>, Previous: <a href="break-Statement.html" accesskey="p" rel="prev"><code>break</code> Statement</a>, Up: <a href="Loop-Statements.html" accesskey="u" rel="up">Loop Statements</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="for-Statement-1"></span><h4 class="subsection">19.6.4 <code>for</code> Statement</h4>
+<span id="index-for-statement"></span>
+<span id="index-statement_002c-for"></span>
+<span id="index-for"></span>
+
+<p>A <code>for</code> statement uses three expressions written inside a
+parenthetical group to define the repetition of the loop.  The first
+expression says how to prepare to start the loop.  The second says how
+to test, before each iteration, whether to continue looping.  The
+third says how to advance, at the end of an iteration, for the next
+iteration.  All together, it looks like this:
+</p>
+<div class="example">
+<pre class="example">for (<var>start</var>; <var>continue-test</var>; <var>advance</var>)
+  <var>body</var>
+</pre></div>
+
+<p>The first thing the <code>for</code> statement does is compute <var>start</var>.
+The next thing it does is compute the expression <var>continue-test</var>.
+If that expression is false (zero), the <code>for</code> statement finishes
+immediately, so <var>body</var> is executed zero times.
+</p>
+<p>However, if <var>continue-test</var> is true (nonzero), the <code>for</code>
+statement executes <var>body</var>, then <var>advance</var>.  Then it loops back
+to the not-quite-top to test <var>continue-test</var> again.  But it does
+not compute <var>start</var> again.
+</p>
+</div>
+
+
+
+</body>
+</html>

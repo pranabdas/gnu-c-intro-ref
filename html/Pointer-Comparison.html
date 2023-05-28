@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Pointer Comparison (GNU C Language Manual)</title>
+
+<meta name="description" content="Pointer Comparison (GNU C Language Manual)">
+<meta name="keywords" content="Pointer Comparison (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Pointers.html" rel="up" title="Pointers">
+<link href="Pointer-Arithmetic.html" rel="next" title="Pointer Arithmetic">
+<link href="Void-Pointers.html" rel="prev" title="Void Pointers">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Pointer-Comparison">
+<div class="header">
+<p>
+Next: <a href="Pointer-Arithmetic.html" accesskey="n" rel="next">Pointer Arithmetic</a>, Previous: <a href="Void-Pointers.html" accesskey="p" rel="prev">Void Pointers</a>, Up: <a href="Pointers.html" accesskey="u" rel="up">Pointers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Pointer-Comparison-1"></span><h3 class="section">14.9 Pointer Comparison</h3>
+<span id="index-pointer-comparison"></span>
+<span id="index-comparison_002c-pointer"></span>
+
+<p>Two pointer values are equal if they point to the same location, or if
+they are both null.  You can test for this with <code>==</code> and
+<code>!=</code>.  Here&rsquo;s a trivial example:
+</p>
+<div class="example">
+<pre class="example">{
+  int i;
+  int *p, *q;
+
+  p = &amp;i;
+  q = &amp;i;
+  if (p == q)
+    printf (&quot;This will be printed.\n&quot;);
+  if (p != q)
+    printf (&quot;This won't be printed.\n&quot;);
+}
+</pre></div>
+
+<p>Ordering comparisons such as <code>&gt;</code> and <code>&gt;=</code> operate on
+pointers by converting them to unsigned integers.  The C standard says
+the two pointers must point within the same object in memory, but on
+GNU/Linux systems these operations simply compare the numeric values
+of the pointers.
+</p>
+<p>The pointer values to be compared should in principle have the same type, but
+they are allowed to differ in limited cases.  First of all, if the two
+pointers&rsquo; target types are nearly compatible (see <a href="Compatible-Types.html">Compatible Types</a>), the comparison is allowed.
+</p>
+<p>If one of the operands is <code>void *</code> (see <a href="Void-Pointers.html">Void Pointers</a>) and
+the other is another pointer type, the comparison operator converts
+the <code>void *</code> pointer to the other type so as to compare them.
+(In standard C, this is not allowed if the other type is a function
+pointer type, but it works in GNU C.)
+</p>
+<p>Comparison operators also allow comparing the integer 0 with a pointer
+value.  This works by converting 0 to a null pointer of the same type
+as the other operand.
+</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Combining Variable Declarations (GNU C Language Manual)</title>
+
+<meta name="description" content="Combining Variable Declarations (GNU C Language Manual)">
+<meta name="keywords" content="Combining Variable Declarations (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Variable-Declarations.html" rel="up" title="Variable Declarations">
+<link href="Declaring-Arrays-and-Pointers.html" rel="prev" title="Declaring Arrays and Pointers">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Combining-Variable-Declarations">
+<div class="header">
+<p>
+Previous: <a href="Declaring-Arrays-and-Pointers.html" accesskey="p" rel="prev">Declaring Arrays and Pointers</a>, Up: <a href="Variable-Declarations.html" accesskey="u" rel="up">Variable Declarations</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Combining-Variable-Declarations-1"></span><h4 class="subsection">20.1.2 Combining Variable Declarations</h4>
+<span id="index-combining-variable-declarations"></span>
+<span id="index-variable-declarations_002c-combining"></span>
+<span id="index-declarations_002c-combining"></span>
+
+<p>When multiple declarations have the same <var>keywords</var> and
+<var>basetype</var>, you can combine them using commas.  Thus,
+</p>
+<div class="example">
+<pre class="example"><var>keywords</var> <var>basetype</var>
+   <var>decorated-variable-1</var> <span class="roman">[</span>= <var>init1</var><span class="roman">]</span>,
+   <var>decorated-variable-2</var> <span class="roman">[</span>= <var>init2</var><span class="roman">]</span>;
+</pre></div>
+
+<p>is equivalent to
+</p>
+<div class="example">
+<pre class="example"><var>keywords</var> <var>basetype</var>
+   <var>decorated-variable-1</var> <span class="roman">[</span>= <var>init1</var><span class="roman">]</span>;
+<var>keywords</var> <var>basetype</var>
+   <var>decorated-variable-2</var> <span class="roman">[</span>= <var>init2</var><span class="roman">]</span>;
+</pre></div>
+
+<p>Here are some simple examples:
+</p>
+<div class="example">
+<pre class="example">int a, b;
+int a = 1, b = 2;
+int a, *p, array[5];
+int a = 0, *p = &amp;a, array[5] = {1, 2};
+</pre></div>
+
+<p>In the last two examples, <code>a</code> is an <code>int</code>, <code>p</code> is a
+pointer to <code>int</code>, and <code>array</code> is an array of 5 <code>int</code>s.
+Since the initializer for <code>array</code> specifies only two elements,
+the other three elements are initialized to zero.
+</p>
+</div>
+
+
+
+</body>
+</html>

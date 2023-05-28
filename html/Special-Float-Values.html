@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Special Float Values (GNU C Language Manual)</title>
+
+<meta name="description" content="Special Float Values (GNU C Language Manual)">
+<meta name="keywords" content="Special Float Values (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Floating-Point-in-Depth.html" rel="up" title="Floating Point in Depth">
+<link href="Invalid-Optimizations.html" rel="next" title="Invalid Optimizations">
+<link href="Floating-Type-Specs.html" rel="prev" title="Floating Type Specs">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Special-Float-Values">
+<div class="header">
+<p>
+Next: <a href="Invalid-Optimizations.html" accesskey="n" rel="next">Invalid Optimizations</a>, Previous: <a href="Floating-Type-Specs.html" accesskey="p" rel="prev">Floating-Point Type Specifications</a>, Up: <a href="Floating-Point-in-Depth.html" accesskey="u" rel="up">Floating Point in Depth</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Special-Floating_002dPoint-Values"></span><h3 class="section">28.3 Special Floating-Point Values</h3>
+<span id="index-special-floating_002dpoint-values"></span>
+<span id="index-floating_002dpoint-values_002c-special"></span>
+
+<p>IEEE floating point provides for special values that are not ordinary
+numbers.
+</p>
+<dl compact="compact">
+<dt><span>infinities</span></dt>
+<dd><p><code>+Infinity</code> and <code>-Infinity</code> are two different infinite
+values, one positive and one negative.  These result from
+operations such as <code>1 / 0</code>, <code>Infinity + Infinity</code>,
+<code>Infinity * Infinity</code>, and <code>Infinity + <var>finite</var></code>, and also
+from a result that is finite, but larger than the most positive possible
+value or smaller than the most negative possible value.
+</p>
+<p>See <a href="Handling-Infinity.html">Handling Infinity</a>, for more about working with infinities.
+</p>
+</dd>
+<dt id='index-QNaN'><span>NaNs (not a number)<a href='#index-QNaN' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-SNaN"></span>
+<p>There are two special values, called Not-a-Number (NaN): a quiet
+NaN (QNaN), and a signaling NaN (SNaN).
+</p>
+<p>A QNaN is produced by operations for which the value is undefined
+in real arithmetic, such as <code>0 / 0</code>, <code>sqrt (-1)</code>,
+<code>Infinity - Infinity</code>, and any basic operation in which an
+operand is a QNaN.
+</p>
+<p>The signaling NaN is intended for initializing
+otherwise-unassigned storage, and the goal is that unlike a
+QNaN, an SNaN <em>does</em> cause an interrupt that can be caught
+by a software handler, diagnosed, and reported.  In practice,
+little use has been made of signaling NaNs, because the most
+common CPUs in desktop and portable computers fail to implement
+the full IEEE 754 Standard, and supply only one kind of NaN, the
+quiet one.  Also, programming-language standards have taken
+decades to catch up to the IEEE 754 standard, and implementations
+of those language standards make an additional delay before
+programmers become willing to use these features.
+</p>
+<p>To enable support for signaling NaNs, use the GCC command-line option
+<samp>-fsignaling-nans</samp>, but this is an experimental feature and may
+not work as expected in every situation.
+</p>
+<p>A NaN has a sign bit, but its value means nothing.
+</p>
+<p>See <a href="Handling-NaN.html">Handling NaN</a>, for more about working with NaNs.
+</p>
+</dd>
+<dt id='index-subnormal-numbers'><span>subnormal numbers<a href='#index-subnormal-numbers' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-underflow_002c-floating"></span>
+<span id="index-floating-underflow"></span>
+<span id="subnormal-numbers"></span><p>It can happen that a computed floating-point value is too small to
+represent, such as when two tiny numbers are multiplied.  The result
+is then said to <em>underflow</em>.  The traditional behavior before
+the IEEE 754 Standard was to use zero as the result, and possibly to report
+the underflow in some sort of program output.
+</p>
+<p>The IEEE 754 Standard is vague about whether rounding happens
+before detection of floating underflow and overflow, or after, and CPU
+designers may choose either.
+</p>
+<p>However, the Standard does something unusual compared to earlier
+designs, and that is that when the result is smaller than the
+smallest <em>normalized</em> representable value (i.e., one in
+which the leading significand bit is <code>1</code>), the normalization
+requirement is relaxed, leading zero bits are permitted, and
+precision is gradually lost until there are no more bits in the
+significand.  That phenomenon is called <em>gradual underflow</em>,
+and it serves important numerical purposes, although it does
+reduce the precision of the final result.  Some floating-point
+designs allow you to choose at compile time, or even at
+run time, whether underflows are gradual, or are flushed abruptly
+to zero.  Numbers that have entered the region of gradual
+underflow are called <em>subnormal</em>.
+</p>
+<p>You can use the library functions <code>fesetround</code> and
+<code>fegetround</code> to set and get the rounding mode.  Rounding modes
+are defined (if supported by the platform) in <code>fenv.h</code> as:
+<code>FE_UPWARD</code> to round toward positive infinity; <code>FE_DOWNWARD</code>
+to round toward negative infinity; <code>FE_TOWARDZERO</code> to round
+toward zero; and <code>FE_TONEAREST</code> to round to the nearest
+representable value, the default mode.  It is best to use
+<code>FE_TONEAREST</code> except when there is a special need for some other
+mode.
+</p></dd>
+</dl>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Invalid-Optimizations.html">Invalid Optimizations</a>, Previous: <a href="Floating-Type-Specs.html">Floating-Point Type Specifications</a>, Up: <a href="Floating-Point-in-Depth.html">Floating Point in Depth</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

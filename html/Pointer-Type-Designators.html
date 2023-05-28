@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Pointer Type Designators (GNU C Language Manual)</title>
+
+<meta name="description" content="Pointer Type Designators (GNU C Language Manual)">
+<meta name="keywords" content="Pointer Type Designators (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Pointers.html" rel="up" title="Pointers">
+<link href="Pointer-Dereference.html" rel="next" title="Pointer Dereference">
+<link href="Pointer-Declarations.html" rel="prev" title="Pointer Declarations">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Pointer-Type-Designators">
+<div class="header">
+<p>
+Next: <a href="Pointer-Dereference.html" accesskey="n" rel="next">Dereferencing Pointers</a>, Previous: <a href="Pointer-Declarations.html" accesskey="p" rel="prev">Pointer-Variable Declarations</a>, Up: <a href="Pointers.html" accesskey="u" rel="up">Pointers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Pointer_002dType-Designators"></span><h3 class="section">14.4 Pointer-Type Designators</h3>
+
+<p>Every type in C has a designator; you make it by deleting the variable
+name and the semicolon from a declaration (see <a href="Type-Designators.html">Type Designators</a>).  Here are the designators for the pointer
+types of the example declarations in the previous section:
+</p>
+<div class="example">
+<pre class="example">int *           /* <span class="roman">Pointer to <code>int</code>.</span> */
+double *        /* <span class="roman">Pointer to <code>double</code>.</span> */
+double (*)[5]   /* <span class="roman">Pointer to <code>double[5]</code>.</span> */
+</pre></div>
+
+<p>Remember, to understand what type a designator stands for, imagine the
+corresponding variable declaration with a variable name in it, and
+figure out what type that variable would have.  Thus, the type
+designator <code>double (*)[5]</code> corresponds to the variable declaration
+<code>double (*<var>variable</var>)[5]</code>.  That deciares a pointer variable
+which, when dereferenced, gives an array of 5 <code>double</code>s.
+So the type designator means, &ldquo;pointer to an array of 5 <code>double</code>s.&rdquo;
+</p>
+</div>
+
+
+
+</body>
+</html>

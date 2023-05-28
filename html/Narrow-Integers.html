@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Narrow Integers (GNU C Language Manual)</title>
+
+<meta name="description" content="Narrow Integers (GNU C Language Manual)">
+<meta name="keywords" content="Narrow Integers (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Integer-Types.html" rel="up" title="Integer Types">
+<link href="Integer-Conversion.html" rel="next" title="Integer Conversion">
+<link href="Signed-and-Unsigned-Types.html" rel="prev" title="Signed and Unsigned Types">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Narrow-Integers">
+<div class="header">
+<p>
+Next: <a href="Integer-Conversion.html" accesskey="n" rel="next">Conversion among Integer Types</a>, Previous: <a href="Signed-and-Unsigned-Types.html" accesskey="p" rel="prev">Signed and Unsigned Types</a>, Up: <a href="Integer-Types.html" accesskey="u" rel="up">Integer Data Types</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Narrow-Integers-1"></span><h4 class="subsection">11.1.3 Narrow Integers</h4>
+
+<p>The types that are narrower than <code>int</code> are rarely used for
+ordinary variables&mdash;we declare them <code>int</code> instead.  This is
+because C converts those narrower types to <code>int</code> for any
+arithmetic.  There is literally no reason to declare a local variable
+<code>char</code>, for instance.
+</p>
+<p>In particular, if the value is really a character, you should declare
+the variable <code>int</code>.  Not <code>char</code>!  Using that narrow type can
+force the compiler to truncate values for conversion, which is a
+waste.  Furthermore, some functions return either a character value,
+or -1 for &ldquo;no character.&rdquo;  Using <code>int</code> makes it possible
+to distinguish -1 from a character by sign.
+</p>
+<p>The narrow integer types are useful as parts of other objects, such as
+arrays and structures.  Compare these array declarations, whose sizes
+on 32-bit processors are shown:
+</p>
+<div class="example">
+<pre class="example">signed char ac[1000];   /* <span class="roman">1000 bytes</span> */
+short as[1000];         /* <span class="roman">2000 bytes</span> */
+int ai[1000];           /* <span class="roman">4000 bytes</span> */
+long long all[1000];    /* <span class="roman">8000 bytes</span> */
+</pre></div>
+
+<p>In addition, character strings must be made up of <code>char</code>s,
+because that&rsquo;s what all the standard library string functions expect.
+Thus, array <code>ac</code> could be used as a character string, but the
+others could not be.
+</p>
+</div>
+
+
+
+</body>
+</html>

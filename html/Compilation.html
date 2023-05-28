@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Compilation (GNU C Language Manual)</title>
+
+<meta name="description" content="Compilation (GNU C Language Manual)">
+<meta name="keywords" content="Compilation (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="Directing-Compilation.html" rel="next" title="Directing Compilation">
+<link href="Floating-Point-in-Depth.html" rel="prev" title="Floating Point in Depth">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="chapter" id="Compilation">
+<div class="header">
+<p>
+Next: <a href="Directing-Compilation.html" accesskey="n" rel="next">Directing Compilation</a>, Previous: <a href="Floating-Point-in-Depth.html" accesskey="p" rel="prev">Floating Point in Depth</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Compilation-1"></span><h2 class="chapter">29 Compilation</h2>
+<span id="index-object-file"></span>
+<span id="index-compilation-module"></span>
+<span id="index-make-rules"></span>
+<span id="index-link"></span>
+
+<p>Early in the manual we explained how to compile a simple C program
+that consists of a single source file (see <a href="Compile-Example.html">Compiling the Example Program</a>).
+However, we handle only short programs that way.  A typical C program
+consists of many source files, each of which is usually a separate
+<em>compilation module</em>&mdash;meaning that it has to be compiled
+separately.  (The source files that are not separate compilation
+modules are those that are used via <code>#include</code>; see <a href="Header-Files.html">Header Files</a>.)
+</p>
+<p>To compile a multi-module program, you compile each of the program&rsquo;s
+compilation modules, making an <em>object file</em> for that module.  The
+last step is to <em>link</em> the many object files together into a
+single executable for the whole program.
+</p>
+<p>The full details of how to compile C programs (and other programs)
+with GCC are documented in xxxx.
+Here we give only a simple introduction.
+</p>
+<p>These commands compile two compilation modules, <samp>foo.c</samp> and
+<samp>bar.c</samp>, running the compiler for each module:
+</p>
+<div class="example">
+<pre class="example">gcc -c -O -g foo.c
+gcc -c -O -g bar.c
+</pre></div>
+
+<p>In these commands, <samp>-g</samp> says to generate debugging information,
+<samp>-O</samp> says to do some optimization, and <samp>-c</samp> says to put
+the compiled code for that module into a corresponding object file and
+go no further.  The object file for <samp>foo.c</samp> is automatically
+called <samp>foo.o</samp>, and so on.
+</p>
+<p>If you wish, you can specify the additional compilation options.  For
+instance, <samp>-Wformat -Wparenthesis -Wstrict-prototypes</samp> request
+additional warnings.
+</p>
+<span id="index-linking-object-files"></span>
+<p>After you compile all the program&rsquo;s modules, you link the object files
+into a combined executable, like this:
+</p>
+<div class="example">
+<pre class="example">gcc -o foo foo.o bar.o
+</pre></div>
+
+<p>In this command, <samp>-o foo</samp> species the file name for the
+executable file, and the other arguments are the object files to link.
+Always specify the executable file name in a command that generates
+one.
+</p>
+<p>One reason to divide a large program into multiple compilation modules
+is to control how each module can access the internals of the others.
+When a module declares a function or variable <code>extern</code>, other
+modules can access it.  The other functions and variables defined in a
+module can&rsquo;t be accessed from outside that module.
+</p>
+<p>The other reason for using multiple modules is so that changing one
+source file does not require recompiling all of them in order to try
+the modified program.  It is sufficient to recompile the source file
+that you changed, then link them all again.  Dividing a large program
+into many substantial modules in this way typically makes
+recompilation much faster.
+</p>
+<p>Normally we don&rsquo;t run any of these commands directly.  Instead we
+write a set of <em>make rules</em> for the program, then use the
+<code>make</code> program to recompile only the source files that need to
+be recompiled, by following those rules.  See <a data-manual="make" href="https://www.gnu.org/software/make/manual/html_node/index.html#Top">The GNU Make
+Manual</a> in <cite>The GNU Make Manual</cite>.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Directing-Compilation.html">Directing Compilation</a>, Previous: <a href="Floating-Point-in-Depth.html">Floating Point in Depth</a>, Up: <a href="index.html">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Character Constants (GNU C Language Manual)</title>
+
+<meta name="description" content="Character Constants (GNU C Language Manual)">
+<meta name="keywords" content="Character Constants (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Constants.html" rel="up" title="Constants">
+<link href="String-Constants.html" rel="next" title="String Constants">
+<link href="Invalid-Numbers.html" rel="prev" title="Invalid Numbers">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Character-Constants">
+<div class="header">
+<p>
+Next: <a href="String-Constants.html" accesskey="n" rel="next">String Constants</a>, Previous: <a href="Invalid-Numbers.html" accesskey="p" rel="prev">Invalid Numbers</a>, Up: <a href="Constants.html" accesskey="u" rel="up">Constants</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Character-Constants-1"></span><h3 class="section">12.6 Character Constants</h3>
+<span id="index-character-constants"></span>
+<span id="index-constants_002c-character"></span>
+<span id="index-escape-sequence"></span>
+
+<p>A <em>character constant</em> is written with single quotes, as in
+<code>'<var>c</var>'</code>.  In the simplest case, <var>c</var> is a single ASCII
+character that the constant should represent.  The constant has type
+<code>int</code>, and its value is the character code of that character.
+For instance, <code>'a'</code> represents the character code for the letter
+&lsquo;<samp>a</samp>&rsquo;: 97, that is.
+</p>
+<p>To put the &lsquo;<samp>'</samp>&rsquo; character (single quote) in the character
+constant, <em>escape</em> it with a backslash (&lsquo;<samp>\</samp>&rsquo;).  This character
+constant looks like <code>'\''</code>.  The backslash character here
+functions as an <em>escape character</em>, and such a sequence,
+starting with &lsquo;<samp>\</samp>&rsquo;, is called an <em>escape sequence</em>.
+</p>
+<p>To put the &lsquo;<samp>\</samp>&rsquo; character (backslash) in the character constant,
+escape it with &lsquo;<samp>\</samp>&rsquo; (another backslash).  This character
+constant looks like <code>'\\'</code>.
+</p>
+<span id="index-bell-character"></span>
+<span id="index-_005ca"></span>
+<span id="index-backspace"></span>
+<span id="index-_005cb"></span>
+<span id="index-tab-_0028ASCII-character_0029"></span>
+<span id="index-_005ct"></span>
+<span id="index-vertical-tab"></span>
+<span id="index-_005cv"></span>
+<span id="index-formfeed"></span>
+<span id="index-_005cf"></span>
+<span id="index-newline"></span>
+<span id="index-_005cn"></span>
+<span id="index-return-_0028ASCII-character_0029"></span>
+<span id="index-_005cr"></span>
+<span id="index-escape-_0028ASCII-character_0029"></span>
+<span id="index-_005ce"></span>
+<p>Here are all the escape sequences that represent specific
+characters in a character constant.  The numeric values shown are
+the corresponding ASCII character codes, as decimal numbers.
+</p>
+<div class="example">
+<pre class="example">'\a' &rArr; 7       /* <span class="roman">alarm, <kbd>CTRL-g</kbd></span> */
+'\b' &rArr; 8       /* <span class="roman">backspace, <tt class="key">BS</tt>, <kbd>CTRL-h</kbd></span> */
+'\t' &rArr; 9       /* <span class="roman">tab, <tt class="key">TAB</tt>, <kbd>CTRL-i</kbd></span> */
+'\n' &rArr; 10      /* <span class="roman">newline, <kbd>CTRL-j</kbd></span> */
+'\v' &rArr; 11      /* <span class="roman">vertical tab, <kbd>CTRL-k</kbd></span> */
+'\f' &rArr; 12      /* <span class="roman">formfeed, <kbd>CTRL-l</kbd></span> */
+'\r' &rArr; 13      /* <span class="roman">carriage return, <tt class="key">RET</tt>, <kbd>CTRL-m</kbd></span> */
+'\e' &rArr; 27      /* <span class="roman">escape character, <tt class="key">ESC</tt>, <kbd>CTRL-[</kbd></span> */
+'\\' &rArr; 92      /* <span class="roman">backslash character, <kbd>\</kbd></span> */
+'\'' &rArr; 39      /* <span class="roman">single quote character, <kbd>'</kbd></span> */
+'\&quot;' &rArr; 34      /* <span class="roman">double quote character, <kbd>&quot;</kbd></span> */
+'\?' &rArr; 63      /* <span class="roman">question mark, <kbd>?</kbd></span> */
+</pre></div>
+
+<p>&lsquo;<samp>\e</samp>&rsquo; is a GNU C extension; to stick to standard C, write
+&lsquo;<samp>\33</samp>&rsquo;.  (The number after &lsquo;<samp>backslash</samp>&rsquo; is octal.)  To specify
+a character constant using decimal, use a cast; for instance,
+<code>(unsigned char) 27</code>.
+</p>
+<p>You can also write octal and hex character codes as
+&lsquo;<samp>\<var>octalcode</var></samp>&rsquo; or &lsquo;<samp>\x<var>hexcode</var></samp>&rsquo;.  Decimal is not an
+option here, so octal codes do not need to start with &lsquo;<samp>0</samp>&rsquo;.
+</p>
+<p>The character constant&rsquo;s value has type <code>int</code>.  However, the
+character code is treated initially as a <code>char</code> value, which is
+then converted to <code>int</code>.  If the character code is greater than
+127 (<code>0177</code> in octal), the resulting <code>int</code> may be negative
+on a platform where the type <code>char</code> is 8 bits long and signed.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="String-Constants.html">String Constants</a>, Previous: <a href="Invalid-Numbers.html">Invalid Numbers</a>, Up: <a href="Constants.html">Constants</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

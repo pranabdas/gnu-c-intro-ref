@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Signals (GNU C Language Manual)</title>
+
+<meta name="description" content="Signals (GNU C Language Manual)">
+<meta name="keywords" content="Signals (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html" rel="up" title="Top">
+<link href="GNU-Free-Documentation-License.html" rel="next" title="GNU Free Documentation License">
+<link href="Attributes.html" rel="prev" title="Attributes">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="appendix" id="Signals">
+<div class="header">
+<p>
+Next: <a href="GNU-Free-Documentation-License.html" accesskey="n" rel="next">GNU Free Documentation License</a>, Previous: <a href="Attributes.html" accesskey="p" rel="prev">Attributes in Declarations</a>, Up: <a href="index.html" accesskey="u" rel="up">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Signals-1"></span><h2 class="appendix">Appendix E Signals</h2>
+<span id="index-signal"></span>
+<span id="index-handler-_0028for-signal_0029"></span>
+<span id="index-SIGSEGV"></span>
+<span id="index-SIGFPE"></span>
+<span id="index-SIGBUS"></span>
+
+<p>Some program operations bring about an error condition called a
+<em>signal</em>.  These signals terminate the program, by default.
+</p>
+<p>There are various different kinds of signals, each with a name.  We
+have seen several such error conditions through this manual:
+</p>
+<dl compact="compact">
+<dt><span><code>SIGSEGV</code></span></dt>
+<dd><p>This signal is generated when a program tries to read or write outside
+the memory that is allocated for it, or to write memory that can only
+be read.  The name is an abbreviation for &ldquo;segmentation violation&rdquo;.
+</p>
+</dd>
+<dt><span><code>SIGFPE</code></span></dt>
+<dd><p>This signal indicates a fatal arithmetic error.  The name is an
+abbreviation for &ldquo;floating-point exception&rdquo;, but covers all types of
+arithmetic errors, including division by zero and overflow.
+</p>
+</dd>
+<dt><span><code>SIGBUS</code></span></dt>
+<dd><p>This signal is generated when an invalid pointer is dereferenced,
+typically the result of dereferencing an uninitialized pointer.  It is
+similar to <code>SIGSEGV</code>, except that <code>SIGSEGV</code> indicates
+invalid access to valid memory, while <code>SIGBUS</code> indicates an
+attempt to access an invalid address.
+</p></dd>
+</dl>
+
+<p>These kinds of signal allow the program to specify a function as a
+<em>signal handler</em>.  When a signal has a handler, it doesn&rsquo;t
+terminate the program; instead it calls the handler.
+</p>
+<p>There are many other kinds of signal; here we list only those that
+come from run-time errors in C operations.  The rest have to do with
+the functioning of the operating system.  The GNU C Library Reference
+Manual gives more explanation about signals (see <a data-manual="libc" href="https://www.gnu.org/software/libc/manual/html_node/Program-Signal-Handling.html#Program-Signal-Handling">The GNU C Library</a> in <cite>The GNU C Library Reference
+Manual</cite>).
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="GNU-Free-Documentation-License.html">GNU Free Documentation License</a>, Previous: <a href="Attributes.html">Attributes in Declarations</a>, Up: <a href="index.html">GNU C Manual</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Recursive Fibonacci (GNU C Language Manual)</title>
+
+<meta name="description" content="Recursive Fibonacci (GNU C Language Manual)">
+<meta name="keywords" content="Recursive Fibonacci (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="The-First-Example.html" rel="up" title="The First Example">
+<link href="Stack.html" rel="next" title="Stack">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Recursive-Fibonacci">
+<div class="header">
+<p>
+Next: <a href="Stack.html" accesskey="n" rel="next">The Stack, And Stack Overflow</a>, Up: <a href="The-First-Example.html" accesskey="u" rel="up">The First Example</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Example_003a-Recursive-Fibonacci"></span><h3 class="section">1.1 Example: Recursive Fibonacci</h3>
+<span id="index-recursive-Fibonacci-function"></span>
+<span id="index-Fibonacci-function_002c-recursive"></span>
+
+<p>To introduce the most basic features of C, let&rsquo;s look at code for a
+simple mathematical function that does calculations on integers.  This
+function calculates the <var>n</var>th number in the Fibonacci series, in
+which each number is the sum of the previous two: 1, 1, 2, 3, 5, 8,
+13, 21, 34, 55, &hellip;.
+</p>
+<div class="example">
+<pre class="example">int
+fib (int n)
+{
+  if (n &lt;= 2)  /* <span class="roman">This avoids infinite recursion.</span>  */
+    return 1;
+  else
+    return fib (n - 1) + fib (n - 2);
+}
+</pre></div>
+
+<p>This very simple program illustrates several features of C:
+</p>
+<ul>
+<li> A function definition, whose first two lines constitute the function
+header.  See <a href="Function-Definitions.html">Function Definitions</a>.
+
+</li><li> A function parameter <code>n</code>, referred to as the variable <code>n</code>
+inside the function body.  See <a href="Function-Parameter-Variables.html">Function Parameter Variables</a>.
+A function definition uses parameters to refer to the argument
+values provided in a call to that function.
+
+</li><li> Arithmetic.  C programs add with &lsquo;<samp>+</samp>&rsquo; and subtract with
+&lsquo;<samp>-</samp>&rsquo;.  See <a href="Arithmetic.html">Arithmetic</a>.
+
+</li><li> Numeric comparisons.  The operator &lsquo;<samp>&lt;=</samp>&rsquo; tests for &ldquo;less than or
+equal.&rdquo;  See <a href="Numeric-Comparisons.html">Numeric Comparisons</a>.
+
+</li><li> Integer constants written in base 10.
+See <a href="Integer-Constants.html">Integer Constants</a>.
+
+</li><li> A function call.  The function call <code>fib (n - 1)</code> calls the
+function <code>fib</code>, passing as its argument the value <code>n - 1</code>.
+See <a href="Function-Calls.html">Function Calls</a>.
+
+</li><li> A comment, which starts with &lsquo;<samp>/*</samp>&rsquo; and ends with &lsquo;<samp>*/</samp>&rsquo;.  The
+comment has no effect on the execution of the program.  Its purpose is
+to provide explanations to people reading the source code.  Including
+comments in the code is tremendously important&mdash;they provide
+background information so others can understand the code more quickly.
+See <a href="Comments.html">Comments</a>.
+
+<p>In this manual, we present comment text in the variable-width typeface
+used for the text of the chapters, not in the fixed-width typeface
+used for the rest of the code.  That is to make comments easier to
+read.  This distinction of typeface does not exist in a real file of C
+source code.
+</p>
+</li><li> Two kinds of statements, the <code>return</code> statement and the
+<code>if</code>&hellip;<code>else</code> statement.  See <a href="Statements.html">Statements</a>.
+
+</li><li> Recursion.  The function <code>fib</code> calls itself; that is called a
+<em>recursive call</em>.  These are valid in C, and quite common.
+
+<p>The <code>fib</code> function would not be useful if it didn&rsquo;t return.
+Thus, recursive definitions, to be of any use, must avoid
+<em>infinite recursion</em>.
+</p>
+<p>This function definition prevents infinite recursion by specially
+handling the case where <code>n</code> is two or less.  Thus the maximum
+depth of recursive calls is less than <code>n</code>.
+</p></li></ul>
+
+
+<ul class="section-toc">
+<li><a href="Function-Header.html" accesskey="1">Function Header</a></li>
+<li><a href="Function-Body.html" accesskey="2">Function Body</a></li>
+</ul>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Stack.html">The Stack, And Stack Overflow</a>, Up: <a href="The-First-Example.html">The First Example</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

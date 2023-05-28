@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>break Statement (GNU C Language Manual)</title>
+
+<meta name="description" content="break Statement (GNU C Language Manual)">
+<meta name="keywords" content="break Statement (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Loop-Statements.html" rel="up" title="Loop Statements">
+<link href="for-Statement.html" rel="next" title="for Statement">
+<link href="do_002dwhile-Statement.html" rel="prev" title="do-while Statement">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="break-Statement">
+<div class="header">
+<p>
+Next: <a href="for-Statement.html" accesskey="n" rel="next"><code>for</code> Statement</a>, Previous: <a href="do_002dwhile-Statement.html" accesskey="p" rel="prev"><code>do-while</code> Statement</a>, Up: <a href="Loop-Statements.html" accesskey="u" rel="up">Loop Statements</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="break-Statement-1"></span><h4 class="subsection">19.6.3 <code>break</code> Statement</h4>
+<span id="index-break-statement"></span>
+<span id="index-statement_002c-break"></span>
+<span id="index-break"></span>
+
+<p>The <code>break</code> statement looks like &lsquo;<samp>break;</samp>&rsquo;.  Its effect is to
+exit immediately from the innermost loop construct or <code>switch</code>
+statement (see <a href="switch-Statement.html"><code>switch</code> Statement</a>).
+</p>
+<p>For example, this loop advances <code>p</code> until the next null
+character or newline.
+</p>
+<div class="example">
+<pre class="example">while (*p)
+  {
+    /* <span class="roman">End loop if we have reached a newline.</span>  */
+    if (*p == '\n')
+      break;
+    p++
+  }
+</pre></div>
+
+<p>When there are nested loops, the <code>break</code> statement exits from the
+innermost loop containing it.
+</p>
+<div class="example">
+<pre class="example">struct list_if_tuples
+{
+  struct list_if_tuples next;
+  int length;
+  data *contents;
+};
+
+void
+process_all_elements (struct list_if_tuples *list)
+{
+  while (list)
+    {
+      /* <span class="roman">Process all the elements in this node&rsquo;s vector,</span>
+         <span class="roman">stopping when we reach one that is null.</span>  */
+      for (i = 0; i &lt; list-&gt;length; i++
+        {
+          /* <span class="roman">Null element terminates this node&rsquo;s vector.</span>  */
+          if (list-&gt;contents[i] == NULL)
+            /* <span class="roman">Exit the <code>for</code> loop.</span>  */
+            break;
+          /* <span class="roman">Operate on the next element.</span>  */
+          process_element (list-&gt;contents[i]);
+        }
+
+      list = list-&gt;next;
+    }
+}
+</pre></div>
+
+<p>The only way in C to exit from an outer loop is with
+<code>goto</code> (see <a href="goto-Statement.html"><code>goto</code> Statement and Labels</a>).
+</p>
+</div>
+
+
+
+</body>
+</html>

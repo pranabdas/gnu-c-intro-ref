@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Arrays of Variable Length (GNU C Language Manual)</title>
+
+<meta name="description" content="Arrays of Variable Length (GNU C Language Manual)">
+<meta name="keywords" content="Arrays of Variable Length (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arrays.html" rel="up" title="Arrays">
+<link href="Constructing-Array-Values.html" rel="prev" title="Constructing Array Values">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Arrays-of-Variable-Length">
+<div class="header">
+<p>
+Previous: <a href="Constructing-Array-Values.html" accesskey="p" rel="prev">Constructing Array Values</a>, Up: <a href="Arrays.html" accesskey="u" rel="up">Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Arrays-of-Variable-Length-1"></span><h3 class="section">16.9 Arrays of Variable Length</h3>
+<span id="index-array-of-variable-length"></span>
+<span id="index-variable_002dlength-arrays"></span>
+
+<p>In GNU C, you can declare variable-length arrays like any other
+arrays, but with a length that is not a constant expression.  The
+storage is allocated at the point of declaration and deallocated when
+the block scope containing the declaration exits.  For example:
+</p>
+<div class="example">
+<pre class="example">#include &lt;stdio.h&gt;  /* <span class="roman">Defines <code>FILE</code>.</span> */
+#include &lt;string.h&gt; /* <span class="roman">Declares <code>str</code>.</span> */
+
+FILE *
+concat_fopen (char *s1, char *s2, char *mode)
+{
+  char str[strlen (s1) + strlen (s2) + 1];
+  strcpy (str, s1);
+  strcat (str, s2);
+  return fopen (str, mode);
+}
+</pre></div>
+
+<p>(This uses some standard library functions; see <a data-manual="libc" href="https://www.gnu.org/software/libc/manual/html_node/String-and-Array-Utilities.html#String-and-Array-Utilities">String and Array
+Utilities</a> in <cite>The GNU C Library Reference Manual</cite>.)
+</p>
+<p>The length of an array is computed once when the storage is allocated
+and is remembered for the scope of the array in case it is used in
+<code>sizeof</code>.
+</p>
+<p><strong>Warning:</strong> don&rsquo;t allocate a variable-length array if the size
+might be very large (more than 100,000), or in a recursive function,
+because that is likely to cause stack overflow.  Allocate the array
+dynamically instead (see <a href="Dynamic-Memory-Allocation.html">Dynamic Memory Allocation</a>).
+</p>
+<p>Jumping or breaking out of the scope of the array name deallocates the
+storage.  Jumping into the scope is not allowed; that gives an error
+message.
+</p>
+<p>You can also use variable-length arrays as arguments to functions:
+</p>
+<div class="example">
+<pre class="example">struct entry
+tester (int len, char data[len][len])
+{
+  <span class="roman">&hellip;</span>
+}
+</pre></div>
+
+<p>As usual, a function argument declared with an array type
+is really a pointer to an array that already exists.
+Calling the function does not allocate the array, so there&rsquo;s no
+particular danger of stack overflow in using this construct.
+</p>
+<p>To pass the array first and the length afterward, use a forward
+declaration in the function&rsquo;s parameter list (another GNU extension).
+For example,
+</p>
+<div class="example">
+<pre class="example">struct entry
+tester (int len; char data[len][len], int len)
+{
+  <span class="roman">&hellip;</span>
+}
+</pre></div>
+
+<p>The <code>int len</code> before the semicolon is a <em>parameter forward
+declaration</em>, and it serves the purpose of making the name <code>len</code>
+known when the declaration of <code>data</code> is parsed.
+</p>
+<p>You can write any number of such parameter forward declarations in the
+parameter list.  They can be separated by commas or semicolons, but
+the last one must end with a semicolon, which is followed by the
+&ldquo;real&rdquo; parameter declarations.  Each forward declaration must match
+a &ldquo;real&rdquo; declaration in parameter name and data type.  ISO C11 does
+not support parameter forward declarations.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Constructing-Array-Values.html">Constructing Array Values</a>, Up: <a href="Arrays.html">Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

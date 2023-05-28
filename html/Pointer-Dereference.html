@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Pointer Dereference (GNU C Language Manual)</title>
+
+<meta name="description" content="Pointer Dereference (GNU C Language Manual)">
+<meta name="keywords" content="Pointer Dereference (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Pointers.html" rel="up" title="Pointers">
+<link href="Null-Pointers.html" rel="next" title="Null Pointers">
+<link href="Pointer-Type-Designators.html" rel="prev" title="Pointer Type Designators">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Pointer-Dereference">
+<div class="header">
+<p>
+Next: <a href="Null-Pointers.html" accesskey="n" rel="next">Null Pointers</a>, Previous: <a href="Pointer-Type-Designators.html" accesskey="p" rel="prev">Pointer-Type Designators</a>, Up: <a href="Pointers.html" accesskey="u" rel="up">Pointers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Dereferencing-Pointers"></span><h3 class="section">14.5 Dereferencing Pointers</h3>
+<span id="index-dereferencing-pointers"></span>
+<span id="index-pointer-dereferencing"></span>
+
+<p>The main use of a pointer value is to <em>dereference it</em> (access the
+data it points at) with the unary &lsquo;<samp>*</samp>&rsquo; operator.  For instance,
+<code>*&amp;i</code> is the value at <code>i</code>&rsquo;s address&mdash;which is just
+<code>i</code>.  The two expressions are equivalent, provided <code>&amp;i</code> is
+valid.
+</p>
+<p>A pointer-dereference expression whose type is data (not a function)
+is an lvalue.
+</p>
+<p>Pointers become really useful when we store them somewhere and use
+them later.  Here&rsquo;s a simple example to illustrate the practice:
+</p>
+<div class="example">
+<pre class="example">{
+  int i;
+  int *ptr;
+
+  ptr = &amp;i;
+
+  i = 5;
+
+  <span class="roman">&hellip;</span>
+
+  return *ptr;   /* <span class="roman">Returns 5, fetched from <code>i</code>.</span>  */
+}
+</pre></div>
+
+<p>This shows how to declare the variable <code>ptr</code> as type
+<code>int *</code> (pointer to <code>int</code>), store a pointer value into it
+(pointing at <code>i</code>), and use it later to get the value of the
+object it points at (the value in <code>i</code>).
+</p>
+<p>If anyone can provide a useful example which is this basic,
+I would be grateful.
+</p>
+</div>
+
+
+
+</body>
+</html>

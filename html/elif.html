@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>elif (GNU C Language Manual)</title>
+
+<meta name="description" content="elif (GNU C Language Manual)">
+<meta name="keywords" content="elif (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Conditional-Syntax.html" rel="up" title="Conditional Syntax">
+<link href="else.html" rel="prev" title="else">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection" id="elif">
+<div class="header">
+<p>
+Previous: <a href="else.html" accesskey="p" rel="prev">The <code>#else</code> directive</a>, Up: <a href="Conditional-Syntax.html" accesskey="u" rel="up">Syntax of Preprocessing Conditionals</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="The-_0023elif-directive"></span><h4 class="subsubsection">26.6.2.5 The <code>#elif</code> directive</h4>
+
+<span id="index-_0023elif"></span>
+<p>One common case of nested conditionals is used to check for more than two
+possible alternatives.  For example, you might have
+</p>
+<div class="example">
+<pre class="example">#if X == 1
+/* <span class="roman">&hellip;</span> */
+#else /* X != 1 */
+#if X == 2
+/* <span class="roman">&hellip;</span> */
+#else /* X != 2 */
+/* <span class="roman">&hellip;</span> */
+#endif /* X != 2 */
+#endif /* X != 1 */
+</pre></div>
+
+<p>Another conditional directive, <code>#elif</code>, allows this to be
+abbreviated as follows:
+</p>
+<div class="example">
+<pre class="example">#if X == 1
+/* <span class="roman">&hellip;</span> */
+#elif X == 2
+/* <span class="roman">&hellip;</span> */
+#else /* X != 2 and X != 1*/
+/* <span class="roman">&hellip;</span> */
+#endif /* X != 2 and X != 1*/
+</pre></div>
+
+<p><code>#elif</code> stands for &ldquo;else if&rdquo;.  Like <code>#else</code>, it goes in the
+middle of a conditional group and subdivides it; it does not require a
+matching <code>#endif</code> of its own.  Like <code>#if</code>, the <code>#elif</code>
+directive includes an expression to be tested.  The text following the
+<code>#elif</code> is processed only if the original <code>#if</code>-condition
+failed and the <code>#elif</code> condition succeeds.
+</p>
+<p>More than one <code>#elif</code> can go in the same conditional group.  Then
+the text after each <code>#elif</code> is processed only if the <code>#elif</code>
+condition succeeds after the original <code>#if</code> and all previous
+<code>#elif</code> directives within it have failed.
+</p>
+<p><code>#else</code> is allowed after any number of <code>#elif</code> directives, but
+<code>#elif</code> may not follow <code>#else</code>.
+</p>
+</div>
+
+
+
+</body>
+</html>

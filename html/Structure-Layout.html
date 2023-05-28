@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Structure Layout (GNU C Language Manual)</title>
+
+<meta name="description" content="Structure Layout (GNU C Language Manual)">
+<meta name="keywords" content="Structure Layout (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Structures.html" rel="up" title="Structures">
+<link href="Packed-Structures.html" rel="next" title="Packed Structures">
+<link href="Field-Offset.html" rel="prev" title="Field Offset">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Structure-Layout">
+<div class="header">
+<p>
+Next: <a href="Packed-Structures.html" accesskey="n" rel="next">Packed Structures</a>, Previous: <a href="Field-Offset.html" accesskey="p" rel="prev">Field Offset</a>, Up: <a href="Structures.html" accesskey="u" rel="up">Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Structure-Layout-1"></span><h3 class="section">15.5 Structure Layout</h3>
+<span id="index-structure-layout"></span>
+<span id="index-layout-of-structures"></span>
+
+<p>The rest of this chapter covers advanced topics about structures.  If
+you are just learning C, you can skip it.
+</p>
+<p>The precise layout of a <code>struct</code> type is crucial when using it to
+overlay hardware registers, to access data structures in shared
+memory, or to assemble and disassemble packets for network
+communication.  It is also important for avoiding memory waste when
+the program makes many objects of that type.  However, the layout
+depends on the target platform.  Each platform has conventions for
+structure layout, which compilers need to follow.
+</p>
+<p>Here are the conventions used on most platforms.
+</p>
+<p>The structure&rsquo;s fields appear in the structure layout in the order
+they are declared.  When possible, consecutive fields occupy
+consecutive bytes within the structure.  However, if a field&rsquo;s type
+demands more alignment than it would get that way, C gives it the
+alignment it requires by leaving a gap after the previous field.
+</p>
+<p>Once all the fields have been laid out, it is possible to determine
+the structure&rsquo;s alignment and size.  The structure&rsquo;s alignment is the
+maximum alignment of any of the fields in it.  Then the structure&rsquo;s
+size is rounded up to a multiple of its alignment.  That may require
+leaving a gap at the end of the structure.
+</p>
+<p>Here are some examples, where we assume that <code>char</code> has size and
+alignment 1 (always true), and <code>int</code> has size and alignment 4
+(true on most kinds of computers):
+</p>
+<div class="example">
+<pre class="example">struct foo
+{
+  char a, b;
+  int c;
+};
+</pre></div>
+
+<p>This structure occupies 8 bytes, with an alignment of 4.  <code>a</code> is
+at offset 0, <code>b</code> is at offset 1, and <code>c</code> is at offset 4.
+There is a gap of 2 bytes before <code>c</code>.
+</p>
+<p>Contrast that with this structure:
+</p>
+<div class="example">
+<pre class="example">struct foo
+{
+  char a;
+  int c;
+  char b;
+};
+</pre></div>
+
+<p>This structure has size 12 and alignment 4.  <code>a</code> is at offset 0,
+<code>c</code> is at offset 4, and <code>b</code> is at offset 8.  There are two
+gaps: three bytes before <code>c</code>, and three bytes at the end.
+</p>
+<p>These two structures have the same contents at the C level, but one
+takes 8 bytes and the other takes 12 bytes due to the ordering of the
+fields.  A reliable way to avoid this sort of wastage is to order the
+fields by size, biggest fields first.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Packed-Structures.html">Packed Structures</a>, Previous: <a href="Field-Offset.html">Field Offset</a>, Up: <a href="Structures.html">Structures</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

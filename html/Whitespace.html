@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Whitespace (GNU C Language Manual)</title>
+
+<meta name="description" content="Whitespace (GNU C Language Manual)">
+<meta name="keywords" content="Whitespace (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Lexical-Syntax.html" rel="up" title="Lexical Syntax">
+<link href="Comments.html" rel="next" title="Comments">
+<link href="Characters.html" rel="prev" title="Characters">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Whitespace">
+<div class="header">
+<p>
+Next: <a href="Comments.html" accesskey="n" rel="next">Comments</a>, Previous: <a href="Characters.html" accesskey="p" rel="prev">Characters</a>, Up: <a href="Lexical-Syntax.html" accesskey="u" rel="up">Lexical Syntax</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Whitespace-1"></span><h3 class="section">5.3 Whitespace</h3>
+<span id="index-whitespace-characters-in-source-files"></span>
+<span id="index-space-character-in-source"></span>
+<span id="index-tab-character-in-source"></span>
+<span id="index-formfeed-in-source"></span>
+<span id="index-linefeed-in-source"></span>
+<span id="index-newline-in-source"></span>
+<span id="index-carriage-return-in-source"></span>
+<span id="index-vertical-tab-in-source"></span>
+
+<p>Whitespace means characters that exist in a file but appear blank in a
+printed listing of a file (or traditionally did appear blank, several
+decades ago).  The C language requires whitespace in order to separate
+two consecutive identifiers, or to separate an identifier from a
+numeric constant.  Other than that, and a few special situations
+described later, whitespace is optional; you can put it in when you
+wish, to make the code easier to read.
+</p>
+<p>Space and tab in C code are treated as whitespace characters.  So are
+line breaks.  You can represent a line break with the newline
+character (also called <em>linefeed</em> or LF), CR (carriage return), or
+the CRLF sequence (two characters: carriage return followed by a
+newline character).
+</p>
+<p>The <em>formfeed</em> character, Control-L, was traditionally used to
+divide a file into pages.  It is still used this way in source code,
+and the tools that generate nice printouts of source code still start
+a new page after each &ldquo;formfeed&rdquo; character.  Dividing code into
+pages separated by formfeed characters is a good way to break it up
+into comprehensible pieces and show other programmers where they start
+and end.
+</p>
+<p>The <em>vertical tab</em> character, Control-K, was traditionally used to
+make printing advance down to the next section of a page.  We know of
+no particular reason to use it in source code, but it is still
+accepted as whitespace in C.
+</p>
+<p>Comments are also syntactically equivalent to whitespace.
+</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,616 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Top (GNU C Language Manual)</title>
+
+<meta name="description" content="Top (GNU C Language Manual)">
+<meta name="keywords" content="Top (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="#Top" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="The-First-Example.html" rel="next" title="The First Example">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<h1 class="settitle" align="center">GNU C Language Manual</h1>
+
+
+
+
+
+
+
+<div class="top" id="Top">
+<div class="header">
+<p>
+Next: <a href="The-First-Example.html" accesskey="n" rel="next">The First Example</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="GNU-C-Manual"></span><h1 class="top">GNU C Manual</h1>
+
+<p>This manual explains the C language for use with the GNU Compiler
+Collection (GCC) on the GNU/Linux system and other systems.  We refer
+to this dialect as GNU C.  If you already know C, you can use this as
+a reference manual.
+</p>
+<p>If you understand basic concepts of programming but know nothing about
+C, you can read this manual sequentially from the beginning to learn
+the C language.
+</p>
+<p>If you are a beginner in programming, we recommend you first learn a
+language with automatic garbage collection and no explicit pointers,
+rather than starting with C.  Good choices include Lisp, Scheme,
+Python and Java.  C&rsquo;s explicit pointers mean that programmers must be
+careful to avoid certain kinds of errors.
+</p>
+<p>C is a venerable language; it was first used in 1973.  The GNU C
+Compiler, which was subsequently extended into the GNU Compiler
+Collection, was first released in 1987.  Other important languages
+were designed based on C: once you know C, it gives you a useful base
+for learning C<tt>++</tt>, C#, Java, Scala, D, Go, and more.
+</p>
+<p>The special advantage of C is that it is fairly simple while allowing
+close access to the computer&rsquo;s hardware, which previously required
+writing in assembler language to describe the individual machine
+instructions.  Some have called C a &ldquo;high-level assembler language&rdquo;
+because of its explicit pointers and lack of automatic management of
+storage.  As one wag put it, &ldquo;C combines the power of assembler
+language with the convenience of assembler language.&rdquo;  However, C is
+far more portable, and much easier to read and write, than assembler
+language.
+</p>
+<p>This manual describes the GNU C language supported by the GNU Compiler
+Collection, as of roughly 2017.  Please inform us of any changes
+needed to match the current version of GNU C.
+</p>
+<p>When a construct may be absent or work differently in other C
+compilers, we say so.  When it is not part of ISO standard C, we say
+it is a &ldquo;GNU C extension,&rdquo; because it is useful to know that.
+However, standards and other dialects are secondary topics for this
+manual.  For simplicity&rsquo;s sake, we keep those notes short, unless it
+is vital to say more.
+</p>
+<p>Likewise, we hardly mention C<tt>++</tt> or other languages that the GNU
+Compiler Collection supports.  We hope this manual will serve as a
+base for writing manuals for those languages, but languages so
+different can&rsquo;t share one common manual.
+</p>
+<p>Some aspects of the meaning of C programs depend on the target
+platform: which computer, and which operating system, the compiled
+code will run on.  Where this is the case, we say so.
+</p>
+<p>The C language provides no built-in facilities for performing such
+common operations as input/output, memory management, string
+manipulation, and the like.  Instead, these facilities are provided by
+functions defined in the standard library, which is automatically
+available in every C program.  See <a data-manual="libc" href="https://www.gnu.org/software/libc/manual/html_node/index.html#Top">The GNU C Library</a> in <cite>The GNU C Library Reference Manual</cite>.
+</p>
+<p>GNU/Linux systems use the GNU C Library to do this job.  It is itself
+a C program, so once you know C you can read its source code and see
+how its library functions do their jobs.  Some fraction of the
+functions are implemented as <em>system calls</em>, which means they
+contain a special instruction that asks the system kernel (Linux) to
+do a specific task.  To understand how those are implemented, you&rsquo;d
+need to read Linux source code instead.  Whether a library function is
+a system call is an internal implementation detail that makes no
+difference for how to call the function.
+</p>
+<p>This manual incorporates the former GNU C Preprocessor Manual, which
+was among the earliest GNU manuals.  It also uses some text from the
+earlier GNU C Manual that was written by Trevis Rothwell and James
+Youngman.
+</p>
+<p>GNU C has many obscure features, each one either for historical
+compatibility or meant for very special situations.  We have left them
+to a companion manual, the GNU C Obscurities Manual, which will be
+published digitally later.
+</p>
+<p>Please report errors and suggestions to c-manual@gnu.org.
+</p>
+
+<div class="Contents_element" id="SEC_Contents">
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="no-bullet">
+  <li><a id="toc-The-First-Example-1" href="The-First-Example.html">1 The First Example</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Example_003a-Recursive-Fibonacci" href="Recursive-Fibonacci.html">1.1 Example: Recursive Fibonacci</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Function-Header-1" href="Function-Header.html">1.1.1 Function Header</a></li>
+      <li><a id="toc-Function-Body-1" href="Function-Body.html">1.1.2 Function Body</a></li>
+    </ul></li>
+    <li><a id="toc-The-Stack_002c-And-Stack-Overflow" href="Stack.html">1.2 The Stack, And Stack Overflow</a></li>
+    <li><a id="toc-Example_003a-Iterative-Fibonacci" href="Iterative-Fibonacci.html">1.3 Example: Iterative Fibonacci</a></li>
+  </ul></li>
+  <li><a id="toc-A-Complete-Program" href="Complete-Program.html">2 A Complete Program</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Complete-Program-Example" href="Complete-Example.html">2.1 Complete Program Example</a></li>
+    <li><a id="toc-Complete-Program-Explanation" href="Complete-Explanation.html">2.2 Complete Program Explanation</a></li>
+    <li><a id="toc-Complete-Program_002c-Line-by-Line" href="Complete-Line_002dby_002dLine.html">2.3 Complete Program, Line by Line</a></li>
+    <li><a id="toc-Compiling-the-Example-Program" href="Compile-Example.html">2.4 Compiling the Example Program</a></li>
+  </ul></li>
+  <li><a id="toc-Storage-and-Data" href="Storage.html">3 Storage and Data</a></li>
+  <li><a id="toc-Beyond-Integers-1" href="Beyond-Integers.html">4 Beyond Integers</a>
+  <ul class="no-bullet">
+    <li><a id="toc-An-Example-with-Non_002dInteger-Numbers" href="Float-Example.html">4.1 An Example with Non-Integer Numbers</a></li>
+    <li><a id="toc-An-Example-with-Arrays" href="Array-Example.html">4.2 An Example with Arrays</a></li>
+    <li><a id="toc-Calling-the-Array-Example" href="Array-Example-Call.html">4.3 Calling the Array Example</a></li>
+    <li><a id="toc-Variations-for-Array-Example" href="Array-Example-Variations.html">4.4 Variations for Array Example</a></li>
+  </ul></li>
+  <li><a id="toc-Lexical-Syntax-1" href="Lexical-Syntax.html">5 Lexical Syntax</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Write-Programs-in-English_0021" href="English.html">5.1 Write Programs in English!</a></li>
+    <li><a id="toc-Characters-1" href="Characters.html">5.2 Characters</a></li>
+    <li><a id="toc-Whitespace-1" href="Whitespace.html">5.3 Whitespace</a></li>
+    <li><a id="toc-Comments-1" href="Comments.html">5.4 Comments</a></li>
+    <li><a id="toc-Identifiers-1" href="Identifiers.html">5.5 Identifiers</a></li>
+    <li><a id="toc-Operators-and-Punctuation" href="Operators_002fPunctuation.html">5.6 Operators and Punctuation</a></li>
+    <li><a id="toc-Line-Continuation-1" href="Line-Continuation.html">5.7 Line Continuation</a></li>
+  </ul></li>
+  <li><a id="toc-Arithmetic-1" href="Arithmetic.html">6 Arithmetic</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Basic-Arithmetic-1" href="Basic-Arithmetic.html">6.1 Basic Arithmetic</a></li>
+    <li><a id="toc-Integer-Arithmetic-1" href="Integer-Arithmetic.html">6.2 Integer Arithmetic</a></li>
+    <li><a id="toc-Integer-Overflow-1" href="Integer-Overflow.html">6.3 Integer Overflow</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Overflow-with-Unsigned-Integers" href="Unsigned-Overflow.html">6.3.1 Overflow with Unsigned Integers</a></li>
+      <li><a id="toc-Overflow-with-Signed-Integers" href="Signed-Overflow.html">6.3.2 Overflow with Signed Integers</a></li>
+    </ul></li>
+    <li><a id="toc-Mixed_002dMode-Arithmetic" href="Mixed-Mode.html">6.4 Mixed-Mode Arithmetic</a></li>
+    <li><a id="toc-Division-and-Remainder-1" href="Division-and-Remainder.html">6.5 Division and Remainder</a></li>
+    <li><a id="toc-Numeric-Comparisons-1" href="Numeric-Comparisons.html">6.6 Numeric Comparisons</a></li>
+    <li><a id="toc-Shift-Operations-1" href="Shift-Operations.html">6.7 Shift Operations</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Shifting-Makes-New-Bits" href="Bits-Shifted-In.html">6.7.1 Shifting Makes New Bits</a></li>
+      <li><a id="toc-Caveats-for-Shift-Operations" href="Shift-Caveats.html">6.7.2 Caveats for Shift Operations</a></li>
+      <li><a id="toc-Shift-Hacks-1" href="Shift-Hacks.html">6.7.3 Shift Hacks</a></li>
+    </ul></li>
+    <li><a id="toc-Bitwise-Operations-1" href="Bitwise-Operations.html">6.8 Bitwise Operations</a></li>
+  </ul></li>
+  <li><a id="toc-Assignment-Expressions-1" href="Assignment-Expressions.html">7 Assignment Expressions</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Simple-Assignment-1" href="Simple-Assignment.html">7.1 Simple Assignment</a></li>
+    <li><a id="toc-Lvalues-1" href="Lvalues.html">7.2 Lvalues</a></li>
+    <li><a id="toc-Modifying-Assignment-1" href="Modifying-Assignment.html">7.3 Modifying Assignment</a></li>
+    <li><a id="toc-Increment-and-Decrement-Operators" href="Increment_002fDecrement.html">7.4 Increment and Decrement Operators</a></li>
+    <li><a id="toc-Postincrement-and-Postdecrement" href="Postincrement_002fPostdecrement.html">7.5 Postincrement and Postdecrement</a></li>
+    <li><a id="toc-Pitfall_003a-Assignment-in-Subexpressions" href="Assignment-in-Subexpressions.html">7.6 Pitfall: Assignment in Subexpressions</a></li>
+    <li><a id="toc-Write-Assignments-in-Separate-Statements" href="Write-Assignments-Separately.html">7.7 Write Assignments in Separate Statements</a></li>
+  </ul></li>
+  <li><a id="toc-Execution-Control-Expressions-1" href="Execution-Control-Expressions.html">8 Execution Control Expressions</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Logical-Operators-1" href="Logical-Operators.html">8.1 Logical Operators</a></li>
+    <li><a id="toc-Logical-Operators-and-Comparisons" href="Logicals-and-Comparison.html">8.2 Logical Operators and Comparisons</a></li>
+    <li><a id="toc-Logical-Operators-and-Assignments" href="Logicals-and-Assignments.html">8.3 Logical Operators and Assignments</a></li>
+    <li><a id="toc-Conditional-Expression-1" href="Conditional-Expression.html">8.4 Conditional Expression</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Rules-for-the-Conditional-Operator" href="Conditional-Rules.html">8.4.1 Rules for the Conditional Operator</a></li>
+      <li><a id="toc-Conditional-Operator-Branches" href="Conditional-Branches.html">8.4.2 Conditional Operator Branches</a></li>
+    </ul></li>
+    <li><a id="toc-Comma-Operator-1" href="Comma-Operator.html">8.5 Comma Operator</a>
+    <ul class="no-bullet">
+      <li><a id="toc-The-Uses-of-the-Comma-Operator" href="Uses-of-Comma.html">8.5.1 The Uses of the Comma Operator</a></li>
+      <li><a id="toc-Clean-Use-of-the-Comma-Operator" href="Clean-Comma.html">8.5.2 Clean Use of the Comma Operator</a></li>
+      <li><a id="toc-When-Not-to-Use-the-Comma-Operator" href="Avoid-Comma.html">8.5.3 When Not to Use the Comma Operator</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Binary-Operator-Grammar-1" href="Binary-Operator-Grammar.html">9 Binary Operator Grammar</a></li>
+  <li><a id="toc-Order-of-Execution-1" href="Order-of-Execution.html">10 Order of Execution</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Reordering-of-Operands-1" href="Reordering-of-Operands.html">10.1 Reordering of Operands</a></li>
+    <li><a id="toc-Associativity-and-Ordering-1" href="Associativity-and-Ordering.html">10.2 Associativity and Ordering</a></li>
+    <li><a id="toc-Sequence-Points-1" href="Sequence-Points.html">10.3 Sequence Points</a></li>
+    <li><a id="toc-Postincrement-and-Ordering-1" href="Postincrement-and-Ordering.html">10.4 Postincrement and Ordering</a></li>
+    <li><a id="toc-Ordering-of-Operands-1" href="Ordering-of-Operands.html">10.5 Ordering of Operands</a></li>
+    <li><a id="toc-Optimization-and-Ordering-1" href="Optimization-and-Ordering.html">10.6 Optimization and Ordering</a></li>
+  </ul></li>
+  <li><a id="toc-Primitive-Data-Types" href="Primitive-Types.html">11 Primitive Data Types</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Integer-Data-Types" href="Integer-Types.html">11.1 Integer Data Types</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Basic-Integers-1" href="Basic-Integers.html">11.1.1 Basic Integers</a></li>
+      <li><a id="toc-Signed-and-Unsigned-Types-1" href="Signed-and-Unsigned-Types.html">11.1.2 Signed and Unsigned Types</a></li>
+      <li><a id="toc-Narrow-Integers-1" href="Narrow-Integers.html">11.1.3 Narrow Integers</a></li>
+      <li><a id="toc-Conversion-among-Integer-Types" href="Integer-Conversion.html">11.1.4 Conversion among Integer Types</a></li>
+      <li><a id="toc-Boolean-Type-1" href="Boolean-Type.html">11.1.5 Boolean Type</a></li>
+      <li><a id="toc-Integer-Variations-1" href="Integer-Variations.html">11.1.6 Integer Variations</a></li>
+    </ul></li>
+    <li><a id="toc-Floating_002dPoint-Data-Types-1" href="Floating_002dPoint-Data-Types.html">11.2 Floating-Point Data Types</a></li>
+    <li><a id="toc-Complex-Data-Types-1" href="Complex-Data-Types.html">11.3 Complex Data Types</a></li>
+    <li><a id="toc-The-Void-Type-1" href="The-Void-Type.html">11.4 The Void Type</a></li>
+    <li><a id="toc-Other-Data-Types-1" href="Other-Data-Types.html">11.5 Other Data Types</a></li>
+    <li><a id="toc-Type-Designators-1" href="Type-Designators.html">11.6 Type Designators</a></li>
+  </ul></li>
+  <li><a id="toc-Constants-1" href="Constants.html">12 Constants</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Integer-Constants-1" href="Integer-Constants.html">12.1 Integer Constants</a></li>
+    <li><a id="toc-Integer-Constant-Data-Types" href="Integer-Const-Type.html">12.2 Integer Constant Data Types</a></li>
+    <li><a id="toc-Floating_002dPoint-Constants" href="Floating-Constants.html">12.3 Floating-Point Constants</a></li>
+    <li><a id="toc-Imaginary-Constants-1" href="Imaginary-Constants.html">12.4 Imaginary Constants</a></li>
+    <li><a id="toc-Invalid-Numbers-1" href="Invalid-Numbers.html">12.5 Invalid Numbers</a></li>
+    <li><a id="toc-Character-Constants-1" href="Character-Constants.html">12.6 Character Constants</a></li>
+    <li><a id="toc-String-Constants-1" href="String-Constants.html">12.7 String Constants</a></li>
+    <li><a id="toc-UTF_002d8-String-Constants-1" href="UTF_002d8-String-Constants.html">12.8 UTF-8 String Constants</a></li>
+    <li><a id="toc-Unicode-Character-Codes-1" href="Unicode-Character-Codes.html">12.9 Unicode Character Codes</a></li>
+    <li><a id="toc-Wide-Character-Constants-1" href="Wide-Character-Constants.html">12.10 Wide Character Constants</a></li>
+    <li><a id="toc-Wide-String-Constants-1" href="Wide-String-Constants.html">12.11 Wide String Constants</a></li>
+  </ul></li>
+  <li><a id="toc-Type-Size-1" href="Type-Size.html">13 Type Size</a></li>
+  <li><a id="toc-Pointers-1" href="Pointers.html">14 Pointers</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Address-of-Data-1" href="Address-of-Data.html">14.1 Address of Data</a></li>
+    <li><a id="toc-Pointer-Types-1" href="Pointer-Types.html">14.2 Pointer Types</a></li>
+    <li><a id="toc-Pointer_002dVariable-Declarations" href="Pointer-Declarations.html">14.3 Pointer-Variable Declarations</a></li>
+    <li><a id="toc-Pointer_002dType-Designators" href="Pointer-Type-Designators.html">14.4 Pointer-Type Designators</a></li>
+    <li><a id="toc-Dereferencing-Pointers" href="Pointer-Dereference.html">14.5 Dereferencing Pointers</a></li>
+    <li><a id="toc-Null-Pointers-1" href="Null-Pointers.html">14.6 Null Pointers</a></li>
+    <li><a id="toc-Dereferencing-Null-or-Invalid-Pointers" href="Invalid-Dereference.html">14.7 Dereferencing Null or Invalid Pointers</a></li>
+    <li><a id="toc-Void-Pointers-1" href="Void-Pointers.html">14.8 Void Pointers</a></li>
+    <li><a id="toc-Pointer-Comparison-1" href="Pointer-Comparison.html">14.9 Pointer Comparison</a></li>
+    <li><a id="toc-Pointer-Arithmetic-1" href="Pointer-Arithmetic.html">14.10 Pointer Arithmetic</a></li>
+    <li><a id="toc-Pointers-and-Arrays-1" href="Pointers-and-Arrays.html">14.11 Pointers and Arrays</a></li>
+    <li><a id="toc-Pointer-Arithmetic-at-Low_002dLevel" href="Low_002dLevel-Pointer-Arithmetic.html">14.12 Pointer Arithmetic at Low-Level</a></li>
+    <li><a id="toc-Pointer-Increment-and-Decrement" href="Pointer-Increment_002fDecrement.html">14.13 Pointer Increment and Decrement</a></li>
+    <li><a id="toc-Drawbacks-of-Pointer-Arithmetic" href="Pointer-Arithmetic-Drawbacks.html">14.14 Drawbacks of Pointer Arithmetic</a></li>
+    <li><a id="toc-Pointer_002dInteger-Conversion-1" href="Pointer_002dInteger-Conversion.html">14.15 Pointer-Integer Conversion</a></li>
+    <li><a id="toc-Printing-Pointers-1" href="Printing-Pointers.html">14.16 Printing Pointers</a></li>
+  </ul></li>
+  <li><a id="toc-Structures-1" href="Structures.html">15 Structures</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Referencing-Structure-Fields" href="Referencing-Fields.html">15.1 Referencing Structure Fields</a></li>
+    <li><a id="toc-Arrays-as-Fields-1" href="Arrays-as-Fields.html">15.2 Arrays as Fields</a></li>
+    <li><a id="toc-Dynamic-Memory-Allocation-1" href="Dynamic-Memory-Allocation.html">15.3 Dynamic Memory Allocation</a></li>
+    <li><a id="toc-Field-Offset-1" href="Field-Offset.html">15.4 Field Offset</a></li>
+    <li><a id="toc-Structure-Layout-1" href="Structure-Layout.html">15.5 Structure Layout</a></li>
+    <li><a id="toc-Packed-Structures-1" href="Packed-Structures.html">15.6 Packed Structures</a></li>
+    <li><a id="toc-Bit-Fields-1" href="Bit-Fields.html">15.7 Bit Fields</a></li>
+    <li><a id="toc-Bit-Field-Packing-1" href="Bit-Field-Packing.html">15.8 Bit Field Packing</a></li>
+    <li><a id="toc-const-Fields-1" href="const-Fields.html">15.9 <code>const</code> Fields</a></li>
+    <li><a id="toc-Arrays-of-Length-Zero" href="Zero-Length.html">15.10 Arrays of Length Zero</a></li>
+    <li><a id="toc-Flexible-Array-Fields-1" href="Flexible-Array-Fields.html">15.11 Flexible Array Fields</a></li>
+    <li><a id="toc-Overlaying-Different-Structures" href="Overlaying-Structures.html">15.12 Overlaying Different Structures</a></li>
+    <li><a id="toc-Structure-Assignment-1" href="Structure-Assignment.html">15.13 Structure Assignment</a></li>
+    <li><a id="toc-Unions-1" href="Unions.html">15.14 Unions</a></li>
+    <li><a id="toc-Packing-With-Unions-1" href="Packing-With-Unions.html">15.15 Packing With Unions</a></li>
+    <li><a id="toc-Cast-to-a-Union-Type" href="Cast-to-Union.html">15.16 Cast to a Union Type</a></li>
+    <li><a id="toc-Structure-Constructors-1" href="Structure-Constructors.html">15.17 Structure Constructors</a></li>
+    <li><a id="toc-Unnamed-Types-as-Fields-1" href="Unnamed-Types-as-Fields.html">15.18 Unnamed Types as Fields</a></li>
+    <li><a id="toc-Incomplete-Types-1" href="Incomplete-Types.html">15.19 Incomplete Types</a></li>
+    <li><a id="toc-Intertwined-Incomplete-Types-1" href="Intertwined-Incomplete-Types.html">15.20 Intertwined Incomplete Types</a></li>
+    <li><a id="toc-Type-Tags-1" href="Type-Tags.html">15.21 Type Tags</a></li>
+  </ul></li>
+  <li><a id="toc-Arrays-1" href="Arrays.html">16 Arrays</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Accessing-Array-Elements-1" href="Accessing-Array-Elements.html">16.1 Accessing Array Elements</a></li>
+    <li><a id="toc-Declaring-an-Array-1" href="Declaring-an-Array.html">16.2 Declaring an Array</a></li>
+    <li><a id="toc-Strings-1" href="Strings.html">16.3 Strings</a></li>
+    <li><a id="toc-Array-Type-Designators-1" href="Array-Type-Designators.html">16.4 Array Type Designators</a></li>
+    <li><a id="toc-Incomplete-Array-Types-1" href="Incomplete-Array-Types.html">16.5 Incomplete Array Types</a></li>
+    <li><a id="toc-Limitations-of-C-Arrays-1" href="Limitations-of-C-Arrays.html">16.6 Limitations of C Arrays</a></li>
+    <li><a id="toc-Multidimensional-Arrays-1" href="Multidimensional-Arrays.html">16.7 Multidimensional Arrays</a></li>
+    <li><a id="toc-Constructing-Array-Values-1" href="Constructing-Array-Values.html">16.8 Constructing Array Values</a></li>
+    <li><a id="toc-Arrays-of-Variable-Length-1" href="Arrays-of-Variable-Length.html">16.9 Arrays of Variable Length</a></li>
+  </ul></li>
+  <li><a id="toc-Enumeration-Types-1" href="Enumeration-Types.html">17 Enumeration Types</a></li>
+  <li><a id="toc-Defining-Typedef-Names-1" href="Defining-Typedef-Names.html">18 Defining Typedef Names</a></li>
+  <li><a id="toc-Statements-1" href="Statements.html">19 Statements</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Expression-Statement-1" href="Expression-Statement.html">19.1 Expression Statement</a></li>
+    <li><a id="toc-if-Statement-1" href="if-Statement.html">19.2 <code>if</code> Statement</a></li>
+    <li><a id="toc-if_002delse-Statement-1" href="if_002delse-Statement.html">19.3 <code>if-else</code> Statement</a></li>
+    <li><a id="toc-Blocks-1" href="Blocks.html">19.4 Blocks</a></li>
+    <li><a id="toc-return-Statement-1" href="return-Statement.html">19.5 <code>return</code> Statement</a></li>
+    <li><a id="toc-Loop-Statements-1" href="Loop-Statements.html">19.6 Loop Statements</a>
+    <ul class="no-bullet">
+      <li><a id="toc-while-Statement-1" href="while-Statement.html">19.6.1 <code>while</code> Statement</a></li>
+      <li><a id="toc-do_002dwhile-Statement-1" href="do_002dwhile-Statement.html">19.6.2 <code>do-while</code> Statement</a></li>
+      <li><a id="toc-break-Statement-1" href="break-Statement.html">19.6.3 <code>break</code> Statement</a></li>
+      <li><a id="toc-for-Statement-1" href="for-Statement.html">19.6.4 <code>for</code> Statement</a></li>
+      <li><a id="toc-Example-of-for-1" href="Example-of-for.html">19.6.5 Example of <code>for</code></a></li>
+      <li><a id="toc-Omitted-for_002dExpressions-1" href="Omitted-for_002dExpressions.html">19.6.6 Omitted <code>for</code>-Expressions</a></li>
+      <li><a id="toc-for_002dIndex-Declarations-1" href="for_002dIndex-Declarations.html">19.6.7 <code>for</code>-Index Declarations</a></li>
+      <li><a id="toc-continue-Statement-1" href="continue-Statement.html">19.6.8 <code>continue</code> Statement</a></li>
+    </ul></li>
+    <li><a id="toc-switch-Statement-1" href="switch-Statement.html">19.7 <code>switch</code> Statement</a></li>
+    <li><a id="toc-Example-of-switch" href="switch-Example.html">19.8 Example of <code>switch</code></a></li>
+    <li><a id="toc-Duff_0027s-Device" href="Duffs-Device.html">19.9 Duff&rsquo;s Device</a></li>
+    <li><a id="toc-Case-Ranges-1" href="Case-Ranges.html">19.10 Case Ranges</a></li>
+    <li><a id="toc-Null-Statement-1" href="Null-Statement.html">19.11 Null Statement</a></li>
+    <li><a id="toc-goto-Statement-and-Labels" href="goto-Statement.html">19.12 <code>goto</code> Statement and Labels</a></li>
+    <li><a id="toc-Locally-Declared-Labels" href="Local-Labels.html">19.13 Locally Declared Labels</a></li>
+    <li><a id="toc-Labels-as-Values-1" href="Labels-as-Values.html">19.14 Labels as Values</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Label-Value-Uses-1" href="Label-Value-Uses.html">19.14.1 Label Value Uses</a></li>
+      <li><a id="toc-Label-Value-Caveats-1" href="Label-Value-Caveats.html">19.14.2 Label Value Caveats</a></li>
+    </ul></li>
+    <li><a id="toc-Statements-and-Declarations-in-Expressions" href="Statement-Exprs.html">19.15 Statements and Declarations in Expressions</a></li>
+  </ul></li>
+  <li><a id="toc-Variables-1" href="Variables.html">20 Variables</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Variable-Declarations-1" href="Variable-Declarations.html">20.1 Variable Declarations</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Declaring-Arrays-and-Pointers-1" href="Declaring-Arrays-and-Pointers.html">20.1.1 Declaring Arrays and Pointers</a></li>
+      <li><a id="toc-Combining-Variable-Declarations-1" href="Combining-Variable-Declarations.html">20.1.2 Combining Variable Declarations</a></li>
+    </ul></li>
+    <li><a id="toc-Initializers-1" href="Initializers.html">20.2 Initializers</a></li>
+    <li><a id="toc-Designated-Initializers" href="Designated-Inits.html">20.3 Designated Initializers</a></li>
+    <li><a id="toc-Referring-to-a-Type-with-_005f_005fauto_005ftype" href="Auto-Type.html">20.4 Referring to a Type with <code>__auto_type</code></a></li>
+    <li><a id="toc-Local-Variables-1" href="Local-Variables.html">20.5 Local Variables</a></li>
+    <li><a id="toc-File_002dScope-Variables-1" href="File_002dScope-Variables.html">20.6 File-Scope Variables</a></li>
+    <li><a id="toc-Static-Local-Variables-1" href="Static-Local-Variables.html">20.7 Static Local Variables</a></li>
+    <li><a id="toc-extern-Declarations" href="Extern-Declarations.html">20.8 <code>extern</code> Declarations</a></li>
+    <li><a id="toc-Allocating-File_002dScope-Variables" href="Allocating-File_002dScope.html">20.9 Allocating File-Scope Variables</a></li>
+    <li><a id="toc-auto-and-register-1" href="auto-and-register.html">20.10 <code>auto</code> and <code>register</code></a></li>
+    <li><a id="toc-Omitting-Types-in-Declarations" href="Omitting-Types.html">20.11 Omitting Types in Declarations</a></li>
+  </ul></li>
+  <li><a id="toc-Type-Qualifiers-1" href="Type-Qualifiers.html">21 Type Qualifiers</a>
+  <ul class="no-bullet">
+    <li><a id="toc-const-Variables-and-Fields" href="const.html">21.1 <code>const</code> Variables and Fields</a></li>
+    <li><a id="toc-volatile-Variables-and-Fields" href="volatile.html">21.2 <code>volatile</code> Variables and Fields</a></li>
+    <li><a id="toc-restrict_002dQualified-Pointers" href="restrict-Pointers.html">21.3 <code>restrict</code>-Qualified Pointers</a></li>
+    <li><a id="toc-restrict-Pointer-Example-1" href="restrict-Pointer-Example.html">21.4 <code>restrict</code> Pointer Example</a></li>
+  </ul></li>
+  <li><a id="toc-Functions-1" href="Functions.html">22 Functions</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Function-Definitions-1" href="Function-Definitions.html">22.1 Function Definitions</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Function-Parameter-Variables-1" href="Function-Parameter-Variables.html">22.1.1 Function Parameter Variables</a></li>
+      <li><a id="toc-Forward-Function-Declarations-1" href="Forward-Function-Declarations.html">22.1.2 Forward Function Declarations</a></li>
+      <li><a id="toc-Static-Functions-1" href="Static-Functions.html">22.1.3 Static Functions</a></li>
+      <li><a id="toc-Arrays-as-Parameters-1" href="Arrays-as-Parameters.html">22.1.4 Arrays as Parameters</a>
+      <ul class="no-bullet">
+        <li><a id="toc-Array-parameters-are-pointers" href="Array-Parm-Pointer.html">22.1.4.1 Array parameters are pointers</a></li>
+        <li><a id="toc-Passing-array-arguments" href="Passing-Array-Args.html">22.1.4.2 Passing array arguments</a></li>
+        <li><a id="toc-Type-qualifiers-on-array-parameters" href="Array-Parm-Qualifiers.html">22.1.4.3 Type qualifiers on array parameters</a></li>
+      </ul></li>
+      <li><a id="toc-Functions-That-Accept-Structure-Arguments" href="Structs-as-Parameters.html">22.1.5 Functions That Accept Structure Arguments</a></li>
+    </ul></li>
+    <li><a id="toc-Function-Declarations-1" href="Function-Declarations.html">22.2 Function Declarations</a></li>
+    <li><a id="toc-Function-Calls-1" href="Function-Calls.html">22.3 Function Calls</a></li>
+    <li><a id="toc-Function-Call-Semantics-1" href="Function-Call-Semantics.html">22.4 Function Call Semantics</a></li>
+    <li><a id="toc-Function-Pointers-1" href="Function-Pointers.html">22.5 Function Pointers</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Declaring-Function-Pointers-1" href="Declaring-Function-Pointers.html">22.5.1 Declaring Function Pointers</a></li>
+      <li><a id="toc-Assigning-Function-Pointers-1" href="Assigning-Function-Pointers.html">22.5.2 Assigning Function Pointers</a></li>
+      <li><a id="toc-Calling-Function-Pointers-1" href="Calling-Function-Pointers.html">22.5.3 Calling Function Pointers</a></li>
+    </ul></li>
+    <li><a id="toc-The-main-Function-1" href="The-main-Function.html">22.6 The <code>main</code> Function</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Returning-Values-from-main" href="Values-from-main.html">22.6.1 Returning Values from <code>main</code></a></li>
+      <li><a id="toc-Accessing-Command_002dline-Parameters" href="Command_002dline-Parameters.html">22.6.2 Accessing Command-line Parameters</a></li>
+      <li><a id="toc-Accessing-Environment-Variables" href="Environment-Variables.html">22.6.3 Accessing Environment Variables</a></li>
+    </ul></li>
+    <li><a id="toc-Advanced-Function-Features" href="Advanced-Definitions.html">22.7 Advanced Function Features</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Variable_002dLength-Array-Parameters-1" href="Variable_002dLength-Array-Parameters.html">22.7.1 Variable-Length Array Parameters</a></li>
+      <li><a id="toc-Variable_002dLength-Parameter-Lists" href="Variable-Number-of-Arguments.html">22.7.2 Variable-Length Parameter Lists</a></li>
+      <li><a id="toc-Nested-Functions-1" href="Nested-Functions.html">22.7.3 Nested Functions</a></li>
+      <li><a id="toc-Inline-Function-Definitions-1" href="Inline-Function-Definitions.html">22.7.4 Inline Function Definitions</a></li>
+    </ul></li>
+    <li><a id="toc-Obsolete-Function-Features" href="Obsolete-Definitions.html">22.8 Obsolete Function Features</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Older-GNU-C-Inlining" href="Old-GNU-Inlining.html">22.8.1 Older GNU C Inlining</a></li>
+      <li><a id="toc-Old_002dStyle-Function-Definitions-1" href="Old_002dStyle-Function-Definitions.html">22.8.2 Old-Style Function Definitions</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Compatible-Types-1" href="Compatible-Types.html">23 Compatible Types</a></li>
+  <li><a id="toc-Type-Conversions-1" href="Type-Conversions.html">24 Type Conversions</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Explicit-Type-Conversion-1" href="Explicit-Type-Conversion.html">24.1 Explicit Type Conversion</a></li>
+    <li><a id="toc-Assignment-Type-Conversions-1" href="Assignment-Type-Conversions.html">24.2 Assignment Type Conversions</a></li>
+    <li><a id="toc-Argument-Promotions-1" href="Argument-Promotions.html">24.3 Argument Promotions</a></li>
+    <li><a id="toc-Operand-Promotions-1" href="Operand-Promotions.html">24.4 Operand Promotions</a></li>
+    <li><a id="toc-Common-Type-1" href="Common-Type.html">24.5 Common Type</a></li>
+  </ul></li>
+  <li><a id="toc-Scope-1" href="Scope.html">25 Scope</a></li>
+  <li><a id="toc-Preprocessing-1" href="Preprocessing.html">26 Preprocessing</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Preprocessing-Overview" href="Preproc-Overview.html">26.1 Preprocessing Overview</a></li>
+    <li><a id="toc-Directives-1" href="Directives.html">26.2 Directives</a></li>
+    <li><a id="toc-Preprocessing-Tokens-1" href="Preprocessing-Tokens.html">26.3 Preprocessing Tokens</a></li>
+    <li><a id="toc-Header-Files-1" href="Header-Files.html">26.4 Header Files</a>
+    <ul class="no-bullet">
+      <li><a id="toc-_0023include-Syntax" href="include-Syntax.html">26.4.1 <code>#include</code> Syntax</a></li>
+      <li><a id="toc-_0023include-Operation" href="include-Operation.html">26.4.2 <code>#include</code> Operation</a></li>
+      <li><a id="toc-Search-Path-1" href="Search-Path.html">26.4.3 Search Path</a></li>
+      <li><a id="toc-Once_002dOnly-Headers-1" href="Once_002dOnly-Headers.html">26.4.4 Once-Only Headers</a></li>
+      <li><a id="toc-Computed-Includes-1" href="Computed-Includes.html">26.4.5 Computed Includes</a></li>
+    </ul></li>
+    <li><a id="toc-Macros-1" href="Macros.html">26.5 Macros</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Object_002dlike-Macros-1" href="Object_002dlike-Macros.html">26.5.1 Object-like Macros</a></li>
+      <li><a id="toc-Function_002dlike-Macros-1" href="Function_002dlike-Macros.html">26.5.2 Function-like Macros</a></li>
+      <li><a id="toc-Macro-Arguments-1" href="Macro-Arguments.html">26.5.3 Macro Arguments</a></li>
+      <li><a id="toc-Stringification-1" href="Stringification.html">26.5.4 Stringification</a></li>
+      <li><a id="toc-Concatenation-1" href="Concatenation.html">26.5.5 Concatenation</a></li>
+      <li><a id="toc-Variadic-Macros-1" href="Variadic-Macros.html">26.5.6 Variadic Macros</a></li>
+      <li><a id="toc-Predefined-Macros-1" href="Predefined-Macros.html">26.5.7 Predefined Macros</a></li>
+      <li><a id="toc-Undefining-and-Redefining-Macros-1" href="Undefining-and-Redefining-Macros.html">26.5.8 Undefining and Redefining Macros</a></li>
+      <li><a id="toc-Directives-Within-Macro-Arguments-1" href="Directives-Within-Macro-Arguments.html">26.5.9 Directives Within Macro Arguments</a></li>
+      <li><a id="toc-Macro-Pitfalls-1" href="Macro-Pitfalls.html">26.5.10 Macro Pitfalls</a>
+      <ul class="no-bullet">
+        <li><a id="toc-Misnesting-1" href="Misnesting.html">26.5.10.1 Misnesting</a></li>
+        <li><a id="toc-Operator-Precedence-Problems-1" href="Operator-Precedence-Problems.html">26.5.10.2 Operator Precedence Problems</a></li>
+        <li><a id="toc-Swallowing-the-Semicolon-1" href="Swallowing-the-Semicolon.html">26.5.10.3 Swallowing the Semicolon</a></li>
+        <li><a id="toc-Duplication-of-Side-Effects-1" href="Duplication-of-Side-Effects.html">26.5.10.4 Duplication of Side Effects</a></li>
+        <li><a id="toc-Using-_005f_005fauto_005ftype-for-Local-Variables" href="Macros-and-Auto-Type.html">26.5.10.5 Using <code>__auto_type</code> for Local Variables</a></li>
+        <li><a id="toc-Self_002dReferential-Macros-1" href="Self_002dReferential-Macros.html">26.5.10.6 Self-Referential Macros</a></li>
+        <li><a id="toc-Argument-Prescan-1" href="Argument-Prescan.html">26.5.10.7 Argument Prescan</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a id="toc-Conditionals-1" href="Conditionals.html">26.6 Conditionals</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Uses-of-Conditional-Directives" href="Conditional-Uses.html">26.6.1 Uses of Conditional Directives</a></li>
+      <li><a id="toc-Syntax-of-Preprocessing-Conditionals" href="Conditional-Syntax.html">26.6.2 Syntax of Preprocessing Conditionals</a>
+      <ul class="no-bullet">
+        <li><a id="toc-The-_0023ifdef-directive" href="ifdef.html">26.6.2.1 The <code>#ifdef</code> directive</a></li>
+        <li><a id="toc-The-_0023if-directive" href="if.html">26.6.2.2 The <code>#if</code> directive</a></li>
+        <li><a id="toc-The-defined-test" href="defined.html">26.6.2.3 The <code>defined</code> test</a></li>
+        <li><a id="toc-The-_0023else-directive" href="else.html">26.6.2.4 The <code>#else</code> directive</a></li>
+        <li><a id="toc-The-_0023elif-directive" href="elif.html">26.6.2.5 The <code>#elif</code> directive</a></li>
+      </ul></li>
+      <li><a id="toc-Deleted-Code-1" href="Deleted-Code.html">26.6.3 Deleted Code</a></li>
+    </ul></li>
+    <li><a id="toc-Diagnostics-1" href="Diagnostics.html">26.7 Diagnostics</a></li>
+    <li><a id="toc-Line-Control-1" href="Line-Control.html">26.8 Line Control</a></li>
+    <li><a id="toc-Null-Directive-1" href="Null-Directive.html">26.9 Null Directive</a></li>
+  </ul></li>
+  <li><a id="toc-Integers-in-Depth-1" href="Integers-in-Depth.html">27 Integers in Depth</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Integer-Representations-1" href="Integer-Representations.html">27.1 Integer Representations</a></li>
+    <li><a id="toc-Maximum-and-Minimum-Values-1" href="Maximum-and-Minimum-Values.html">27.2 Maximum and Minimum Values</a></li>
+  </ul></li>
+  <li><a id="toc-Floating-Point-in-Depth-1" href="Floating-Point-in-Depth.html">28 Floating Point in Depth</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Floating_002dPoint-Representations" href="Floating-Representations.html">28.1 Floating-Point Representations</a></li>
+    <li><a id="toc-Floating_002dPoint-Type-Specifications" href="Floating-Type-Specs.html">28.2 Floating-Point Type Specifications</a></li>
+    <li><a id="toc-Special-Floating_002dPoint-Values" href="Special-Float-Values.html">28.3 Special Floating-Point Values</a></li>
+    <li><a id="toc-Invalid-Optimizations-1" href="Invalid-Optimizations.html">28.4 Invalid Optimizations</a></li>
+    <li><a id="toc-Floating-Arithmetic-Exception-Flags" href="Exception-Flags.html">28.5 Floating Arithmetic Exception Flags</a></li>
+    <li><a id="toc-Exact-Floating_002dPoint-Arithmetic" href="Exact-Floating_002dPoint.html">28.6 Exact Floating-Point Arithmetic</a></li>
+    <li><a id="toc-Rounding-1" href="Rounding.html">28.7 Rounding</a></li>
+    <li><a id="toc-Rounding-Issues-1" href="Rounding-Issues.html">28.8 Rounding Issues</a></li>
+    <li><a id="toc-Significance-Loss-1" href="Significance-Loss.html">28.9 Significance Loss</a></li>
+    <li><a id="toc-Fused-Multiply_002dAdd-1" href="Fused-Multiply_002dAdd.html">28.10 Fused Multiply-Add</a></li>
+    <li><a id="toc-Error-Recovery-1" href="Error-Recovery.html">28.11 Error Recovery</a></li>
+    <li><a id="toc-Exact-Floating_002dPoint-Constants" href="Exact-Floating-Constants.html">28.12 Exact Floating-Point Constants</a></li>
+    <li><a id="toc-Handling-Infinity-1" href="Handling-Infinity.html">28.13 Handling Infinity</a></li>
+    <li><a id="toc-Handling-NaN-1" href="Handling-NaN.html">28.14 Handling NaN</a></li>
+    <li><a id="toc-Signed-Zeros-1" href="Signed-Zeros.html">28.15 Signed Zeros</a></li>
+    <li><a id="toc-Scaling-by-Powers-of-the-Base" href="Scaling-by-the-Base.html">28.16 Scaling by Powers of the Base</a></li>
+    <li><a id="toc-Rounding-Control-1" href="Rounding-Control.html">28.17 Rounding Control</a></li>
+    <li><a id="toc-Machine-Epsilon-1" href="Machine-Epsilon.html">28.18 Machine Epsilon</a></li>
+    <li><a id="toc-Complex-Arithmetic-1" href="Complex-Arithmetic.html">28.19 Complex Arithmetic</a></li>
+    <li><a id="toc-Round_002dTrip-Base-Conversion-1" href="Round_002dTrip-Base-Conversion.html">28.20 Round-Trip Base Conversion</a></li>
+    <li><a id="toc-Further-Reading-1" href="Further-Reading.html">28.21 Further Reading</a></li>
+  </ul></li>
+  <li><a id="toc-Compilation-1" href="Compilation.html">29 Compilation</a></li>
+  <li><a id="toc-Directing-Compilation-1" href="Directing-Compilation.html">30 Directing Compilation</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Pragmas-1" href="Pragmas.html">30.1 Pragmas</a>
+    <ul class="no-bullet">
+      <li><a id="toc-Pragma-Basics-1" href="Pragma-Basics.html">30.1.1 Pragma Basics</a></li>
+      <li><a id="toc-Severity-Pragmas-1" href="Severity-Pragmas.html">30.1.2 Severity Pragmas</a></li>
+      <li><a id="toc-Optimization-Pragmas-1" href="Optimization-Pragmas.html">30.1.3 Optimization Pragmas</a></li>
+    </ul></li>
+    <li><a id="toc-Static-Assertions-1" href="Static-Assertions.html">30.2 Static Assertions</a></li>
+  </ul></li>
+  <li><a id="toc-Type-Alignment-1" href="Type-Alignment.html">Appendix A Type Alignment</a></li>
+  <li><a id="toc-Aliasing-1" href="Aliasing.html">Appendix B Aliasing</a>
+  <ul class="no-bullet">
+    <li><a id="toc-Aliasing-and-Alignment" href="Aliasing-Alignment.html">B.1 Aliasing and Alignment</a></li>
+    <li><a id="toc-Aliasing-and-Length" href="Aliasing-Length.html">B.2 Aliasing and Length</a></li>
+    <li><a id="toc-Type-Rules-for-Aliasing" href="Aliasing-Type-Rules.html">B.3 Type Rules for Aliasing</a></li>
+  </ul></li>
+  <li><a id="toc-Digraphs-1" href="Digraphs.html">Appendix C Digraphs</a></li>
+  <li><a id="toc-Attributes-in-Declarations" href="Attributes.html">Appendix D Attributes in Declarations</a></li>
+  <li><a id="toc-Signals-1" href="Signals.html">Appendix E Signals</a></li>
+  <li><a id="toc-GNU-Free-Documentation-License-1" href="GNU-Free-Documentation-License.html">Appendix F GNU Free Documentation License</a></li>
+  <li><a id="toc-GNU-General-Public-License-1" href="GNU-General-Public-License.html">Appendix G GNU General Public License</a></li>
+  <li><a id="toc-Index-of-Symbols-and-Keywords" href="Symbol-Index.html" rel="index">Index of Symbols and Keywords</a></li>
+  <li><a id="toc-Concept-Index-1" href="Concept-Index.html" rel="index">Concept Index</a></li>
+</ul>
+</div>
+</div>
+<div class="Overview_element" id="SEC_Overview">
+<h2 class="shortcontents-heading">Short Table of Contents</h2>
+
+<div class="shortcontents">
+<ul class="no-bullet">
+<li><a id="stoc-The-First-Example-1" href="#toc-The-First-Example-1">1 The First Example</a></li>
+<li><a id="stoc-A-Complete-Program" href="#toc-A-Complete-Program">2 A Complete Program</a></li>
+<li><a id="stoc-Storage-and-Data" href="#toc-Storage-and-Data">3 Storage and Data</a></li>
+<li><a id="stoc-Beyond-Integers-1" href="#toc-Beyond-Integers-1">4 Beyond Integers</a></li>
+<li><a id="stoc-Lexical-Syntax-1" href="#toc-Lexical-Syntax-1">5 Lexical Syntax</a></li>
+<li><a id="stoc-Arithmetic-1" href="#toc-Arithmetic-1">6 Arithmetic</a></li>
+<li><a id="stoc-Assignment-Expressions-1" href="#toc-Assignment-Expressions-1">7 Assignment Expressions</a></li>
+<li><a id="stoc-Execution-Control-Expressions-1" href="#toc-Execution-Control-Expressions-1">8 Execution Control Expressions</a></li>
+<li><a id="stoc-Binary-Operator-Grammar-1" href="#toc-Binary-Operator-Grammar-1">9 Binary Operator Grammar</a></li>
+<li><a id="stoc-Order-of-Execution-1" href="#toc-Order-of-Execution-1">10 Order of Execution</a></li>
+<li><a id="stoc-Primitive-Data-Types" href="#toc-Primitive-Data-Types">11 Primitive Data Types</a></li>
+<li><a id="stoc-Constants-1" href="#toc-Constants-1">12 Constants</a></li>
+<li><a id="stoc-Type-Size-1" href="#toc-Type-Size-1">13 Type Size</a></li>
+<li><a id="stoc-Pointers-1" href="#toc-Pointers-1">14 Pointers</a></li>
+<li><a id="stoc-Structures-1" href="#toc-Structures-1">15 Structures</a></li>
+<li><a id="stoc-Arrays-1" href="#toc-Arrays-1">16 Arrays</a></li>
+<li><a id="stoc-Enumeration-Types-1" href="#toc-Enumeration-Types-1">17 Enumeration Types</a></li>
+<li><a id="stoc-Defining-Typedef-Names-1" href="#toc-Defining-Typedef-Names-1">18 Defining Typedef Names</a></li>
+<li><a id="stoc-Statements-1" href="#toc-Statements-1">19 Statements</a></li>
+<li><a id="stoc-Variables-1" href="#toc-Variables-1">20 Variables</a></li>
+<li><a id="stoc-Type-Qualifiers-1" href="#toc-Type-Qualifiers-1">21 Type Qualifiers</a></li>
+<li><a id="stoc-Functions-1" href="#toc-Functions-1">22 Functions</a></li>
+<li><a id="stoc-Compatible-Types-1" href="#toc-Compatible-Types-1">23 Compatible Types</a></li>
+<li><a id="stoc-Type-Conversions-1" href="#toc-Type-Conversions-1">24 Type Conversions</a></li>
+<li><a id="stoc-Scope-1" href="#toc-Scope-1">25 Scope</a></li>
+<li><a id="stoc-Preprocessing-1" href="#toc-Preprocessing-1">26 Preprocessing</a></li>
+<li><a id="stoc-Integers-in-Depth-1" href="#toc-Integers-in-Depth-1">27 Integers in Depth</a></li>
+<li><a id="stoc-Floating-Point-in-Depth-1" href="#toc-Floating-Point-in-Depth-1">28 Floating Point in Depth</a></li>
+<li><a id="stoc-Compilation-1" href="#toc-Compilation-1">29 Compilation</a></li>
+<li><a id="stoc-Directing-Compilation-1" href="#toc-Directing-Compilation-1">30 Directing Compilation</a></li>
+<li><a id="stoc-Type-Alignment-1" href="#toc-Type-Alignment-1">Appendix A Type Alignment</a></li>
+<li><a id="stoc-Aliasing-1" href="#toc-Aliasing-1">Appendix B Aliasing</a></li>
+<li><a id="stoc-Digraphs-1" href="#toc-Digraphs-1">Appendix C Digraphs</a></li>
+<li><a id="stoc-Attributes-in-Declarations" href="#toc-Attributes-in-Declarations">Appendix D Attributes in Declarations</a></li>
+<li><a id="stoc-Signals-1" href="#toc-Signals-1">Appendix E Signals</a></li>
+<li><a id="stoc-GNU-Free-Documentation-License-1" href="#toc-GNU-Free-Documentation-License-1">Appendix F GNU Free Documentation License</a></li>
+<li><a id="stoc-GNU-General-Public-License-1" href="#toc-GNU-General-Public-License-1">Appendix G GNU General Public License</a></li>
+<li><a id="stoc-Index-of-Symbols-and-Keywords" href="#toc-Index-of-Symbols-and-Keywords" rel="index">Index of Symbols and Keywords</a></li>
+<li><a id="stoc-Concept-Index-1" href="#toc-Concept-Index-1" rel="index">Concept Index</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="The-First-Example.html" accesskey="n" rel="next">The First Example</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

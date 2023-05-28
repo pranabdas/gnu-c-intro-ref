@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Incomplete Array Types (GNU C Language Manual)</title>
+
+<meta name="description" content="Incomplete Array Types (GNU C Language Manual)">
+<meta name="keywords" content="Incomplete Array Types (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Arrays.html" rel="up" title="Arrays">
+<link href="Limitations-of-C-Arrays.html" rel="next" title="Limitations of C Arrays">
+<link href="Array-Type-Designators.html" rel="prev" title="Array Type Designators">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Incomplete-Array-Types">
+<div class="header">
+<p>
+Next: <a href="Limitations-of-C-Arrays.html" accesskey="n" rel="next">Limitations of C Arrays</a>, Previous: <a href="Array-Type-Designators.html" accesskey="p" rel="prev">Array Type Designators</a>, Up: <a href="Arrays.html" accesskey="u" rel="up">Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Incomplete-Array-Types-1"></span><h3 class="section">16.5 Incomplete Array Types</h3>
+<span id="index-incomplete-array-types"></span>
+<span id="index-array-types_002c-incomplete"></span>
+
+<p>An array is equivalent, for most purposes, to a pointer to its zeroth
+element.  When that is true, the length of the array is irrelevant.
+The length needs to be known only for allocating space for the array, or
+for <code>sizeof</code> and <code>typeof</code> (see <a href="Auto-Type.html">Referring to a Type with <code>__auto_type</code></a>).  Thus, in some
+contexts C allows
+</p>
+<ul>
+<li> An <code>extern</code> declaration says how to refer to a variable allocated
+elsewhere.  It does not need to allocate space for the variable,
+so if it is an array, you can omit the length.  For example,
+
+<div class="example">
+<pre class="example">extern int foo[];
+</pre></div>
+
+</li><li> When declaring a function parameter as an array, the argument value
+passed to the function is really a pointer to the array&rsquo;s zeroth
+element.  This value does not say how long the array really is, there
+is no need to declare it.  For example,
+
+<div class="example">
+<pre class="example">int
+func (int foo[])
+</pre></div>
+</li></ul>
+
+<p>These declarations are examples of <em>incomplete</em> array types, types
+that are not fully specified.  The incompleteness makes no difference
+for accessing elements of the array, but it matters for some other
+things.  For instance, <code>sizeof</code> is not allowed on an incomplete
+type.
+</p>
+<p>With multidimensional arrays, only the first dimension can be omitted:
+</p>
+<div class="example">
+<pre class="example">extern struct chesspiece *funnyboard foo[][8];
+</pre></div>
+
+<p>In other words, the code doesn&rsquo;t have to say how many rows there are,
+but it must state how big each row is.
+</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Pointer-Integer Conversion (GNU C Language Manual)</title>
+
+<meta name="description" content="Pointer-Integer Conversion (GNU C Language Manual)">
+<meta name="keywords" content="Pointer-Integer Conversion (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Pointers.html" rel="up" title="Pointers">
+<link href="Printing-Pointers.html" rel="next" title="Printing Pointers">
+<link href="Pointer-Arithmetic-Drawbacks.html" rel="prev" title="Pointer Arithmetic Drawbacks">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Pointer_002dInteger-Conversion">
+<div class="header">
+<p>
+Next: <a href="Printing-Pointers.html" accesskey="n" rel="next">Printing Pointers</a>, Previous: <a href="Pointer-Arithmetic-Drawbacks.html" accesskey="p" rel="prev">Drawbacks of Pointer Arithmetic</a>, Up: <a href="Pointers.html" accesskey="u" rel="up">Pointers</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Pointer_002dInteger-Conversion-1"></span><h3 class="section">14.15 Pointer-Integer Conversion</h3>
+<span id="index-pointer_002dinteger-conversion"></span>
+<span id="index-conversion-between-pointers-and-integers"></span>
+<span id="index-uintptr_005ft"></span>
+
+<p>On modern computers, an address is simply a number.  It occupies the
+same space as some size of integer.  In C, you can convert a pointer
+to the appropriate integer types and vice versa, without losing
+information.  The appropriate integer types are <code>uintptr_t</code> (an
+unsigned type) and <code>intptr_t</code> (a signed type).  Both are defined
+in <samp>stdint.h</samp>.
+</p>
+<p>For instance,
+</p>
+<div class="example">
+<pre class="example">#include &lt;stdint.h&gt;
+#include &lt;stdio.h&gt;
+
+void
+print_pointer (void *ptr)
+{
+  uintptr_t converted = (uintptr_t) ptr;
+
+  printf (&quot;Pointer value is 0x%x\n&quot;,
+          (unsigned int) converted);
+}
+</pre></div>
+
+<p>The specification &lsquo;<samp>%x</samp>&rsquo; in the template (the first argument) for
+<code>printf</code> means to represent this argument using hexadecimal
+notation.  It&rsquo;s cleaner to use <code>uintptr_t</code>, since hexadecimal
+printing treats the number as unsigned, but it won&rsquo;t actually matter:
+all <code>printf</code> gets to see is the series of bits in the number.
+</p>
+<p><strong>Warning:</strong> Converting pointers to integers is risky&mdash;don&rsquo;t do
+it unless it is really necessary.
+</p>
+</div>
+
+
+
+</body>
+</html>

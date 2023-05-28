@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Postincrement/Postdecrement (GNU C Language Manual)</title>
+
+<meta name="description" content="Postincrement/Postdecrement (GNU C Language Manual)">
+<meta name="keywords" content="Postincrement/Postdecrement (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Assignment-Expressions.html" rel="up" title="Assignment Expressions">
+<link href="Assignment-in-Subexpressions.html" rel="next" title="Assignment in Subexpressions">
+<link href="Increment_002fDecrement.html" rel="prev" title="Increment/Decrement">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="section" id="Postincrement_002fPostdecrement">
+<div class="header">
+<p>
+Next: <a href="Assignment-in-Subexpressions.html" accesskey="n" rel="next">Pitfall: Assignment in Subexpressions</a>, Previous: <a href="Increment_002fDecrement.html" accesskey="p" rel="prev">Increment and Decrement Operators</a>, Up: <a href="Assignment-Expressions.html" accesskey="u" rel="up">Assignment Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Postincrement-and-Postdecrement"></span><h3 class="section">7.5 Postincrement and Postdecrement</h3>
+<span id="index-postincrement-expression"></span>
+<span id="index-postdecrement-expression"></span>
+<span id="index-operator_002c-postincrement"></span>
+<span id="index-operator_002c-postdecrement"></span>
+
+<p>Using &lsquo;<samp>++</samp>&rsquo; or &lsquo;<samp>--</samp>&rsquo; <em>after</em> an lvalue does something
+peculiar: it gets the value directly out of the lvalue and <em>then</em>
+increments or decrements it.  Thus, the value of <code>i++</code> is the same
+as the value of <code>i</code>, but <code>i++</code> also increments <code>i</code> &ldquo;a
+little later.&rdquo;  This is called <em>postincrement</em> or
+<em>postdecrement</em>.
+</p>
+<p>For example,
+</p>
+<div class="example">
+<pre class="example">#include &lt;stdio.h&gt;   /* <span class="roman">Declares <code>printf</code>.</span> */
+
+int
+main (void)
+{
+  int i = 5;
+  printf (&quot;%d\n&quot;, i);
+  printf (&quot;%d\n&quot;, i++);
+  printf (&quot;%d\n&quot;, i);
+  return 0;
+}
+</pre></div>
+
+<p>prints lines containing 5, again 5, and 6.  The expression <code>i++</code>
+has the value 5, which is the value of <code>i</code> at the time,
+but it increments <code>i</code> from 5 to 6 just a little later.
+</p>
+<p>How much later is &ldquo;just a little later&rdquo;?  The compiler has some
+flexibility in deciding that.  The rule is that the increment has to
+happen by the next <em>sequence point</em>; in simple cases, that means
+by the end of the statement.  See <a href="Sequence-Points.html">Sequence Points</a>.
+</p>
+<p>Regardless of precisely where the compiled code increments the value
+of <code>i</code>, the crucial thing is that the value of <code>i++</code> is the
+value that <code>i</code> has <em>before</em> incrementing it.
+</p>
+<p>If a unary operator precedes a postincrement or postincrement expression,
+the increment nests inside:
+</p>
+<div class="example">
+<pre class="example">-a++   <span class="roman">is equivalent to</span>   -(a++)
+</pre></div>
+
+<p>That&rsquo;s the only order that makes sense; <code>-a</code> is not an lvalue, so
+it can&rsquo;t be incremented.
+</p>
+<p>The most common use of postincrement is with arrays.  Here&rsquo;s an
+example of using postincrement to access one element of an array and
+advance the index for the next access.  Compare this with the example
+<code>avg_of_double</code> (see <a href="Array-Example.html">An Example with Arrays</a>), which is almost the same
+but doesn&rsquo;t use postincrement.
+</p>
+<div class="example">
+<pre class="example">double
+avg_of_double_alt (int length, double input_data[])
+{
+  double sum = 0;
+  int i;
+
+  /* <span class="roman">Fetch each element and add it into <code>sum</code>.</span>  */
+  for (i = 0; i &lt; length;)
+    /* <span class="roman">Use the index <code>i</code>, then increment it.</span>  */
+    sum += input_data[i++];
+
+  return sum / length;
+}
+</pre></div>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Assignment-in-Subexpressions.html">Pitfall: Assignment in Subexpressions</a>, Previous: <a href="Increment_002fDecrement.html">Increment and Decrement Operators</a>, Up: <a href="Assignment-Expressions.html">Assignment Expressions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

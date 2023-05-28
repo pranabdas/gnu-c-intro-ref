@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+
+(The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License," with the
+Front-Cover Texts being "A GNU Manual," and with the Back-Cover
+Texts as in (a) below.  A copy of the license is included in the
+section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual." -->
+<title>Macros and Auto Type (GNU C Language Manual)</title>
+
+<meta name="description" content="Macros and Auto Type (GNU C Language Manual)">
+<meta name="keywords" content="Macros and Auto Type (GNU C Language Manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Symbol-Index.html" rel="index" title="Symbol Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Macro-Pitfalls.html" rel="up" title="Macro Pitfalls">
+<link href="Self_002dReferential-Macros.html" rel="next" title="Self-Referential Macros">
+<link href="Duplication-of-Side-Effects.html" rel="prev" title="Duplication of Side Effects">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<div class="subsubsection" id="Macros-and-Auto-Type">
+<div class="header">
+<p>
+Next: <a href="Self_002dReferential-Macros.html" accesskey="n" rel="next">Self-Referential Macros</a>, Previous: <a href="Duplication-of-Side-Effects.html" accesskey="p" rel="prev">Duplication of Side Effects</a>, Up: <a href="Macro-Pitfalls.html" accesskey="u" rel="up">Macro Pitfalls</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Using-_005f_005fauto_005ftype-for-Local-Variables"></span><h4 class="subsubsection">26.5.10.5 Using <code>__auto_type</code> for Local Variables</h4>
+<span id="index-local-variables-in-macros"></span>
+<span id="index-variables_002c-local_002c-in-macros"></span>
+<span id="index-macros_002c-local-variables-in"></span>
+
+<p>The operator <code>__auto_type</code> makes it possible to
+define macros that can work on any data type even though they need to
+generate local variable declarations.  See <a href="Auto-Type.html">Referring to a Type with <code>__auto_type</code></a>.
+</p>
+<p>For instance, here&rsquo;s how to define a safe &ldquo;maximum&rdquo; macro that
+operates on any arithmetic type and computes each of its arguments
+exactly once:
+</p>
+<div class="example">
+<pre class="example">#define max(a,b) \
+  ({ __auto_type _a = (a); \
+      __auto_type _b = (b); \
+    _a &gt; _b ? _a : _b; })
+</pre></div>
+
+<p>The &lsquo;<samp>({ &hellip; })</samp>&rsquo; notation produces <em>statement
+expression</em>&mdash;a statement that can be used as an expression
+(see <a href="Statement-Exprs.html">Statements and Declarations in Expressions</a>).  Its value is the value of its last
+statement.  This permits us to define local variables and store each
+argument value into one.
+</p>
+<span id="index-underscores-in-variables-in-macros"></span>
+<span id="index-_005f-in-variables-in-macros"></span>
+
+<p>The reason for using names that start with underscores for the local
+variables is to avoid conflicts with variable names that occur within
+the expressions that are substituted for <code>a</code> and <code>b</code>.
+Underscore followed by a lower case letter won&rsquo;t be predefined by the
+system in any way.
+</p>
+
+</div>
+
+
+
+</body>
+</html>
