@@ -20,6 +20,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y --no-install-recommends \
+          autoconf \
           texlive-latex-recommended \
           texlive-latex-extra \
           texlive-fonts-extra \
@@ -34,12 +35,14 @@ jobs:
       - name: Build docs
         run: |
           cd c-intro-and-ref
+          autoreconf -vi
+          ./configure
           texi2pdf c.texi
           make c.html
           cd ..
           mkdir build
           cp c-intro-and-ref/c.pdf build/
-          cp c-intro-and-ref/c.html build/
+          cp -a c-intro-and-ref/c.html/. build/
 
       - name: Deploy on gh-pages
         uses: peaceiris/actions-gh-pages@v3
