@@ -3,7 +3,9 @@ GNU C Intro and Reference - ChangeLog
 2023-07-25  Ineiev  <ineiev@gnu.org>
 
 	* Makefile.am (dist_data_DATA): New variable.  Add c.pdf to distribution.
-	* configure.ac: Bump version to 0.0-rc2.
+	* configure.ac (AC_INIT): Bump version to 0.0-rc2.
+	* configure.ac (AC_INIT): Fix a typo in package name; bump version
+	to 0.0-rc3.
 
 -----
 
