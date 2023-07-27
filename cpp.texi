@@ -2176,8 +2176,8 @@ Here are some samples.
 @item
 Some macros are predefined on each kind of machine
 (@pxref{System specific Predefined Macros, System specific Predefined
-Macros, System-specific Predefined Macros, gcc, Using the GNU Compiler
-Collection}).  This allows you to provide code specially tuned for a
+Macros, System-specific Predefined Macros, cpp, The C Preprocessor}).
+This allows you to provide code specially tuned for a
 particular machine.
 
 @item
