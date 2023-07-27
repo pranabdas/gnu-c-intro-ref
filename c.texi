@@ -84,9 +84,9 @@ Cover art by J. Random Artist
 @end iftex
 
 This manual explains the C language for use with the GNU Compiler
-Collection (GCC) on the GNU/Linux system and other systems.  We refer
-to this dialect as GNU C.  If you already know C, you can use this as
-a reference manual.
+Collection (GCC) on the GNU/Linux operating system and other systems.
+We refer to this dialect as GNU C.  If you already know C, you can use
+this as a reference manual.
 
 If you understand basic concepts of programming but know nothing about
 C, you can read this manual sequentially from the beginning to learn
@@ -95,8 +95,8 @@ the C language.
 If you are a beginner in programming, we recommend you first learn a
 language with automatic garbage collection and no explicit pointers,
 rather than starting with C@.  Good choices include Lisp, Scheme,
-Python and Java.  C's explicit pointers mean that programmers must be
-careful to avoid certain kinds of errors.
+Python and Java.  Because of C's explicit pointers, programmers must be
+careful to avoid certain kinds of errors in memory usage.
 
 C is a venerable language; it was first used in 1973.  The GNU C
 Compiler, which was subsequently extended into the GNU Compiler
@@ -125,14 +125,14 @@ However, standards and other dialects are secondary topics for this
 manual.  For simplicity's sake, we keep those notes short, unless it
 is vital to say more.
 
-Likewise, we hardly mention C@t{++} or other languages that the GNU
-Compiler Collection supports.  We hope this manual will serve as a
-base for writing manuals for those languages, but languages so
-different can't share one common manual.
-
 Some aspects of the meaning of C programs depend on the target
 platform: which computer, and which operating system, the compiled
 code will run on.  Where this is the case, we say so.
+
+We hardly mention C@t{++} or other languages that the GNU
+Compiler Collection supports.  We hope this manual will serve as a
+base for writing manuals for those languages, but languages so
+different can't share one common manual.
 
 The C language provides no built-in facilities for performing such
 common operations as input/output, memory management, string
@@ -141,13 +141,13 @@ functions defined in the standard library, which is automatically
 available in every C program.  @xref{Top, The GNU C Library, , libc,
 The GNU C Library Reference Manual}.
 
-GNU/Linux systems use the GNU C Library to do this job.  It is itself
-a C program, so once you know C you can read its source code and see
-how its library functions do their jobs.  Some fraction of the
-functions are implemented as @dfn{system calls}, which means they
-contain a special instruction that asks the system kernel (Linux) to
-do a specific task.  To understand how those are implemented, you'd
-need to read Linux source code instead.  Whether a library function is
+Most GNU/Linux systems use the GNU C Library to provide those facilities.
+It is itself written in C, so once you know C you can read its source
+code and see how its library functions do their jobs.  Some fraction
+of the functions are implemented as @dfn{system calls}, which means
+they contain a special instruction that asks the system kernel (Linux)
+to do a specific task.  To understand how those are implemented, you'd
+need to read Linux source code.  Whether a library function is
 a system call is an internal implementation detail that makes no
 difference for how to call the function.
 
@@ -5032,7 +5032,7 @@ Remember, to understand what type a designator stands for, imagine the
 corresponding variable declaration with a variable name in it, and
 figure out what type that variable would have.  Thus, the type
 designator @code{double (*)[5]} corresponds to the variable declaration
-@code{double (*@var{variable})[5]}.  That deciares a pointer variable
+@code{double (*@var{variable})[5]}.  That declares a pointer variable
 which, when dereferenced, gives an array of 5 @code{double}s.
 So the type designator means, ``pointer to an array of 5 @code{double}s.''
 
@@ -5212,7 +5212,8 @@ type, if the left operand has a pointer type; for instance,
 Passing an argument of type @code{void *} for a parameter that has a
 pointer type also converts.  For example, supposing the function
 @code{hack} is declared to require type @code{float *} for its
-argument, this will convert the null pointer to that type.
+parameter, this call to @code{hack} will convert the argument to that
+type.
 
 @example
 /* @r{Declare @code{hack} that way.}
@@ -6682,7 +6683,7 @@ This specifies @code{x + y} for field @code{a},
 the character @samp{a} for field @code{b}'s element 0,
 and the null character for field @code{b}'s element 1.
 
-The parentheses around that constructor are to necessary, but we
+The parentheses around that constructor are not necessary, but we
 recommend writing them to make the nesting of the containing
 expression clearer.
 
@@ -7253,14 +7254,20 @@ for accessing elements of the array, but it matters for some other
 things.  For instance, @code{sizeof} is not allowed on an incomplete
 type.
 
-With multidimensional arrays, only the first dimension can be omitted:
+With multidimensional arrays, only the first dimension can be omitted.
+For example, suppose we want to represent the positions of pieces on a
+chessboard which has the usual 8 files (columns), but more (or fewer)
+ranks (rows) than the usual 8.  This declaration could hold a pointer
+to a two-dimensional array that can hold that data.  Each element of
+the array holds one row.
 
 @example
-extern struct chesspiece *funnyboard foo[][8];
+struct chesspiece *funnyboard[][8];
 @end example
 
-In other words, the code doesn't have to say how many rows there are,
-but it must state how big each row is.
+Since it is just a pointer to the start of an array, its type can be
+incomplete, but it must state how big each array element is---the
+number of elements in each row.
 
 @node Limitations of C Arrays
 @section Limitations of C Arrays
@@ -11275,7 +11282,7 @@ another.
 @cindex thunks
 
 A @dfn{nested function} is a function defined inside another function.
-(The ability to do this indispensable for automatic translation of
+(The ability to do this is indispensable for automatic translation of
 certain programming languages into C.)  The nested function's name is
 local to the block where it is defined.  For example, here we define a
 nested function named @code{square}, then call it twice:
@@ -11991,8 +11998,8 @@ Each definition or declaration of an identifier is visible
 in certain parts of the program, which is typically less than the whole
 of the program.  The parts where it is visible are called its @dfn{scope}.
 
-Normally, declarations made at the top-level in the source -- that is,
-not within any blocks and function definitions -- are visible for the
+Normally, declarations made at the top-level in the source---that is,
+not within any blocks and function definitions---are visible for the
 entire contents of the source file after that point.  This is called
 @dfn{file scope} (@pxref{File-Scope Variables}).
 
