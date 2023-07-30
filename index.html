@@ -71,9 +71,9 @@ Next: <a href="The-First-Example.html" accesskey="n" rel="next">The First Exampl
 <span id="GNU-C-Manual"></span><h1 class="top">GNU C Manual</h1>
 
 <p>This manual explains the C language for use with the GNU Compiler
-Collection (GCC) on the GNU/Linux system and other systems.  We refer
-to this dialect as GNU C.  If you already know C, you can use this as
-a reference manual.
+Collection (GCC) on the GNU/Linux operating system and other systems.
+We refer to this dialect as GNU C.  If you already know C, you can use
+this as a reference manual.
 </p>
 <p>If you understand basic concepts of programming but know nothing about
 C, you can read this manual sequentially from the beginning to learn
@@ -82,8 +82,8 @@ the C language.
 <p>If you are a beginner in programming, we recommend you first learn a
 language with automatic garbage collection and no explicit pointers,
 rather than starting with C.  Good choices include Lisp, Scheme,
-Python and Java.  C&rsquo;s explicit pointers mean that programmers must be
-careful to avoid certain kinds of errors.
+Python and Java.  Because of C&rsquo;s explicit pointers, programmers must be
+careful to avoid certain kinds of errors in memory usage.
 </p>
 <p>C is a venerable language; it was first used in 1973.  The GNU C
 Compiler, which was subsequently extended into the GNU Compiler
@@ -112,14 +112,14 @@ However, standards and other dialects are secondary topics for this
 manual.  For simplicity&rsquo;s sake, we keep those notes short, unless it
 is vital to say more.
 </p>
-<p>Likewise, we hardly mention C<tt>++</tt> or other languages that the GNU
-Compiler Collection supports.  We hope this manual will serve as a
-base for writing manuals for those languages, but languages so
-different can&rsquo;t share one common manual.
-</p>
 <p>Some aspects of the meaning of C programs depend on the target
 platform: which computer, and which operating system, the compiled
 code will run on.  Where this is the case, we say so.
+</p>
+<p>We hardly mention C<tt>++</tt> or other languages that the GNU
+Compiler Collection supports.  We hope this manual will serve as a
+base for writing manuals for those languages, but languages so
+different can&rsquo;t share one common manual.
 </p>
 <p>The C language provides no built-in facilities for performing such
 common operations as input/output, memory management, string
@@ -127,13 +127,13 @@ manipulation, and the like.  Instead, these facilities are provided by
 functions defined in the standard library, which is automatically
 available in every C program.  See <a data-manual="libc" href="https://www.gnu.org/software/libc/manual/html_node/index.html#Top">The GNU C Library</a> in <cite>The GNU C Library Reference Manual</cite>.
 </p>
-<p>GNU/Linux systems use the GNU C Library to do this job.  It is itself
-a C program, so once you know C you can read its source code and see
-how its library functions do their jobs.  Some fraction of the
-functions are implemented as <em>system calls</em>, which means they
-contain a special instruction that asks the system kernel (Linux) to
-do a specific task.  To understand how those are implemented, you&rsquo;d
-need to read Linux source code instead.  Whether a library function is
+<p>Most GNU/Linux systems use the GNU C Library to provide those facilities.
+It is itself written in C, so once you know C you can read its source
+code and see how its library functions do their jobs.  Some fraction
+of the functions are implemented as <em>system calls</em>, which means
+they contain a special instruction that asks the system kernel (Linux)
+to do a specific task.  To understand how those are implemented, you&rsquo;d
+need to read Linux source code.  Whether a library function is
 a system call is an internal implementation detail that makes no
 difference for how to call the function.
 </p>

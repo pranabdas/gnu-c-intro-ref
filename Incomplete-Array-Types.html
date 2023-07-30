@@ -98,15 +98,26 @@ for accessing elements of the array, but it matters for some other
 things.  For instance, <code>sizeof</code> is not allowed on an incomplete
 type.
 </p>
-<p>With multidimensional arrays, only the first dimension can be omitted:
+<p>With multidimensional arrays, only the first dimension can be omitted.
+For example, suppose we want to represent the positions of pieces on a
+chessboard which has the usual 8 files (columns), but more (or fewer)
+ranks (rows) than the usual 8.  This declaration could hold a pointer
+to a two-dimensional array that can hold that data.  Each element of
+the array holds one row.
 </p>
 <div class="example">
-<pre class="example">extern struct chesspiece *funnyboard foo[][8];
+<pre class="example">struct chesspiece *funnyboard[][8];
 </pre></div>
 
-<p>In other words, the code doesn&rsquo;t have to say how many rows there are,
-but it must state how big each row is.
+<p>Since it is just a pointer to the start of an array, its type can be
+incomplete, but it must state how big each array element is&mdash;the
+number of elements in each row.
 </p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Limitations-of-C-Arrays.html">Limitations of C Arrays</a>, Previous: <a href="Array-Type-Designators.html">Array Type Designators</a>, Up: <a href="Arrays.html">Arrays</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Symbol-Index.html" title="Index" rel="index">Index</a>]</p>
 </div>
 
 
