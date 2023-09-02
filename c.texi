@@ -2379,7 +2379,7 @@ To extract the day, month, and year out of
 /* @r{Remainder dividing by 32 gives lowest 5 bits, 0b1100.}  */
 d = date % 32;
 /* @r{Shifting 5 bits right discards the day, leaving 0b111101111110110.}
-      Remainder dividing by 16 gives lowest remaining 4 bits, 0b110.}  */
+   @r{Remainder dividing by 16 gives lowest remaining 4 bits, 0b110.}  */
 m = (date >> 5) % 16;
 /* @r{Shifting 9 bits right discards day and month,}
    @r{leaving 0b111101111110.}  */
