@@ -2632,18 +2632,27 @@ example, given a date specified by day of the month <code>d</code>, month
 integer <code>date</code>:
 </p>
 <div class="example">
-<pre class="example">unsigned int d = 12;
-unsigned int m = 6;
-unsigned int y = 1983;
+<pre class="example">unsigned int d = 12;		/* <span class="roman">12 in binary is 0b1100.</span>  */
+unsigned int m = 6;             /* <span class="roman">6 in binary is 0b110.</span>  */
+unsigned int y = 1983;          /* <span class="roman">1983 in binary is 0b11110111111.</span>  */
 unsigned int date = (((y &lt;&lt; 4) + m) &lt;&lt; 5) + d;
+                                /* <span class="roman">Add 0b11110111111000000000</span>
+                                   <span class="roman">and 0b11000000 and 0b1100.</span>
+                                   <span class="roman">Sum is 0b11110111111011001100.</span>  */
 </pre></div>
 
-<p>To extract the original day, month, and year out of
-<code>date</code>, use a combination of shift and remainder.
+<p>To extract the day, month, and year out of
+<code>date</code>, use a combination of shift and remainder:
 </p>
 <div class="example">
-<pre class="example">d = date % 32;
+<pre class="example">/* <span class="roman">32 in binary is 0b100000.</span>  */
+/* <span class="roman">Remainder dividing by 32 gives lowest 5 bits, 0b1100.</span>  */
+d = date % 32;
+/* <span class="roman">Shifting 5 bits right discards the day, leaving 0b111101111110110.</span>
+   <span class="roman">Remainder dividing by 16 gives lowest remaining 4 bits, 0b110.</span>  */
 m = (date &gt;&gt; 5) % 16;
+/* <span class="roman">Shifting 9 bits right discards day and month,</span>
+   <span class="roman">leaving 0b111101111110.</span>  */
 y = date &gt;&gt; 9;
 </pre></div>
 
@@ -7845,7 +7854,7 @@ set_message (char *text)
       if (text[i] == 0)
         return;
     }
-  fatal_error (&quot;Message is too long for `message');
+  fatal_error (&quot;Message is too long for `message'\n&quot;);
 }
 </pre></div>
 
