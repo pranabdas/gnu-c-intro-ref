@@ -15,4 +15,9 @@ Nelson Beebe (assigned to the FSF)
     Original authors.
 
 Ineiev
-    Add AUTHORS, THANKS, NEWS, README, ChangeLog.
+    Add AUTHORS, THANKS, NEWS, README, ChangeLog, Makefile.am,
+    configure.ac, version.texi.
+
+    Tiny changes in c.texi.
+
+    Cleanup in Makefile.

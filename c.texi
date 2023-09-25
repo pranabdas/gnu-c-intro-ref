@@ -9,6 +9,7 @@
 @c ??? alloca
 
 @setfilename ./c.info
+@include version.texi
 @settitle GNU C Language Manual
 @documentencoding UTF-8
 

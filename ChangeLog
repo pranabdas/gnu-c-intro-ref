@@ -1,5 +1,16 @@
 GNU C Intro and Reference - ChangeLog
 
+2023-09-25  Ineiev  <ineiev@gnu.org>
+
+	Add Autotools system in parallel with Makefile.
+
+	* Makefile.am:
+	* version.texi:
+	* configure.ac: New files.
+	* c.texi: Include version.texi.
+	* Makefile: Add copyright and license notices,
+	gather common dependencies in $(SOURCES), use $< and $@ in rules.
+
 
 -----
 
