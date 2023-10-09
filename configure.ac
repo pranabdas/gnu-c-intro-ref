@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script:
 # autoreconf -vi
 # Public domain. Originally written by Ineiev, 2023.
-AC_INIT([GNU C Intro And Reference], [0.0-rc4], [c-manual@gnu.org],
+AC_INIT([GNU C Intro And Reference], [0.0], [c-manual@gnu.org],
   [c-intro-and-ref], [https://www.gnu.org/software/c-intro-and-ref/])
 
 AC_PREREQ([2.65])

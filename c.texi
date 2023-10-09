@@ -1,6 +1,6 @@
 \input texinfo
 
-@c Copyright (C) 2022 Richard Stallman and Free Software Foundation, Inc.
+@c Copyright (C) 2022, 2023 Richard Stallman and Free Software Foundation, Inc.
 
 @c (The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
 
@@ -17,7 +17,9 @@
 @synindex vr fn
 
 @copying
-Copyright @copyright{} 2022 Richard Stallman and Free Software Foundation, Inc.
+This is Edition @value{VERSION}.
+
+Copyright @copyright{} 2022, 2023 Richard Stallman and Free Software Foundation, Inc.
 
 (The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
 
@@ -45,7 +47,7 @@ modify this GNU manual.''
 @center @titlefont{GNU C Language Introduction}
 @center @titlefont{and Reference Manual}
 @sp 4
-@c @center @value{EDITION} Edition
+@center Edition @value{VERSION}
 @sp 5
 @center Richard Stallman
 @center and

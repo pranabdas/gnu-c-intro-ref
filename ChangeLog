@@ -1,5 +1,15 @@
 GNU C Intro and Reference - ChangeLog
 
+2023-10-09  Ineiev  <ineiev@gnu.org>
+
+	Release 0.0.
+
+	* configure.ac: Set release to 0.0.
+	* c.texi: Cite release number.
+	* version.texi (EDITION, VERSION): Use VERSION instead of EDITION;
+	set to 0.0-git.
+	* NEWS: Update.
+
 2023-09-25  Ineiev  <ineiev@gnu.org>
 
 	Add Autotools system in parallel with Makefile.

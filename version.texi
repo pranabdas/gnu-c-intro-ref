@@ -1,1 +1,1 @@
-@set EDITION 0.0-rc4
+@set VERSION 0.0-git
