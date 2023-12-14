@@ -68,6 +68,13 @@ or warnings.
 Except for expansion of predefined macros, all these operations happen
 only if you use preprocessing directives to request them.
 
+@cindex preprocessing operators
+Preprocessing does not recognize the operators of the C language
+itself, outside of the operand of the @code{#if} directive
+(@pxref{if}).  However, it supports three @dfn{preprocessing
+operators} of its own: @code{#} (@pxref{Stringification}), @code{##}
+(@pxref{Concatenation}) and @code{defined} (@pxref{if}).
+
 @node Directives
 @section Directives
 @cindex directives
@@ -157,7 +164,7 @@ The distinction between lexically valid and invalid floating-point
 numbers, for example, doesn't matter at this stage.  The use of
 preprocessing numbers makes it possible to split an identifier at any
 position and get exactly two tokens, and reliably paste them together
-using the @code{##} operator (@pxref{Concatenation}).
+using the @code{##} preprocessing operator (@pxref{Concatenation}).
 
 @item punctuator
 A @dfn{punctuator} is syntactically like an operator.
@@ -589,7 +596,7 @@ keywords.  This can be useful if you wish to hide a keyword such as
 However, the preprocessing operator @code{defined} (@pxref{defined})
 can never be defined as a macro.
 
-The operator @code{#} is used in macros for stringification of an
+The preprocessing operator @code{#} is used in macros for stringification of an
 argument (@pxref{Stringification}), and @code{##} is used for
 concatenation of arguments into larger tokens (@pxref{Concatenation})
 
@@ -938,7 +945,7 @@ foo()def        @expansion{} abc def
 @node Stringification
 @subsection Stringification
 @cindex stringification
-@cindex @code{#} operator
+@cindex @code{#} preprocessing operator
 
 Sometimes you may want to convert a macro argument into a string
 constant.  Parameters are not replaced inside string constants, but
@@ -1028,7 +1035,7 @@ macro-expanded.
 @cindex concatenation
 @cindex token pasting
 @cindex token concatenation
-@cindex @code{##} operator
+@cindex @code{##} preprocessing operator
 
 It is often useful to merge two tokens into one while expanding macros.
 This is called @dfn{token pasting} or @dfn{token concatenation}.  The
@@ -1071,7 +1078,7 @@ concatenated.
 It is an error to use @code{##} at the beginning or end of a macro
 body.
 
-Multiple @code{##} operators are handled left-to-right, so that
+Multiple @code{##} preprocessing operators are handled left-to-right, so that
 @samp{1 ## e ## -2} pastes into @samp{1e-2}.  (Right-to-left
 processing would first generate @samp{e-2}, which is an invalid token.)
 When @code{#} and @code{##} are used together, they are all handled
@@ -1144,11 +1151,12 @@ eprintf ("%s:%d: ", input_file, lineno)
      @expansion{}  fprintf (stderr, "%s:%d: ", input_file, lineno)
 @end example
 
-The variable argument is completely macro-expanded before it is inserted
-into the macro expansion, just like an ordinary argument.  You may use
-the @code{#} and @code{##} operators to stringify the variable argument
-or to paste its leading or trailing token with another token.  (But see
-below for an important special case for @code{##}.)
+The variable argument is completely macro-expanded before it is
+inserted into the macro expansion, just like an ordinary argument.
+You may use the @code{#} and @code{##} preprocessing operators to
+stringify the variable argument or to paste its leading or trailing
+token with another token.  (But see below for an important special
+case for @code{##}.)
 
 @strong{Warning:} don't use the identifier @code{@w{__VA_ARGS__}}
 for anything other than this.
@@ -1350,8 +1358,9 @@ The rest of the predefined macros are GNU C extensions.
 @item __COUNTER__
 This macro expands to sequential integral values starting from 0.  In
 other words, each time the program uses this macro, it generates the
-next successive integer.  This, with the @code{##} operator, provides
-a convenient means for macros to generate unique identifiers.
+next successive integer.  This, with the @code{##} preprocessing
+operator, provides a convenient means for macros to generate unique
+identifiers.
 
 @item __GNUC__
 @itemx __GNUC_MINOR__
@@ -2042,7 +2051,7 @@ A @dfn{conditional} is a preprocessing directive that controls whether
 or not to include a chunk of code in the final token stream that is
 compiled.  Preprocessing conditionals can test arithmetic expressions,
 or whether a name is defined as a macro, or both together using the
-special @code{defined} operator.
+special @code{defined} preprocessing operator.
 
 A preprocessing conditional in C resembles in some ways an @code{if}
 statement in C, but it is important to understand the difference between
@@ -2242,8 +2251,8 @@ Macros.  All macros in the expression are expanded before actual
 computation of the expression's value begins.
 
 @item
-Uses of the @code{defined} operator, which lets you check whether macros
-are defined in the middle of an @code{#if}.
+Uses of the @code{defined} preprocessing operator, which lets you
+check whether macros are defined in the middle of an @code{#if}.
 
 @item
 Identifiers that are not macros, which are all considered to be the
@@ -2276,7 +2285,7 @@ value comes out to be nonzero, the @code{#if} succeeds and the
 @subsubsection The @code{defined} test
 
 @cindex @code{defined}
-The special operator @code{defined} is used in @code{#if} and
+The preprocessing operator @code{defined} is used in @code{#if} and
 @code{#elif} expressions to test whether a certain name is defined as a
 macro.  @code{defined @var{name}} and @code{defined (@var{name})} are
 both expressions whose value is 1 if @var{name} is defined as a macro at
