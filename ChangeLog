@@ -1,5 +1,42 @@
 GNU C Intro and Reference - ChangeLog
 
+2024-01-07  Richard Stallman  <rms@gnu.org>
+
+	* c.texi Many simple clarifiations and fixes.
+	(Top): Explain we assume programs run on a real computer.
+	(Iterative Fibonacci): Add footnote about how a statement with
+	no side effects can be useful in special situations.
+	(Complete Explanation): Fix xref node target.
+	(Identifiers): GNU C allows $.
+	(Operators/Punctuation): Explain each of the other punctuation chars.
+	Brief note re preprocessing operators.
+	How to group operator chars.
+	(Shift Operations): Explain binary constants here too.
+	(Shift Hacks): Explain binary constants here too.
+	Delete extra 0 at end of one binary constant.
+	(Bitwise Operations): Explain binary constants here too.
+	(Assignment Expressions): Recommend parens around conditional exp
+	inside a conditional exp.
+	(Lvalues): Add item for constructors.
+	Explain a little about arrays that are not lvalues.
+	(Modifying Assignment): Explain better about += and side-effects
+	inside subexpressions of the lvalue.
+	(Conditional Rules): Use parens when nesting conditional expressions.
+	(Conditional Branches): Correct type conversion rules for for branches.
+	(Binary Operator Grammar): Here and elsewhere, write "operations"
+	instead of "operators".
+	(Associativity and Ordering): State which operations are associative.
+	Explain the add-four-function-calls example in detail.
+	(Signed and Unsigned Types): Expain how char relates to signed char
+	and unsigned char.
+	(Complex Data Types): Mention j as imaginary suffix.
+	(Integer Const Type): Add examples for integer suffix U.
+	(Floating Constants): Clarify that suffixes don't make a number float.
+	(Floating Constants): Hex float constant must have an exponent.
+	(Character Constants): Explain the traditional names a little.
+	Give ryles for octal character code.
+	(Pointer Dereference): Add another example of a pointer to a variable.
+
 2023-10-09  Ineiev  <ineiev@gnu.org>
 
 	Release 0.0.

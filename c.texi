@@ -132,6 +132,14 @@ Some aspects of the meaning of C programs depend on the target
 platform: which computer, and which operating system, the compiled
 code will run on.  Where this is the case, we say so.
 
+When compiling for a ``real computer'', one that is a reasonable
+platform for running the GNU/Linux system, the type @code{int} is
+always 32 bits in size.  This manual assumes you are compiling for the
+computer where you are running the compiler, which implies @code{int}
+has that size.  GNU C can also compile code for some microprocessors
+on which type @code{int} has fewer bits, but this manual does not try
+to cover the complications of those peculiar platforms.
+
 We hardly mention C@t{++} or other languages that the GNU
 Compiler Collection supports.  We hope this manual will serve as a
 base for writing manuals for those languages, but languages so
@@ -721,14 +729,16 @@ provides a value for it to return.  @xref{return Statement}.
 @end table
 
 Calculating @code{fib} using ordinary integers in C works only for
-@var{n} < 47, because the value of @code{fib (47)} is too large to fit
-in type @code{int}.  The addition operation that tries to add
+@var{n} < 47 because the value of @code{fib (47)} is too large to fit
+in type @code{int}.  In GNU C, type @code{int} holds 32 bits
+(@pxref{Integer Typex}), so the addition operation that tries to add
 @code{fib (46)} and @code{fib (45)} cannot deliver the correct result.
 This occurrence is called @dfn{integer overflow}.
 
 Overflow can manifest itself in various ways, but one thing that can't
 possibly happen is to produce the correct value, since that can't fit
-in the space for the value.  @xref{Integer Overflow}.
+in the space for the value.  @xref{Integer Overflow}, for more details
+about this situation.
 
 @xref{Functions}, for a full explanation about functions.
 
@@ -757,7 +767,7 @@ Stack overflow on GNU/Linux typically manifests itself as the
 fault.''  By default, this signal terminates the program immediately,
 rather than letting the program try to recover, or reach an expected
 ending point.  (We commonly say in this case that the program
-``crashes'').  @xref{Signals}.
+``crashes.'')  @xref{Signals}.
 
 It is inconvenient to observe a crash by passing too large
 an argument to recursive Fibonacci, because the program would run a
@@ -810,10 +820,10 @@ fib (int n)
 
   for (i = 1; i < n; ++i)
     /* @r{If @code{n} is 1 or less, the loop runs zero times,}  */
-    /* @r{since @code{i < n} is false the first time.}  */
+    /* @r{since in that case @code{i < n} is false the first time.}  */
     @{
       /* @r{Now @code{last} is @code{fib (@code{i})}}
-         @r{and @code{prev} is @code{fib (@code{i} @minus{} 1)}.}  */
+         @r{and @code{prev} is @code{fib (@code{i} - 1)}.}  */
       /* @r{Compute @code{fib (@code{i} + 1)}.}  */
       int next = prev + last;
       /* @r{Shift the values down.}  */
@@ -918,9 +928,14 @@ data or has other side effects---for instance, with function calls, or
 with assignments as in this example.  @xref{Expression Statement}.
 
 Using an expression with no side effects in an expression statement is
-pointless except in very special cases.  For instance, the expression
-statement @code{x;} would examine the value of @code{x} and ignore it.
-That is not useful.
+pointless; for instance, the expression statement @code{x;} would
+examine the value of @code{x} and ignore it.  That is not
+useful.@footnote{Computing an expression and ignoring the result can
+be useful in peculiar cases.  For instance, dereferencing a pointer
+and ignoring the value is a way to cause a fault if a pointer value is
+invalid.  @xref{signals}.  But you may need to declare the pointer
+target @code{volatile} or the dereference may be optimized away.
+@xref{volatile}.}
 
 @item Increment operator
 The increment operator is @samp{++}.  @code{++i} is an
@@ -1054,8 +1069,8 @@ certain numeric @dfn{failure codes}.  @xref{Values from main}.
 The simplest way to print text in C is by calling the @code{printf}
 function, so here we explain very briefly what that function does.
 For a full explanation of @code{printf} and the other standard I/O
-functions, see @ref{I/O on Streams, The GNU C Library, , libc, The GNU
-C Library Reference Manual}.
+functions, see @ref{Input/Output on Streams, The GNU C Library, ,
+libc, The GNU C Library Reference Manual}.
 
 @cindex standard output
 The first argument to @code{printf} is a @dfn{string constant}
@@ -1113,7 +1128,7 @@ fib (int n)             /* @r{Its name is @code{fib};}  */
   /* @r{This stops the recursion from being infinite.}  */
   if (n <= 2)           /* @r{If @code{n} is 1 or 2,}  */
     return 1;           /*   @r{make @code{fib} return 1.}  */
-  else                  /* @r{otherwise, add the two previous}  */
+  else                  /* @r{Otherwise, add the two previous}  */
                         /* @r{Fibonacci numbers.}  */
     return fib (n - 1) + fib (n - 2);
 @}
@@ -1344,7 +1359,7 @@ array and then passing it as an argument.  Here is an example.
 
 @example
 @{
-  /* @r{The array of values to average.}  */
+  /* @r{The array of values to compute the average of.}  */
   double nums_to_average[5];
   /* @r{The average, once we compute it.}  */
   double average;
@@ -1418,7 +1433,7 @@ In C, you can combine the two, like this:
 @end example
 
 This declares @code{nums_to_average} so each of its elements is a
-@code{double}, and @code{average} so that it simply is a
+@code{double}, and @code{average} itself as a
 @code{double}.
 
 However, while you @emph{can} combine them, that doesn't mean you
@@ -1693,9 +1708,9 @@ visually from surrounding code.
 @cindex identifiers
 
 An @dfn{identifier} (name) in C is a sequence of letters and digits,
-as well as @samp{_}, that does not start with a digit.  Most compilers
-also allow @samp{$}.  An identifier can be as long as you like; for
-example,
+as well as @samp{_}, that does not start with a digit.  Most C compilers
+also allow @samp{$}; GNU C allows it.  An identifier can be as long as
+you like; for example,
 
 @example
 int anti_dis_establishment_arian_ism;
@@ -1734,9 +1749,18 @@ Here we describe the lexical syntax of operators and punctuation in C.
 The specific operators of C and their meanings are presented in
 subsequent chapters.
 
+Some characters that are generally considered punctuation have a
+different sort of meaning in the C language.  C uses double-quote
+@samp{"} to delimit string constants (@pxref{String Constants}) and
+@samp{'} to delimit constants (@pxref{String Constants}).  The
+characters @samp{$} and @samp{_} can be part of an identifier or a
+keyword.
+
 Most operators in C consist of one or two characters that can't be
-used in identifiers.  The characters used for operators in C are
-@samp{!~^&|*/%+-=<>,.?:}.
+used in identifiers.  The characters used for such operators in C are
+@samp{!~^&|*/%+-=<>,.?:}.  (C preprocessing uses @dfn{preprocessing
+operators}, based on @samp{#}, which are entirely different from
+these operators; @ref{{Preprocessing}.)
 
 Some operators are a single character.  For instance, @samp{-} is the
 operator for negation (with one operand) and the operator for
@@ -1744,8 +1768,8 @@ subtraction (with two operands).
 
 Some operators are two characters.  For example, @samp{++} is the
 increment operator.  Recognition of multicharacter operators works by
-grouping together as many consecutive characters as can constitute one
-operator.
+reading and grouping as many successive characters as can
+constitute one operator, and making them one token.
 
 For instance, the character sequence @samp{++} is always interpreted
 as the increment operator; therefore, if we want to write two
@@ -1899,7 +1923,7 @@ exists; it yields its operand unaltered.
 the result you expect.  Its value is an integer, which is not equal to
 the mathematical quotient when that is a fraction.  Use @samp{%} to
 get the corresponding integer remainder when necessary.
-@xref{Division and Remainder}.  Floating point division yields value
+@xref{Division and Remainder}.  Floating-point division yields a value
 as close as possible to the mathematical quotient.
 
 These operators use algebraic syntax with the usual algebraic
@@ -2283,6 +2307,10 @@ operates on a narrow integer type; it's always either @code{int} or
 wider.  The result of the shift operation has the same type as the
 promoted left operand.
 
+The examples in this section use binary constants, starting with
+@samp{0b} (@pxref{Integer Constants}).  They stand for 32-bit integers
+of type @code{int}.
+
 @menu
 * Bits Shifted In::     How shifting makes new bits to shift in.
 * Shift Caveats::       Caveats of shift operations.
@@ -2306,7 +2334,7 @@ appropriate power of 2.  For example,
 
 The meaning of shifting right depends on whether the data type is
 signed or unsigned (@pxref{Signed and Unsigned Types}).  For a signed
-data type, it performs ``arithmetic shift,'' which keeps the number's
+data type, GNU C performs ``arithmetic shift,'' which keeps the number's
 sign unchanged by duplicating the sign bit.  For an unsigned data
 type, it performs ``logical shift,'' which always shifts in zeros at
 the most significant bit.
@@ -2320,9 +2348,9 @@ towards negative infinity.  For example,
 (unsigned) 21 >> 2 @result{} 5
 @end example
 
-For negative left operand @code{a}, @code{a >> 1} is not equivalent to
-@code{a / 2}.  They both divide by 2, but @samp{/} rounds toward
-zero.
+For a negative left operand @code{a}, @code{a >> 1} is not equivalent
+to @code{a / 2}.  Both operations divide by 2, but @samp{/} rounds
+toward zero.
 
 The shift count must be zero or greater.  Shifting by a negative
 number of bits gives machine-dependent results.
@@ -2350,10 +2378,10 @@ a + (b << 5)   /* @r{Shift first, then add.}  */
 
 Note: according to the C standard, shifting of signed values isn't
 guaranteed to work properly when the value shifted is negative, or
-becomes negative during the operation of shifting left.  However, only
-pedants have a reason to be concerned about this; only computers with
-strange shift instructions could plausibly do this wrong.  In GNU C,
-the operation always works as expected,
+becomes negative during shifting.  However, only pedants have a reason
+to be concerned about this; only computers with strange shift
+instructions could plausibly do this wrong.  In GNU C, the operation
+always works as expected.
 
 @node Shift Hacks
 @subsection Shift Hacks
@@ -2362,6 +2390,10 @@ You can use the shift operators for various useful hacks.  For
 example, given a date specified by day of the month @code{d}, month
 @code{m}, and year @code{y}, you can store the entire date in a single
 integer @code{date}:
+
+The examples in this section use binary constants, starting with
+@samp{0b} (@pxref{Integer Constants}).  They stand for 32-bit integers
+of type @code{int}.
 
 @example
 unsigned int d = 12;		/* @r{12 in binary is 0b1100.}  */
@@ -2385,15 +2417,14 @@ d = date % 32;
    @r{Remainder dividing by 16 gives lowest remaining 4 bits, 0b110.}  */
 m = (date >> 5) % 16;
 /* @r{Shifting 9 bits right discards day and month,}
-   @r{leaving 0b111101111110.}  */
+   @r{leaving 0b11110111111.}  */
 y = date >> 9;
 @end example
 
 @code{-1 << LOWBITS} is a clever way to make an integer whose
 @code{LOWBITS} lowest bits are all 0 and the rest are all 1.
-@code{-(1 << LOWBITS)} is equivalent to that, due to associativity of
-multiplication, since negating a value is equivalent to multiplying it
-by @minus{}1.
+@code{-(1 << LOWBITS)} is equivalent to that, since negating a value
+is equivalent to multiplying it by @minus{}1.
 
 @node Bitwise Operations
 @section Bitwise Operations
@@ -2406,9 +2437,9 @@ by @minus{}1.
 Bitwise operators operate on integers, treating each bit independently.
 They are not allowed for floating-point types.
 
-The examples in this section use binary constants, starting with
-@samp{0b} (@pxref{Integer Constants}).  They stand for 32-bit integers
-of type @code{int}.
+As in the previous section, the examples in this section use binary
+constants, starting with @samp{0b} (@pxref{Integer Constants}).  They
+stand for 32-bit integers of type @code{int}.
 
 @table @code
 @item ~@code{a}
@@ -2463,11 +2494,12 @@ to zero, so that @code{0b111@r{@dots{}}111} is @minus{}1 and
 @code{0b100@r{@dots{}}000} is the most negative possible integer.
 
 @strong{Warning:} C defines a precedence ordering for the bitwise
-binary operators, but you should never rely on it.   You should
-never rely on how bitwise binary operators relate in precedence to the
-arithmetic and shift binary operators.  Other programmers don't
-remember this precedence ordering, so always use parentheses to
-explicitly specify the nesting.
+binary operators, but you should never rely on it.  Likewise, you
+should never rely on how bitwise binary operators relate in precedence
+to the arithmetic and shift binary operators.  Other programmers don't
+remember these aspects of C's precedence ordering; to make your
+programs clear, always use parentheses to explicitly specify the
+nesting among these operators.
 
 For example, suppose @code{offset} is an integer that specifies
 the offset within shared memory of a table, except that its bottom few
@@ -2539,11 +2571,11 @@ the other way,
 
 @noindent
 would be invalid since an assignment expression such as @code{x = y}
-is not valid as an lvalue.
+is not a valid lvalue.
 
 @strong{Warning:} Write parentheses around an assignment if you nest
-it inside another expression, unless that is a conditional expression,
-or comma-separated series, or another assignment.
+it inside another expression, unless that containing expression is a
+comma-separated series or another assignment.
 
 @menu
 * Simple Assignment::            The basics of storing a value.
@@ -2631,6 +2663,9 @@ as for structure fields.
 @item
 An array-element reference using @samp{[@r{@dots{}}]}, if the array
 is an lvalue.
+
+@item
+A structure or union constructor.
 @end itemize
 
 If an expression's outermost operation is any other operator, that
@@ -2638,13 +2673,18 @@ expression is not an lvalue.  Thus, the variable @code{x} is an
 lvalue, but @code{x + 0} is not, even though these two expressions
 compute the same value (assuming @code{x} is a number).
 
-An array can be an lvalue (the rules above determine whether it is
-one), but using the array in an expression converts it automatically
-to a pointer to the zeroth element.  The result of this conversion is
-not an lvalue.  Thus, if the variable @code{a} is an array, you can't
-use @code{a} by itself as the left operand of an assignment.  But you
-can assign to an element of @code{a}, such as @code{a[0]}.  That is an
-lvalue since @code{a} is an lvalue.
+It is rare that a structure value or an array value is not an lvalue,
+but that does happen---for instance, the result of a function call or
+a conditional operator can have a structure or array type, but is
+never an lvalue.
+
+If an array is an lvalue, using the array in an expression still
+converts it automatically to a pointer to the zeroth element.  The
+result of this conversion is not an lvalue.  Thus, if the variable
+@code{a} is an array, you can't use @code{a} by itself as the left
+operand of an assignment.  But you can assign to an element of
+@code{a}, such as @code{a[0]}.  That is an lvalue since @code{a} is an
+lvalue.
 
 @node Modifying Assignment
 @section Modifying Assignment
@@ -2701,19 +2741,21 @@ In most cases, this feature adds no power to the language, but it
 provides substantial convenience.  Also, when @var{lvalue} contains
 code that has side effects, the simple assignment performs those side
 effects twice, while the modifying assignment performs them once.  For
-instance,
+instance, suppose that the function @code{foo} has a side effect, perhaps
+changing static storage.  This statement
 
 @example
 x[foo ()] = x[foo ()] + 5;
 @end example
 
 @noindent
-calls @code{foo} twice, and it could return different values each
-time.  If @code{foo ()} returns 1 the first time and 3 the second
-time, then the effect could be to add @code{x[3]} and 5 and store the
-result in @code{x[1]}, or to add @code{x[1]} and 5 and store the
-result in @code{x[3]}.  We don't know which of the two it will do,
-because C does not specify which call to @code{foo} is computed first.
+calls @code{foo} twice.  If @code{foo} operates on static variables,
+it could return a different value each time.  If @code{foo ()} will
+return 1 the first time and 3 the second time, the effect could be to
+add @code{x[3]} and 5 and store the result in @code{x[1]}, or to add
+@code{x[1]} and 5 and store the result in @code{x[3]}.  We don't know
+which of the two it will do, because C does not specify which call to
+@code{foo} is computed first.
 
 Such a statement is not well defined, and shouldn't be used.
 
@@ -2761,9 +2803,9 @@ main (void)
 @end example
 
 @noindent
-prints lines containing 5, 6, and 6 again.  The expression @code{++i}
-increments @code{i} from 5 to 6, and has the value 6, so the output
-from @code{printf} on that line says @samp{6}.
+prints lines containing @samp{5}, @samp{6}, and @samp{6} again.  The
+expression @code{++i} increments @code{i} from 5 to 6, and has the
+value 6, so the output from @code{printf} on that line says @samp{6}.
 
 Using @samp{--} instead, for predecrement,
 
@@ -2816,9 +2858,10 @@ main (void)
 @end example
 
 @noindent
-prints lines containing 5, again 5, and 6.  The expression @code{i++}
-has the value 5, which is the value of @code{i} at the time,
-but it increments @code{i} from 5 to 6 just a little later.
+prints lines containing @samp{5}, again @samp{5}, and @samp{6}.  The
+expression @code{i++} has the value 5, which is the value of @code{i}
+at the time, but it increments @code{i} from 5 to 6 just a little
+later.
 
 How much later is ``just a little later''?  The compiler has some
 flexibility in deciding that.  The rule is that the increment has to
@@ -2829,21 +2872,21 @@ Regardless of precisely where the compiled code increments the value
 of @code{i}, the crucial thing is that the value of @code{i++} is the
 value that @code{i} has @emph{before} incrementing it.
 
-If a unary operator precedes a postincrement or postincrement expression,
-the increment nests inside:
+If a unary operator precedes a postincrement or postdecrement expression,
+the post-whatever expression nests inside:
 
 @example
 -a++   @r{is equivalent to}   -(a++)
 @end example
 
-That's the only order that makes sense; @code{-a} is not an lvalue, so
-it can't be incremented.
+The other order would not even make sense, here; @code{-a} is not an
+lvalue, so it can't be incremented.
 
 The most common use of postincrement is with arrays.  Here's an
 example of using postincrement to access one element of an array and
 advance the index for the next access.  Compare this with the example
 @code{avg_of_double} (@pxref{Array Example}), which is almost the same
-but doesn't use postincrement.
+but doesn't use postincrement for that.
 
 @example
 double
@@ -2990,13 +3033,13 @@ in any context where an integer-valued expression is allowed.
 Unary operator for logical ``not.''  The value is 1 (true) if
 @var{exp} is 0 (false), and 0 (false) if @var{exp} is nonzero (true).
 
-@strong{Warning:} if @code{exp} is anything but an lvalue or a
+@strong{Warning:} If @var{exp} is anything but an lvalue or a
 function call, you should write parentheses around it.
 
 @item @var{left} && @var{right}
 The logical ``and'' binary operator computes @var{left} and, if necessary,
 @var{right}.  If both of the operands are true, the @samp{&&} expression
-gives the value 1 (which is true).  Otherwise, the @samp{&&} expression
+gives the value 1 (true).  Otherwise, the @samp{&&} expression
 gives the value 0 (false).  If @var{left} yields a false value,
 that determines the overall result, so @var{right} is not computed.
 
@@ -3008,7 +3051,7 @@ gives the value 0 (false).  If @var{left} yields a true value,
 that determines the overall result, so @var{right} is not computed.
 @end table
 
-@strong{Warning:} never rely on the relative precedence of @samp{&&}
+@strong{Warning:} Never rely on the relative precedence of @samp{&&}
 and @samp{||}.  When you use them together, always use parentheses to
 specify explicitly how they nest, as shown here:
 
@@ -3045,8 +3088,8 @@ if (r && x % r == 0)
 
 @noindent
 A truth value is simply a number, so using @code{r} as a truth value
-tests whether it is nonzero.  But @code{r}'s meaning as en expression
-is not a truth value---it is a number to divide by.  So it is better
+tests whether it is nonzero.  But @code{r}'s meaning as an expression
+is not a truth value---it is a number to divide by.  So it is clearer
 style to write the explicit @code{!= 0}.
 
 Here's another equivalent way to write it:
@@ -3056,7 +3099,7 @@ if (!(r == 0) && x % r == 0)
 @end example
 
 @noindent
-This illustrates the unary @samp{!} operator, and the need to
+This illustrates the unary @samp{!} operator, as well as the need to
 write parentheses around its operand.
 
 @node Logicals and Assignments
@@ -3093,7 +3136,8 @@ If an empty list is a null pointer, we can dispense with calling
 @code{nonempty}:
 
 @example
-if ((temp1 = list_next (list))
+if (list
+    && (temp1 = list_next (list))
     && (temp2 = list_next (temp1)))
  @r{@dots{}}
 @end example
@@ -3130,16 +3174,32 @@ of them.
 Here's an example: the absolute value of a number @code{x}
 can be written as @code{(x >= 0 ? x : -x)}.
 
-@strong{Warning:} The conditional expression operators have rather low
+@strong{Warning:} The conditional expression has rather low
 syntactic precedence.  Except when the conditional expression is used
 as an argument in a function call, write parentheses around it.  For
 clarity, always write parentheses around it if it extends across more
 than one line.
 
-Assignment operators and the comma operator (@pxref{Comma Operator})
-have lower precedence than conditional expression operators, so write
-parentheses around those when they appear inside a conditional
-expression.  @xref{Order of Execution}.
+@strong{Warning:} Assignment operators and the comma operator
+(@pxref{Comma Operator}) have lower precedence than conditional
+expressions, so write parentheses around those when they appear inside
+a conditional expression.  @xref{Order of Execution}.
+
+@c ??? Are there any other cases where it is fine to omit them?
+@strong{Warning:} When nesting a conditional expression within another
+conditional expression, unless a pair of matching delimiters surrounds
+the inner conditional expression for some other reason, write
+parentheses around it:
+
+@example
+((foo > 0 ? test1 : test2) ? (ifodd (foo) ? 5 : 10)
+                           : (ifodd (whatever) ? 5 : 10));
+@end example
+
+@noindent
+In the first operand, those parentheses are necessary to prevent
+incorrect parsing.  In the second and third operands, the computer may
+not need the parentheses, but they will help human beings.
 
 @node Conditional Branches
 @subsection Conditional Operator Branches
@@ -3158,8 +3218,8 @@ result type is a similar pointer whose target type combines all the
 type qualifiers (@pxref{Type Qualifiers}) of both branches.
 
 If one branch has type @code{void *} and the other is a pointer to an
-object (not to a function), the conditional converts the @code{void *}
-branch to the type of the other.
+object (not to a function), the conditional converts the latter to
+@code{void *}.
 
 If one branch is an integer constant with value zero and the other is
 a pointer, the conditional converts zero to the pointer's type.
@@ -3229,9 +3289,9 @@ commas between them.
 @node Uses of Comma
 @subsection The Uses of the Comma Operator
 
-With commas, you can put several expressions into a place that
-requires just one expression---for example, in the header of a
-@code{for} statement.  This statement
+With commas, you can put several expressions into a place that allows
+one expression---for example, in the header of a @code{for} statement.
+This statement
 
 @example
 for (i = 0, j = 10, k = 20; i < n; i++)
@@ -3287,7 +3347,7 @@ foo ((4, 5, 6))
 which uses the comma operator and passes just one argument
 (with value 6).
 
-@strong{Warning:} don't use the comma operator around an argument
+@strong{Warning:} Don't use the comma operator within an argument
 of a function unless it makes the code more readable.  When you do so,
 don't put part of another argument on the same line.  Instead, add a
 line break to make the parentheses around the comma operator easier to
@@ -3371,7 +3431,7 @@ parser, and promptly forgot it again.  If you need to look up the full
 precedence order to understand some C code, add enough parentheses so
 nobody else needs to do that.}
 
-You can depend on this subsequence of the precedence ordering
+Clean code can depend on this subsequence of the precedence ordering
 (stated from highest precedence to lowest):
 
 @enumerate
@@ -3381,7 +3441,7 @@ Postfix operations: access to a field or alternative (@samp{.} and
 operators.
 
 @item
-Unary prefix operators.
+Unary prefix operations.
 
 @item
 Multiplication, division, and remainder (they have the same precedence).
@@ -3393,7 +3453,7 @@ Addition and subtraction (they have the same precedence).
 Comparisons---but watch out!
 
 @item
-Logical operators @samp{&&} and @samp{||}---but watch out!
+Logical operations @samp{&&} and @samp{||}---but watch out!
 
 @item
 Conditional expression with @samp{?} and @samp{:}.
@@ -3406,36 +3466,37 @@ Sequential execution (the comma operator, @samp{,}).
 @end enumerate
 
 Two of the lines in the above list say ``but watch out!''  That means
-that the line covers operators with subtly different precedence.
-Never depend on the grammar of C to decide how two comparisons nest;
-instead, always use parentheses to specify their nesting.
+that the line covers operations with subtly different precedence.  When
+you use tro comparison operations together, don't depend on the
+grammar of C to control how they nest.  Instead, always use
+parentheses to show their nesting.
 
-You can let several @samp{&&} operators associate, or several
-@samp{||} operators, but always use parentheses to show how @samp{&&}
+You can let several @samp{&&} operations associate, or several
+@samp{||} operations, but always use parentheses to show how @samp{&&}
 and @samp{||} nest with each other.  @xref{Logical Operators}.
 
-There is one other precedence ordering that code can depend on:
+There is one other precedence ordering that clean code can depend on:
 
 @enumerate
 @item
-Unary postfix operators.
+Unary postfix operations.
 
 @item
-Bitwise and shift operators---but watch out!
+Bitwise and shift operations---but watch out!
 
 @item
 Conditional expression with @samp{?} and @samp{:}.
 @end enumerate
 
-The caveat for bitwise and shift operators is like that for logical
-operators: you can let multiple uses of one bitwise operator
+The caveat for bitwise and shift operations is like that for logical
+operators: you can let multiple uses of one bitwise operation
 associate, but always use parentheses to control nesting of dissimilar
-operators.
+operations.
 
 These lists do not specify any precedence ordering between the bitwise
-and shift operators of the second list and the binary operators above
-conditional expressions in the first list.  When they come together,
-parenthesize them.  @xref{Bitwise Operations}.
+and shift operations of the second list and the binary operations
+above conditional expressions in the first list.  When they come
+together, parenthesize them.  @xref{Bitwise Operations}.
 
 @node Order of Execution
 @chapter Order of Execution
@@ -3494,13 +3555,18 @@ the third argument.
 @section Associativity and Ordering
 @cindex associativity and ordering
 
-An associative binary operator, such as @code{+}, when used repeatedly
-can combine any number of operands.  The operands' values may be
-computed in any order.
+@c ??? What to say about signed overflow and associativity.
 
-If the values are integers and overflow can be ignored, they may be
-combined in any order.  Thus, given four functions that return
-@code{unsigned int}, calling them and adding their results as here
+The bitwise binary operators, @code{&}, @code{|} and @code{^}, are
+associative.  The arithmetic binary operators @code{+} and @code{*}
+are associative if the operand type is unsigned.  An associative
+binary operator, when used repeatedly, can combine any number of
+operands.  The operands' values may be computed in any order, and
+since the operation is associative, they can be combined in any order
+too.
+
+Thus, given four functions that return @code{unsigned int}, calling
+them and adding their results as here
 
 @example
 (foo () + bar ()) + (baz () + quux ())
@@ -3509,12 +3575,15 @@ combined in any order.  Thus, given four functions that return
 @noindent
 may add up the results in any order.
 
-By contrast, arithmetic on signed integers, in which overflow is significant,
-is not always associative (@pxref{Integer Overflow}).  Thus, the
-additions must be done in the order specified, obeying parentheses and
-left-association.  That means computing @code{(foo () + bar ())} and
+By contrast, arithmetic on signed integers is not always associative
+because there is the possibility of overflow (@pxref{Integer
+Overflow}).  Thus, the additions must be done in the order specified,
+obeying parentheses (or left-association in the absence of
+parentheses).  That means computing @code{(foo () + bar ())} and
 @code{(baz () + quux ())} first (in either order), then adding the
 two.
+
+@c ??? Does use of -fwrapv make signed addition count as associative?
 
 The same applies to arithmetic on floating-point values, since that
 too is not really associative.  However, the GCC option
@@ -3522,11 +3591,11 @@ too is not really associative.  However, the GCC option
 order of calculation when an associative operation (associative in
 exact mathematics) combines several operands.  The option takes effect
 when compiling a module (@pxref{Compilation}).  Changing the order
-of association can enable the program to pipeline the floating point
-operations.
+of association can enable GCC to optiimize the floating-point
+ooerations better.
 
-In all these cases, the four function calls can be done in any order.
-There is no right or wrong about that.
+In all these examples, the four function calls can be done in any
+order.  There is no right or wrong about that.
 
 @node Sequence Points
 @section Sequence Points
@@ -3551,9 +3620,9 @@ that expression are carried out before any execution of the
 next operand.
 
 The commas that separate arguments in a function call are @emph{not}
-comma operators, and they do not create sequence points.  The rule
-for function arguments and the rule for operands are different
-(@pxref{Ordering of Operands}).
+comma operators, and they do not create sequence points.  The
+sequence-point rule for function arguments and the rule for operands
+(@pxref{Ordering of Operands}) are different.
 
 @item
 Just before calling a function.  All side effects specified by the
@@ -3790,7 +3859,7 @@ This is harmless and customary.
 @findex unsigned
 
 An unsigned integer type can represent only positive numbers and zero.
-A signed type can represent both positive and negative number, in a
+A signed type can represent both positive and negative numbers, in a
 range spread almost equally on both sides of zero.  For instance,
 @code{unsigned char} holds numbers from 0 to 255 (on most computers),
 while @code{signed char} holds numbers from @minus{}128 to 127.  Each of
@@ -3803,16 +3872,17 @@ other than @code{char} are signed by default; with them, @code{signed}
 is a no-op.
 
 Plain @code{char} may be signed or unsigned; this depends on the
-compiler, the machine in use, and its operating system.
+compiler, the machine in use, and its operating system.  It is not
+@emph{the same type} as either @code{signed char} or @code{unsigned
+char}, but it is always equivalent to one of those two.
 
-In many programs, it makes no difference whether @code{char} is
-signed.  When it does matter, don't leave it to chance; write
-@code{signed char} or @code{unsigned char}.@footnote{Personal note from
-Richard Stallman: Eating with hackers at a fish restaurant, I ordered
-Arctic Char.  When my meal arrived, I noted that the chef had not
-signed it.  So I complained, ``This char is unsigned---I wanted a
-signed char!''  Or rather, I would have said this if I had thought of
-it fast enough.}
+In many programs, it makes no difference whether the type @code{char}
+is signed.  When signedness does matter for a certain vslue, don't
+leave it to chance; declare it as @code{signed char} or @code{unsigned
+char} instead.@footnote{Personal note from Richard Stallman: Eating
+with hackers at a fish restaurant, I ordered arctic char.  When my
+meal arrived, I noted that the chef had not signed it.  So I told
+other hackers, ``This char is unsigned---I wanted a signed char!''}
 
 @node Narrow Integers
 @subsection Narrow Integers
@@ -3825,10 +3895,11 @@ arithmetic.  There is literally no reason to declare a local variable
 
 In particular, if the value is really a character, you should declare
 the variable @code{int}.  Not @code{char}!  Using that narrow type can
-force the compiler to truncate values for conversion, which is a
-waste.  Furthermore, some functions return either a character value,
-or @minus{}1 for ``no character.''  Using @code{int} makes it possible
-to distinguish @minus{}1 from a character by sign.
+force the compiled code to truncate values to @code{char} before
+conversion, which is a waste.  Furthermore, some functions return
+either a character value or @minus{}1 for ``no character.''  Using
+type @code{int} makes it possible to distinguish @minus{}1 from any
+character, by sign.
 
 The narrow integer types are useful as parts of other objects, such as
 arrays and structures.  Compare these array declarations, whose sizes
@@ -3862,7 +3933,7 @@ The process of conversion to a wider type is straightforward: the
 value is unchanged.  The only exception is when converting a negative
 value (in a signed type, obviously) to a wider unsigned type.  In that
 case, the result is a positive value with the same bits
-(@pxref{Integers in Depth}).
+(@pxref{Integers in Depth}), padded on the left with zeros.
 
 @cindex truncation
 Converting to a narrower type, also called @dfn{truncation}, involves
@@ -4024,6 +4095,7 @@ but the order shown above seems most logical.
 
 GNU C supports constants for complex values; for instance, @code{4.0 +
 3.0i} has the value 4 + 3i as type @code{_Complex double}.
+@samp{j} is equivalent to @samp{i}, as a numeric suffix.
 @xref{Imaginary Constants}.
 
 To pull the real and imaginary parts of the number back out, GNU C
@@ -4050,12 +4122,12 @@ which means negating the imaginary part of a complex number:
 
 @example
 _Complex double foo = 4.0 + 3.0i;
-_Complex double bar = ~foo; /* @r{@code{bar} is now 4 @minus{} 3i.} */
+_Complex double bar = ~foo; /* @r{@code{bar} is now 4.0 @minus{} 3.0i.} */
 @end example
 
 @noindent
 For standard C compatibility, you can use the appropriate library
-function: @code{conjf}, @code{conj}, or @code{confl}.
+function: @code{conjf}, @code{conj}, or @code{conjl}.
 
 @node The Void Type
 @section The Void Type
@@ -4122,6 +4194,7 @@ To make the designator for any type, imagine a variable declaration
 for a variable of that type and delete the variable name and the final
 semicolon.
 
+@c ??? Is the rest of this so obvious it can be shortened?
 For example, to designate the type of full-word integers, we start
 with the declaration for a variable @code{foo} with that type,
 which is this:
@@ -4146,13 +4219,15 @@ we determine that the designator is @code{unsigned long int}.
 
 Following this procedure, the designator for any primitive type is
 simply the set of keywords which specifies that type in a declaration.
-The same is true for compound types such as structures, unions, and
-enumerations.
+The same is true for structure types, union types, and
+enumeration types.
+
+@c ??? This graf is needed.
 
 Designators for pointer types do follow the rule of deleting the
 variable name and semicolon, but the result is not so simple.
 @xref{Pointer Type Designators}, as part of the chapter about
-pointers.  @xref{Array Type Designators}), for designators for array
+pointers.  @xref{Array Type Designators}, for designators for array
 types.
 
 To understand what type a designator stands for, imagine a variable
@@ -4272,10 +4347,10 @@ properly represent the value,
 and that isn't excluded by the following rules.
 
 If the constant has @samp{l} or @samp{L} as a suffix, that excludes the
-first two types (non-@code{long}).
+first two types (those that are not @code{long}).
 
 If the constant has @samp{ll} or @samp{LL} as a suffix, that excludes
-first four types (non-@code{long long}).
+first four types (those that are not @code{long long}).
 
 If the constant has @samp{u} or @samp{U} as a suffix, that excludes
 the signed types.
@@ -4291,6 +4366,11 @@ Here are some examples of the suffixes.
 3000000000u      // @r{three billion as @code{unsigned int}.}
 0LL              // @r{zero as a @code{long long int}.}
 0403l            // @r{259 as a @code{long int}.}
+2147483648       // @r{This is of type @code{long long int}
+                 // @r{on typical 32-bit machines,
+                 // @r{since it won't fit in 32 bits as a signed number.}
+2147483648U      // @r{This is of type @code{unsigned int},}
+                 // @r{since it fits in 32 unsigned bits.}
 @end example
 
 Suffixes in integer constants are rarely used.  When the precise type
@@ -4304,9 +4384,11 @@ Type Conversion}).
 @cindex floating-point constants
 @cindex constants, floating-point
 
-A floating-point constant must have either a decimal point, an
+A floating-point decimal constant must have either a decimal point, an
 exponent-of-ten, or both; they distinguish it from an integer
-constant.
+constant.  Just adding the floating-point suffix, @samp{f}, to an
+integer does not make a valid floating-point constant, and adding
+@samp{l} would instead make it a long integer.
 
 To indicate an exponent, write @samp{e} or @samp{E}.  The exponent
 value follows.  It is always written as a decimal number; it can
@@ -4357,9 +4439,11 @@ at the end.  For example,
 Likewise, @samp{l} or @samp{L} at the end forces the constant
 to type @code{long double}.
 
-You can use exponents in hexadecimal floating constants, but since
-@samp{e} would be interpreted as a hexadecimal digit, the character
-@samp{p} or @samp{P} (for ``power'') indicates an exponent.
+@cindex hexadecimal floating constants
+There are also @dfn{hexadecimal floating constants}.  These
+@emph{must} have an exponent, but since @samp{e} would be interpreted
+as a hexadecimal digit, the character @samp{p} or @samp{P} (for
+``power'') indicates the exponent.
 
 The exponent in a hexadecimal floating constant is an optionally signed
 decimal integer that specifies a power of 2 (@emph{not} 10 or 16) to
@@ -4405,7 +4489,7 @@ The four alternative suffix letters are all equivalent.
 @cindex _Complex_I
 The other way to write an imaginary constant is to multiply a real
 constant by @code{_Complex_I}, which represents the imaginary number
-i.  Standard C doesn't support suffixing with @samp{i} or @samp{j}, so
+i.  Standard C doesn't support suffixes for imaginary constants, so
 this clunky method is needed.
 
 To write a complex constant with a nonzero real part and a nonzero
@@ -4427,6 +4511,7 @@ _Complex double foo, bar, quux;
 foo = 2.0i + 4.0 + 3.0i; /* @r{Imaginary part is 5.0.} */
 bar = 4.0 + 12.0; /* @r{Imaginary part is 0.0.} */
 quux = 3.0i + 15.0i; /* @r{Real part is 0.0.} */
+buux = 3.0i + 15.0j; /* @r{Equal to @code{quux}.} */
 @end example
 
 @xref{Complex Data Types}.
@@ -4443,7 +4528,7 @@ Sometimes we need to insert spaces to separate tokens so that they
 won't be combined into a single number-like construct.  For example,
 @code{0xE+12} is a preprocessing number that is not a valid numeric
 constant, so it is a syntax error.  If what we want is the three
-tokens @code{@w{0xE + 12}}, we have to insert two spaces as separators.
+tokens @code{@w{0xE + 12}}, we have to insert spaces as separators.
 
 @node Character Constants
 @section Character Constants
@@ -4484,12 +4569,14 @@ constant looks like @code{'\\'}.
 @cindex @samp{\r}
 @cindex escape (ASCII character)
 @cindex @samp{\e}
-Here are all the escape sequences that represent specific
-characters in a character constant.  The numeric values shown are
-the corresponding ASCII character codes, as decimal numbers.
+Here are all the escape sequences that represent specific characters
+in a character constant.  The numeric values shown are the
+corresponding ASCII character codes, as decimal numbers.  The comments
+give the characters' conventional or traditional namss, as well as the
+appearance for graphical characters.
 
 @example
-'\a' @result{} 7       /* @r{alarm, @kbd{CTRL-g}} */
+'\a' @result{} 7       /* @r{alarm, bell, @kbd{CTRL-g}} */
 '\b' @result{} 8       /* @r{backspace, @key{BS}, @kbd{CTRL-h}} */
 '\t' @result{} 9       /* @r{tab, @key{TAB}, @kbd{CTRL-i}} */
 '\n' @result{} 10      /* @r{newline, @kbd{CTRL-j}} */
@@ -4504,13 +4591,15 @@ the corresponding ASCII character codes, as decimal numbers.
 @end example
 
 @samp{\e} is a GNU C extension; to stick to standard C, write
-@samp{\33}.  (The number after @samp{backslash} is octal.)  To specify
+@samp{\33}.  (The number after @samp{\} is octal.)  To specify
 a character constant using decimal, use a cast; for instance,
 @code{(unsigned char) 27}.
 
 You can also write octal and hex character codes as
 @samp{\@var{octalcode}} or @samp{\x@var{hexcode}}.  Decimal is not an
-option here, so octal codes do not need to start with @samp{0}.
+option here, so octal codes do not need to start with @samp{0}.  An
+octal code is limited to three octal digits, and any non-octal
+character terminates it.
 
 The character constant's value has type @code{int}.  However, the
 character code is treated initially as a @code{char} value, which is
@@ -4542,8 +4631,8 @@ zeroth element (@pxref{Accessing Array Elements}).  This pointer will
 have type @code{char *} because it points to an element of type
 @code{char}.  @code{char *} is an example of a type designator for a
 pointer type (@pxref{Pointer Type Designators}).  That type is used
-for strings generally, not just the strings expressed as constants
-in a program.
+for operating on strings generally, not just the strings expressed as
+constants.
 
 Thus, the string constant @code{"Foo!"} is almost
 equivalent to declaring an array like this
@@ -4553,8 +4642,8 @@ char string_array_1[] = @{'F', 'o', 'o', '!', '\0' @};
 @end example
 
 @noindent
-and then using @code{string_array_1} in the program.  There
-are two differences, however:
+and then using @code{string_array_1} in the program (which converts it
+to type @code{char *}).  There are two differences, however:
 
 @itemize @bullet
 @item
@@ -4621,7 +4710,7 @@ but don't do that---write it like this instead:
 Be careful to avoid passing a string constant to a function that
 modifies the string it receives.  The memory where the string constant
 is stored may be read-only, which would cause a fatal @code{SIGSEGV}
-signal that normally terminates the function (@pxref{Signals}.  Even
+signal that normally terminates the function (@pxref{Signals}).  Even
 worse, the memory may not be read-only.  Then the function might
 modify the string constant, thus spoiling the contents of other string
 constants that are supposed to contain the same value and are unified
@@ -5085,8 +5174,32 @@ This shows how to declare the variable @code{ptr} as type
 (pointing at @code{i}), and use it later to get the value of the
 object it points at (the value in @code{i}).
 
-If anyone can provide a useful example which is this basic,
-I would be grateful.
+Here is another example of using a pointer to a variable.
+
+@example
+/* @r{Define global variable @code{i}.}  */
+int i = 2;
+
+int
+foo (void)
+{
+  /* @r{Save global variable @code{i}'s address.}  */
+  int *global_i = &i;
+
+  /* @r{Declare local @code{i}, shadowing the global @code{i}.}  */
+  int i = 5;
+
+  /* @r{Print value of global @code{i} and value of local @code{i}.}  */
+  printf ("global i: %d\nlocal i: %d\n", *global_i, i);
+  return i;
+}
+@end example
+
+Of course, in a real program it would be much cleaner to use different
+names for these two variables, rather than calling both of them
+@code{i}.  But it is hard to illustrate this syntaxtical point with
+clean code.  If anyone can provide a useful example to illustrate
+this point with, that would be welcome.
 
 @node Null Pointers
 @section Null Pointers
@@ -6567,7 +6680,7 @@ If an alternative is shorter than the union as a whole, it occupies
 the first part of the union's storage, leaving the last part unused
 @emph{for that alternative}.
 
-@strong{Warning:} if the code stores data using one union alternative
+@strong{Warning:} If the code stores data using one union alternative
 and accesses it with another, the results depend on the kind of
 computer in use.  Only wizards should try to do this.  However, when
 you need to do this, a union is a clean way to do it.
@@ -7132,6 +7245,8 @@ these cases in order to allocate storage for the array.
 
 A string in C is a sequence of elements of type @code{char},
 terminated with the null character, the character with code zero.
+However, the C code that operates on strings normally uses
+the pointer type @code{char *} to do it.
 
 Programs often need to use strings with specific, fixed contents.  To
 write one in a C program, use a @dfn{string constant} such as
@@ -7176,6 +7291,7 @@ void
 set_message (char *text)
 @{
   int i;
+  /* @r{Recall that @code{message} is declared above.}  */
   for (i = 0; i < sizeof (message); i++)
     @{
       message[i] = text[i];
@@ -7512,7 +7628,7 @@ The length of an array is computed once when the storage is allocated
 and is remembered for the scope of the array in case it is used in
 @code{sizeof}.
 
-@strong{Warning:} don't allocate a variable-length array if the size
+@strong{Warning:} Don't allocate a variable-length array if the size
 might be very large (more than 100,000), or in a recursive function,
 because that is likely to cause stack overflow.  Allocate the array
 dynamically instead (@pxref{Dynamic Memory Allocation}).
@@ -8120,7 +8236,7 @@ process_all_elements (struct list_if_tuples *list)
     @{
       /* @r{Process all the elements in this node's vector,}
          @r{stopping when we reach one that is null.}  */
-      for (i = 0; i < list->length; i++
+      for (i = 0; i < list->length; i++)
         @{
           /* @r{Null element terminates this node's vector.}  */
           if (list->contents[i] == NULL)
