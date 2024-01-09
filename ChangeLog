@@ -1,3 +1,17 @@
+2024-01-08  Richard Stallman  <rms@gnu.org>
+
+	* c.texi (Unicode Character Codes): Rewrite the initial explanation of
+	character codes and escape characters.  Define "code point".
+	Use fire and water in Chinese examples.
+	D800 - DFFF are not exactly invalid so say it is too obscure
+	to explain here.
+	(Wide String Constants): Types of wide strings are array types.
+	(Type Size): Explain about side effects in sizeof expr and
+	sizeof (type).
+	Rename the variable `array' to `arr'.
+	For size_t, don't say what kind of definition it has.
+	(Pointer Types): Write "pointer to an array of".
+
 GNU C Intro and Reference - ChangeLog
 
 2024-01-07  Richard Stallman  <rms@gnu.org>

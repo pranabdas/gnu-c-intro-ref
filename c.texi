@@ -4741,23 +4741,29 @@ contains character codes 128 and up, the results cannot be relied on.
 @section Unicode Character Codes
 @cindex Unicode character codes
 @cindex universal character names
+@cindex code point
 
-You can specify Unicode characters, for individual character constants
-or as part of string constants (@pxref{String Constants}), using
-escape sequences; and even in C identifiers.  Use the @samp{\u} escape
-sequence with a 16-bit hexadecimal Unicode character code.  If the
-code value is too big for 16 bits, use the @samp{\U} escape sequence
-with a 32-bit hexadecimal Unicode character code.  (These codes are
-called @dfn{universal character names}.)  For example,
+You can specify Unicode characters using escape sequences called
+@dfn{universal character names} that start with @samp{\u} and
+@samp{\U}.  They are valid in C for individual character constants,
+inside string constants (@pxref{String Constants}), and even in
+identifiers.  These escape sequence includes a hexadecimal Unicode
+character code, also called a @dfn{code point} in Unicode terminology.
+
+Use the @samp{\u} escape sequence with a 16-bit hexadecimal Unicode
+character code.  If the character's numeric code is too big for 16
+bits, use the @samp{\U} escape sequence with a 32-bit hexadecimal
+Unicode character code.  Here are some examples.
 
 @example
-\u6C34      /* @r{16-bit code (UTF-16)} */
-\U0010ABCD  /* @r{32-bit code (UTF-32)} */
+\u6C34      /* @r{16-bit code (water)}, UTF-16} */
+\U0010ABCD  /* @r{32-bit code, UTF-32} */
 @end example
 
 @noindent
 One way to use these is in UTF-8 string constants (@pxref{UTF-8 String
-Constants}).  For instance,
+Constants}).  For instance, here we use two of them, each preceded by
+a space.
 
 @example
 u8"fóó \u6C34 \U0010ABCD"
@@ -4767,7 +4773,7 @@ u8"fóó \u6C34 \U0010ABCD"
 Character Constants}), like this:
 
 @example
-u'\u6C34'      /* @r{16-bit code} */
+u'\u6C34'      /* @r{16-bit code (water)} */
 U'\U0010ABCD'  /* @r{32-bit code} */
 @end example
 
@@ -4776,7 +4782,7 @@ and in wide string constants (@pxref{Wide String Constants}), like
 this:
 
 @example
-u"\u6C34\u6C33"  /* @r{16-bit code} */
+u"\u6C34\u706B"  /* @r{16-bit codes (water, fire)} */
 U"\U0010ABCD"    /* @r{32-bit code} */
 @end example
 
@@ -4787,11 +4793,12 @@ And in an identifier:
 int foo\u6C34bar = 0;
 @end example
 
-Codes in the range of @code{D800} through @code{DFFF} are not valid
-in Unicode.  Codes less than @code{00A0} are also forbidden, except for
-@code{0024}, @code{0040}, and @code{0060}; these characters are
-actually ASCII control characters, and you can specify them with other
-escape sequences (@pxref{Character Constants}).
+Codes in the range of @code{D800} through @code{DFFF} are limited to
+very specialized uses, too specialized to explain here.  Codes less
+than @code{00A0} are invalid, except for @code{0024}, @code{0040}, and
+@code{0060}; these characters are actually ASCII control characters,
+and you can specify them with other escape sequences (@pxref{Character
+Constants}).
 
 @node Wide Character Constants
 @section Wide Character Constants
@@ -4853,14 +4860,14 @@ pointer will be.
 @item char16_t
 This is a 16-bit Unicode wide string constant: each element is a
 16-bit Unicode character code with type @code{char16_t}, so the string
-has the pointer type @code{char16_t@ *}.  (That is a type designator;
+has the array type @code{char16_t[]}.  (That is a type designator;
 @pxref{Pointer Type Designators}.)  The constant is written as
 @samp{u} (which must be lower case) followed (with no intervening
 space) by a string constant with the usual syntax.
 
 @item char32_t
 This is a 32-bit Unicode wide string constant: each element is a
-32-bit Unicode character code, and the string has type @code{char32_t@ *}.
+32-bit Unicode character code, and the string has type @code{char32_t[]}.
 It's written as @samp{U} (which must be upper case) followed (with no
 intervening space) by a string constant with the usual syntax.
 
@@ -4868,7 +4875,7 @@ intervening space) by a string constant with the usual syntax.
 This is the original kind of wide string constant.  It's written as
 @samp{L} (which must be upper case) followed (with no intervening
 space) by a string constant with the usual syntax, and the string has
-type @code{wchar_t@ *}.
+type @code{wchar_t[]}.
 
 The width of the data type @code{wchar_t} depends on the target
 platform, which makes this kind of wide string somewhat less useful
@@ -4900,9 +4907,9 @@ a C program, use @code{sizeof}.  There are two ways to use it:
 This gives the size of @var{expression}, based on its data type.  It
 does not calculate the value of @var{expression}, only its size, so if
 @var{expression} includes side effects or function calls, they do not
-happen.  Therefore, @code{sizeof} is always a compile-time operation
-that has zero run-time cost.
-@c ??? What about variable-length arrays
+happen.  Therefore, @code{sizeof} with an expression as argument is
+always a compile-time operation that has zero run-time cost, unless it
+applies to a variable-size array.
 
 A value that is a bit field (@pxref{Bit Fields}) is not allowed as an
 operand of @code{sizeof}.
@@ -4919,14 +4926,14 @@ i = sizeof a + 10;
 sets @code{i} to 18 on most computers because @code{a} occupies 8 bytes.
 
 Here's how to determine the number of elements in an array
-@code{array}:
+@code{arr}:
 
 @example
-(sizeof array / sizeof array[0])
+(sizeof arr / sizeof arr[0])
 @end example
 
 @noindent
-The expression @code{sizeof array} gives the size of the array, not
+The expression @code{sizeof arr} gives the size of the array, not
 the size of a pointer to an element.  However, if @var{expression} is
 a function parameter that was declared as an array, that
 variable really has a pointer type (@pxref{Array Parm Pointer}), so
@@ -4943,9 +4950,13 @@ i = sizeof (double) + 10;
 @noindent
 is equivalent to the previous example.
 
+@strong{Warning:} If @var{type} contains expressions which have side
+effects, those expressions are actually computed and any side effects
+in them do occur.
+
 You can't apply @code{sizeof} to an incomplete type (@pxref{Incomplete
-Types}), nor @code{void}.  Using it on a function type gives 1 in GNU
-C, which makes adding an integer to a function pointer work as desired
+Types}).  Using it on a function type or @code{void} gives 1 in GNU C,
+which makes adding an integer to these pointer types work as desired
 (@pxref{Pointer Arithmetic}).
 @end table
 
@@ -4978,11 +4989,10 @@ sizeof ((int) -x)
 @noindent
 you must write it that way, with parentheses.
 
-The data type of the value of the @code{sizeof} operator is always one
-of the unsigned integer types; which one of those types depends on the
-machine.  The header file @code{stddef.h} defines the typedef name
-@code{size_t} as an alias for this type.  @xref{Defining Typedef
-Names}.
+The data type of the value of the @code{sizeof} operator is always an
+unsigned integer type; which one of those types depends on the
+machine.  The header file @code{stddef.h} defines @code{size_t} as a
+name for such a type.  @xref{Defining Typedef Names}.
 
 @node Pointers
 @chapter Pointers
@@ -5067,7 +5077,7 @@ double a[5];
 
 @item
 @code{a} has type @code{double[5]}; we say @code{&a} is a ``pointer to
-arrays of five @code{double}s.''
+an array of five @code{double}s.''
 
 @item
 @code{a[3]} has type @code{double}; we say @code{&a[3]} is a ``pointer
