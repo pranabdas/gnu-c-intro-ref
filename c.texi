@@ -1760,7 +1760,7 @@ Most operators in C consist of one or two characters that can't be
 used in identifiers.  The characters used for such operators in C are
 @samp{!~^&|*/%+-=<>,.?:}.  (C preprocessing uses @dfn{preprocessing
 operators}, based on @samp{#}, which are entirely different from
-these operators; @ref{{Preprocessing}.)
+these operators; @ref{Preprocessing}.)
 
 Some operators are a single character.  For instance, @samp{-} is the
 operator for negation (with one operand) and the operator for
@@ -4366,8 +4366,8 @@ Here are some examples of the suffixes.
 3000000000u      // @r{three billion as @code{unsigned int}.}
 0LL              // @r{zero as a @code{long long int}.}
 0403l            // @r{259 as a @code{long int}.}
-2147483648       // @r{This is of type @code{long long int}
-                 // @r{on typical 32-bit machines,
+2147483648       // @r{This is of type @code{long long int}.}
+                 // @r{on typical 32-bit machines,}
                  // @r{since it won't fit in 32 bits as a signed number.}
 2147483648U      // @r{This is of type @code{unsigned int},}
                  // @r{since it fits in 32 unsigned bits.}
@@ -4756,7 +4756,7 @@ bits, use the @samp{\U} escape sequence with a 32-bit hexadecimal
 Unicode character code.  Here are some examples.
 
 @example
-\u6C34      /* @r{16-bit code (water)}, UTF-16} */
+\u6C34      /* @r{16-bit code (Chinese for ``water''), UTF-16} */
 \U0010ABCD  /* @r{32-bit code, UTF-32} */
 @end example
 
