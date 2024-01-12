@@ -731,7 +731,7 @@ provides a value for it to return.  @xref{return Statement}.
 Calculating @code{fib} using ordinary integers in C works only for
 @var{n} < 47 because the value of @code{fib (47)} is too large to fit
 in type @code{int}.  In GNU C, type @code{int} holds 32 bits
-(@pxref{Integer Typex}), so the addition operation that tries to add
+(@pxref{Integer Types}), so the addition operation that tries to add
 @code{fib (46)} and @code{fib (45)} cannot deliver the correct result.
 This occurrence is called @dfn{integer overflow}.
 
@@ -933,7 +933,7 @@ examine the value of @code{x} and ignore it.  That is not
 useful.@footnote{Computing an expression and ignoring the result can
 be useful in peculiar cases.  For instance, dereferencing a pointer
 and ignoring the value is a way to cause a fault if a pointer value is
-invalid.  @xref{signals}.  But you may need to declare the pointer
+invalid.  @xref{Signals}.  But you may need to declare the pointer
 target @code{volatile} or the dereference may be optimized away.
 @xref{volatile}.}
 
@@ -5192,7 +5192,7 @@ int i = 2;
 
 int
 foo (void)
-{
+@{
   /* @r{Save global variable @code{i}'s address.}  */
   int *global_i = &i;
 
@@ -5202,7 +5202,7 @@ foo (void)
   /* @r{Print value of global @code{i} and value of local @code{i}.}  */
   printf ("global i: %d\nlocal i: %d\n", *global_i, i);
   return i;
-}
+@}
 @end example
 
 Of course, in a real program it would be much cleaner to use different

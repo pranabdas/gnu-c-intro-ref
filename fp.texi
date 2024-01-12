@@ -1151,7 +1151,8 @@ The @code{volatile} qualifier (@pxref{volatile}) is essential on x86
 platforms to prevent an optimizing compiler from producing the same
 value for both bounds.
 
-@ignore  We no longer discuss the double rounding issue.
+@ignore
+We no longer discuss the double rounding issue.
                         The code also needs to be compiled with the
 option @option{-ffloat-store} that prevents use of higher precision
 for the basic operations, because that would introduce double rounding
@@ -1242,7 +1243,8 @@ macheps (NaN) = nan
 Notice that @code{macheps} has a special test for a NaN to prevent an
 infinite loop.
 
-@ignore  We no longer discuss double rounding.
+@ignore
+We no longer discuss double rounding.
 To ensure that no expressions are evaluated with an intermediate higher
 precision, we can compile with the @option{-fexcess-precision=standard}
 option, which tells the compiler that all calculation results, including

@@ -1,3 +1,9 @@
+2024-01-12  Richard Stallman  <rms@gnu.org>
+
+	* c.texi: fix typos.
+	* fp.texi (Machine Epsilon, Rounding Control):
+	Don't have text on the same line as @ignore.
+
 2024-01-08  Richard Stallman  <rms@gnu.org>
 
 	* c.texi (Unicode Character Codes): Rewrite the initial explanation of
