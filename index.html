@@ -117,6 +117,14 @@ is vital to say more.
 platform: which computer, and which operating system, the compiled
 code will run on.  Where this is the case, we say so.
 </p>
+<p>When compiling for a &ldquo;real computer&rdquo;, one that is a reasonable
+platform for running the GNU/Linux system, the type <code>int</code> is
+always 32 bits in size.  This manual assumes you are compiling for the
+computer where you are running the compiler, which implies <code>int</code>
+has that size.  GNU C can also compile code for some microprocessors
+on which type <code>int</code> has fewer bits, but this manual does not try
+to cover the complications of those peculiar platforms.
+</p>
 <p>We hardly mention C<tt>++</tt> or other languages that the GNU
 Compiler Collection supports.  We hope this manual will serve as a
 base for writing manuals for those languages, but languages so
@@ -837,14 +845,16 @@ provides a value for it to return.  See <a href="#return-Statement"><code>return
 </dl>
 
 <p>Calculating <code>fib</code> using ordinary integers in C works only for
-<var>n</var> &lt; 47, because the value of <code>fib (47)</code> is too large to fit
-in type <code>int</code>.  The addition operation that tries to add
+<var>n</var> &lt; 47 because the value of <code>fib (47)</code> is too large to fit
+in type <code>int</code>.  In GNU C, type <code>int</code> holds 32 bits
+(see <a href="#Integer-Types">Integer Data Types</a>), so the addition operation that tries to add
 <code>fib (46)</code> and <code>fib (45)</code> cannot deliver the correct result.
 This occurrence is called <em>integer overflow</em>.
 </p>
 <p>Overflow can manifest itself in various ways, but one thing that can&rsquo;t
 possibly happen is to produce the correct value, since that can&rsquo;t fit
-in the space for the value.  See <a href="#Integer-Overflow">Integer Overflow</a>.
+in the space for the value.  See <a href="#Integer-Overflow">Integer Overflow</a>, for more details
+about this situation.
 </p>
 <p>See <a href="#Functions">Functions</a>, for a full explanation about functions.
 </p>
@@ -880,7 +890,7 @@ is called <em>stack overflow</em>.
 fault.&rdquo;  By default, this signal terminates the program immediately,
 rather than letting the program try to recover, or reach an expected
 ending point.  (We commonly say in this case that the program
-&ldquo;crashes&rdquo;).  See <a href="#Signals">Signals</a>.
+&ldquo;crashes.&rdquo;)  See <a href="#Signals">Signals</a>.
 </p>
 <p>It is inconvenient to observe a crash by passing too large
 an argument to recursive Fibonacci, because the program would run a
@@ -938,7 +948,7 @@ fib (int n)
 
   for (i = 1; i &lt; n; ++i)
     /* <span class="roman">If <code>n</code> is 1 or less, the loop runs zero times,</span>  */
-    /* <span class="roman">since <code>i &lt; n</code> is false the first time.</span>  */
+    /* <span class="roman">since in that case <code>i &lt; n</code> is false the first time.</span>  */
     {
       /* <span class="roman">Now <code>last</code> is <code>fib (<code>i</code>)</code></span>
          <span class="roman">and <code>prev</code> is <code>fib (<code>i</code> - 1)</code>.</span>  */
@@ -1047,9 +1057,9 @@ data or has other side effects&mdash;for instance, with function calls, or
 with assignments as in this example.  See <a href="#Expression-Statement">Expression Statement</a>.
 </p>
 <p>Using an expression with no side effects in an expression statement is
-pointless except in very special cases.  For instance, the expression
-statement <code>x;</code> would examine the value of <code>x</code> and ignore it.
-That is not useful.
+pointless; for instance, the expression statement <code>x;</code> would
+examine the value of <code>x</code> and ignore it.  That is not
+useful.<a id="DOCF1" href="#FOOT1"><sup>1</sup></a>
 </p>
 </dd>
 <dt><span>Increment operator</span></dt>
@@ -1197,8 +1207,7 @@ certain numeric <em>failure codes</em>.  See <a href="#Values-from-main">Returni
 <p>The simplest way to print text in C is by calling the <code>printf</code>
 function, so here we explain very briefly what that function does.
 For a full explanation of <code>printf</code> and the other standard I/O
-functions, see <a data-manual="libc" href="https://www.gnu.org/software/libc/manual/html_mono/libc.html#I_002fO-on-Streams">The GNU C Library</a> in <cite>The GNU
-C Library Reference Manual</cite>.
+functions, see <a data-manual="libc" href="https://www.gnu.org/software/libc/manual/html_mono/libc.html#Input_002fOutput-on-Streams">The GNU C Library</a> in <cite>The GNU C Library Reference Manual</cite>.
 </p>
 <span id="index-standard-output"></span>
 <p>The first argument to <code>printf</code> is a <em>string constant</em>
@@ -1262,7 +1271,7 @@ fib (int n)             /* <span class="roman">Its name is <code>fib</code>;</sp
   /* <span class="roman">This stops the recursion from being infinite.</span>  */
   if (n &lt;= 2)           /* <span class="roman">If <code>n</code> is 1 or 2,</span>  */
     return 1;           /*   <span class="roman">make <code>fib</code> return 1.</span>  */
-  else                  /* <span class="roman">otherwise, add the two previous</span>  */
+  else                  /* <span class="roman">Otherwise, add the two previous</span>  */
                         /* <span class="roman">Fibonacci numbers.</span>  */
     return fib (n - 1) + fib (n - 2);
 }
@@ -1524,7 +1533,7 @@ array and then passing it as an argument.  Here is an example.
 </p>
 <div class="example">
 <pre class="example">{
-  /* <span class="roman">The array of values to average.</span>  */
+  /* <span class="roman">The array of values to compute the average of.</span>  */
   double nums_to_average[5];
   /* <span class="roman">The average, once we compute it.</span>  */
   double average;
@@ -1604,7 +1613,7 @@ start with the same data type:
 </pre></div>
 
 <p>This declares <code>nums_to_average</code> so each of its elements is a
-<code>double</code>, and <code>average</code> so that it simply is a
+<code>double</code>, and <code>average</code> itself as a
 <code>double</code>.
 </p>
 <p>However, while you <em>can</em> combine them, that doesn&rsquo;t mean you
@@ -1732,7 +1741,7 @@ Unicode characters represented in the
 <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> multibyte encoding.
 This makes it possible to represent accented letters such as &lsquo;<samp>á</samp>&rsquo;,
 as well as other scripts such as Arabic, Chinese, Cyrillic, Hebrew,
-Japanese, and Korean.<a id="DOCF1" href="#FOOT1"><sup>1</sup></a>
+Japanese, and Korean.<a id="DOCF2" href="#FOOT2"><sup>2</sup></a>
 </p>
 <p>In C source code, non-ASCII characters are valid in comments, in wide
 character constants (see <a href="#Wide-Character-Constants">Wide Character Constants</a>), and in string
@@ -1898,9 +1907,9 @@ Next: <a href="#Operators_002fPunctuation" accesskey="n" rel="next">Operators an
 <span id="index-identifiers"></span>
 
 <p>An <em>identifier</em> (name) in C is a sequence of letters and digits,
-as well as &lsquo;<samp>_</samp>&rsquo;, that does not start with a digit.  Most compilers
-also allow &lsquo;<samp>$</samp>&rsquo;.  An identifier can be as long as you like; for
-example,
+as well as &lsquo;<samp>_</samp>&rsquo;, that does not start with a digit.  Most C compilers
+also allow &lsquo;<samp>$</samp>&rsquo;; GNU C allows it.  An identifier can be as long as
+you like; for example,
 </p>
 <div class="example">
 <pre class="example">int anti_dis_establishment_arian_ism;
@@ -1944,9 +1953,18 @@ Next: <a href="#Line-Continuation" accesskey="n" rel="next">Line Continuation</a
 The specific operators of C and their meanings are presented in
 subsequent chapters.
 </p>
+<p>Some characters that are generally considered punctuation have a
+different sort of meaning in the C language.  C uses double-quote
+&lsquo;<samp>&quot;</samp>&rsquo; to delimit string constants (see <a href="#String-Constants">String Constants</a>) and
+&lsquo;<samp>'</samp>&rsquo; to delimit constants (see <a href="#String-Constants">String Constants</a>).  The
+characters &lsquo;<samp>$</samp>&rsquo; and &lsquo;<samp>_</samp>&rsquo; can be part of an identifier or a
+keyword.
+</p>
 <p>Most operators in C consist of one or two characters that can&rsquo;t be
-used in identifiers.  The characters used for operators in C are
-&lsquo;<samp>!~^&amp;|*/%+-=&lt;&gt;,.?:</samp>&rsquo;.
+used in identifiers.  The characters used for such operators in C are
+&lsquo;<samp>!~^&amp;|*/%+-=&lt;&gt;,.?:</samp>&rsquo;.  (C preprocessing uses <em>preprocessing
+operators</em>, based on &lsquo;<samp>#</samp>&rsquo;, which are entirely different from
+these operators; <a href="#Preprocessing">Preprocessing</a>.)
 </p>
 <p>Some operators are a single character.  For instance, &lsquo;<samp>-</samp>&rsquo; is the
 operator for negation (with one operand) and the operator for
@@ -1954,8 +1972,8 @@ subtraction (with two operands).
 </p>
 <p>Some operators are two characters.  For example, &lsquo;<samp>++</samp>&rsquo; is the
 increment operator.  Recognition of multicharacter operators works by
-grouping together as many consecutive characters as can constitute one
-operator.
+reading and grouping as many successive characters as can
+constitute one operator, and making them one token.
 </p>
 <p>For instance, the character sequence &lsquo;<samp>++</samp>&rsquo; is always interpreted
 as the increment operator; therefore, if we want to write two
@@ -2118,7 +2136,7 @@ exists; it yields its operand unaltered.
 the result you expect.  Its value is an integer, which is not equal to
 the mathematical quotient when that is a fraction.  Use &lsquo;<samp>%</samp>&rsquo; to
 get the corresponding integer remainder when necessary.
-See <a href="#Division-and-Remainder">Division and Remainder</a>.  Floating point division yields value
+See <a href="#Division-and-Remainder">Division and Remainder</a>.  Floating-point division yields a value
 as close as possible to the mathematical quotient.
 </p>
 <p>These operators use algebraic syntax with the usual algebraic
@@ -2536,6 +2554,10 @@ operates on a narrow integer type; it&rsquo;s always either <code>int</code> or
 wider.  The result of the shift operation has the same type as the
 promoted left operand.
 </p>
+<p>The examples in this section use binary constants, starting with
+&lsquo;<samp>0b</samp>&rsquo; (see <a href="#Integer-Constants">Integer Constants</a>).  They stand for 32-bit integers
+of type <code>int</code>.
+</p>
 
 <ul class="section-toc">
 <li><a href="#Bits-Shifted-In" accesskey="1">Shifting Makes New Bits</a></li>
@@ -2564,7 +2586,7 @@ appropriate power of 2.  For example,
 
 <p>The meaning of shifting right depends on whether the data type is
 signed or unsigned (see <a href="#Signed-and-Unsigned-Types">Signed and Unsigned Types</a>).  For a signed
-data type, it performs &ldquo;arithmetic shift,&rdquo; which keeps the number&rsquo;s
+data type, GNU C performs &ldquo;arithmetic shift,&rdquo; which keeps the number&rsquo;s
 sign unchanged by duplicating the sign bit.  For an unsigned data
 type, it performs &ldquo;logical shift,&rdquo; which always shifts in zeros at
 the most significant bit.
@@ -2578,9 +2600,9 @@ towards negative infinity.  For example,
 (unsigned) 21 &gt;&gt; 2 &rArr; 5
 </pre></div>
 
-<p>For negative left operand <code>a</code>, <code>a &gt;&gt; 1</code> is not equivalent to
-<code>a / 2</code>.  They both divide by 2, but &lsquo;<samp>/</samp>&rsquo; rounds toward
-zero.
+<p>For a negative left operand <code>a</code>, <code>a &gt;&gt; 1</code> is not equivalent
+to <code>a / 2</code>.  Both operations divide by 2, but &lsquo;<samp>/</samp>&rsquo; rounds
+toward zero.
 </p>
 <p>The shift count must be zero or greater.  Shifting by a negative
 number of bits gives machine-dependent results.
@@ -2614,10 +2636,10 @@ parentheses to explicitly specify the nesting, like this:
 
 <p>Note: according to the C standard, shifting of signed values isn&rsquo;t
 guaranteed to work properly when the value shifted is negative, or
-becomes negative during the operation of shifting left.  However, only
-pedants have a reason to be concerned about this; only computers with
-strange shift instructions could plausibly do this wrong.  In GNU C,
-the operation always works as expected,
+becomes negative during shifting.  However, only pedants have a reason
+to be concerned about this; only computers with strange shift
+instructions could plausibly do this wrong.  In GNU C, the operation
+always works as expected.
 </p>
 <hr>
 </div>
@@ -2632,6 +2654,10 @@ Previous: <a href="#Shift-Caveats" accesskey="p" rel="prev">Caveats for Shift Op
 example, given a date specified by day of the month <code>d</code>, month
 <code>m</code>, and year <code>y</code>, you can store the entire date in a single
 integer <code>date</code>:
+</p>
+<p>The examples in this section use binary constants, starting with
+&lsquo;<samp>0b</samp>&rsquo; (see <a href="#Integer-Constants">Integer Constants</a>).  They stand for 32-bit integers
+of type <code>int</code>.
 </p>
 <div class="example">
 <pre class="example">unsigned int d = 12;		/* <span class="roman">12 in binary is 0b1100.</span>  */
@@ -2654,15 +2680,14 @@ d = date % 32;
    <span class="roman">Remainder dividing by 16 gives lowest remaining 4 bits, 0b110.</span>  */
 m = (date &gt;&gt; 5) % 16;
 /* <span class="roman">Shifting 9 bits right discards day and month,</span>
-   <span class="roman">leaving 0b111101111110.</span>  */
+   <span class="roman">leaving 0b11110111111.</span>  */
 y = date &gt;&gt; 9;
 </pre></div>
 
 <p><code>-1 &lt;&lt; LOWBITS</code> is a clever way to make an integer whose
 <code>LOWBITS</code> lowest bits are all 0 and the rest are all 1.
-<code>-(1 &lt;&lt; LOWBITS)</code> is equivalent to that, due to associativity of
-multiplication, since negating a value is equivalent to multiplying it
-by -1.
+<code>-(1 &lt;&lt; LOWBITS)</code> is equivalent to that, since negating a value
+is equivalent to multiplying it by -1.
 </p>
 <hr>
 </div>
@@ -2682,9 +2707,9 @@ Previous: <a href="#Shift-Operations" accesskey="p" rel="prev">Shift Operations<
 <p>Bitwise operators operate on integers, treating each bit independently.
 They are not allowed for floating-point types.
 </p>
-<p>The examples in this section use binary constants, starting with
-&lsquo;<samp>0b</samp>&rsquo; (see <a href="#Integer-Constants">Integer Constants</a>).  They stand for 32-bit integers
-of type <code>int</code>.
+<p>As in the previous section, the examples in this section use binary
+constants, starting with &lsquo;<samp>0b</samp>&rsquo; (see <a href="#Integer-Constants">Integer Constants</a>).  They
+stand for 32-bit integers of type <code>int</code>.
 </p>
 <dl compact="compact">
 <dt><span><code>~<code>a</code></code></span></dt>
@@ -2743,11 +2768,12 @@ to zero, so that <code>0b111<span class="roman">&hellip;</span>111</code> is -1 
 <code>0b100<span class="roman">&hellip;</span>000</code> is the most negative possible integer.
 </p>
 <p><strong>Warning:</strong> C defines a precedence ordering for the bitwise
-binary operators, but you should never rely on it.   You should
-never rely on how bitwise binary operators relate in precedence to the
-arithmetic and shift binary operators.  Other programmers don&rsquo;t
-remember this precedence ordering, so always use parentheses to
-explicitly specify the nesting.
+binary operators, but you should never rely on it.  Likewise, you
+should never rely on how bitwise binary operators relate in precedence
+to the arithmetic and shift binary operators.  Other programmers don&rsquo;t
+remember these aspects of C&rsquo;s precedence ordering; to make your
+programs clear, always use parentheses to explicitly specify the
+nesting among these operators.
 </p>
 <p>For example, suppose <code>offset</code> is an integer that specifies
 the offset within shared memory of a table, except that its bottom few
@@ -2823,11 +2849,11 @@ the other way,
 </pre></div>
 
 <p>would be invalid since an assignment expression such as <code>x = y</code>
-is not valid as an lvalue.
+is not a valid lvalue.
 </p>
 <p><strong>Warning:</strong> Write parentheses around an assignment if you nest
-it inside another expression, unless that is a conditional expression,
-or comma-separated series, or another assignment.
+it inside another expression, unless that containing expression is a
+comma-separated series or another assignment.
 </p>
 
 <ul class="section-toc">
@@ -2917,6 +2943,8 @@ as for structure fields.
 
 </li><li> An array-element reference using &lsquo;<samp>[<span class="roman">&hellip;</span>]</samp>&rsquo;, if the array
 is an lvalue.
+
+</li><li> A structure or union constructor.
 </li></ul>
 
 <p>If an expression&rsquo;s outermost operation is any other operator, that
@@ -2924,13 +2952,18 @@ expression is not an lvalue.  Thus, the variable <code>x</code> is an
 lvalue, but <code>x + 0</code> is not, even though these two expressions
 compute the same value (assuming <code>x</code> is a number).
 </p>
-<p>An array can be an lvalue (the rules above determine whether it is
-one), but using the array in an expression converts it automatically
-to a pointer to the zeroth element.  The result of this conversion is
-not an lvalue.  Thus, if the variable <code>a</code> is an array, you can&rsquo;t
-use <code>a</code> by itself as the left operand of an assignment.  But you
-can assign to an element of <code>a</code>, such as <code>a[0]</code>.  That is an
-lvalue since <code>a</code> is an lvalue.
+<p>It is rare that a structure value or an array value is not an lvalue,
+but that does happen&mdash;for instance, the result of a function call or
+a conditional operator can have a structure or array type, but is
+never an lvalue.
+</p>
+<p>If an array is an lvalue, using the array in an expression still
+converts it automatically to a pointer to the zeroth element.  The
+result of this conversion is not an lvalue.  Thus, if the variable
+<code>a</code> is an array, you can&rsquo;t use <code>a</code> by itself as the left
+operand of an assignment.  But you can assign to an element of
+<code>a</code>, such as <code>a[0]</code>.  That is an lvalue since <code>a</code> is an
+lvalue.
 </p>
 <hr>
 </div>
@@ -2989,18 +3022,20 @@ instance, you can subtract something from an lvalue like this,
 provides substantial convenience.  Also, when <var>lvalue</var> contains
 code that has side effects, the simple assignment performs those side
 effects twice, while the modifying assignment performs them once.  For
-instance,
+instance, suppose that the function <code>foo</code> has a side effect, perhaps
+changing static storage.  This statement
 </p>
 <div class="example">
 <pre class="example">x[foo ()] = x[foo ()] + 5;
 </pre></div>
 
-<p>calls <code>foo</code> twice, and it could return different values each
-time.  If <code>foo ()</code> returns 1 the first time and 3 the second
-time, then the effect could be to add <code>x[3]</code> and 5 and store the
-result in <code>x[1]</code>, or to add <code>x[1]</code> and 5 and store the
-result in <code>x[3]</code>.  We don&rsquo;t know which of the two it will do,
-because C does not specify which call to <code>foo</code> is computed first.
+<p>calls <code>foo</code> twice.  If <code>foo</code> operates on static variables,
+it could return a different value each time.  If <code>foo ()</code> will
+return 1 the first time and 3 the second time, the effect could be to
+add <code>x[3]</code> and 5 and store the result in <code>x[1]</code>, or to add
+<code>x[1]</code> and 5 and store the result in <code>x[3]</code>.  We don&rsquo;t know
+which of the two it will do, because C does not specify which call to
+<code>foo</code> is computed first.
 </p>
 <p>Such a statement is not well defined, and shouldn&rsquo;t be used.
 </p>
@@ -3052,9 +3087,9 @@ main (void)
 }
 </pre></div>
 
-<p>prints lines containing 5, 6, and 6 again.  The expression <code>++i</code>
-increments <code>i</code> from 5 to 6, and has the value 6, so the output
-from <code>printf</code> on that line says &lsquo;<samp>6</samp>&rsquo;.
+<p>prints lines containing &lsquo;<samp>5</samp>&rsquo;, &lsquo;<samp>6</samp>&rsquo;, and &lsquo;<samp>6</samp>&rsquo; again.  The
+expression <code>++i</code> increments <code>i</code> from 5 to 6, and has the
+value 6, so the output from <code>printf</code> on that line says &lsquo;<samp>6</samp>&rsquo;.
 </p>
 <p>Using &lsquo;<samp>--</samp>&rsquo; instead, for predecrement,
 </p>
@@ -3111,9 +3146,10 @@ main (void)
 }
 </pre></div>
 
-<p>prints lines containing 5, again 5, and 6.  The expression <code>i++</code>
-has the value 5, which is the value of <code>i</code> at the time,
-but it increments <code>i</code> from 5 to 6 just a little later.
+<p>prints lines containing &lsquo;<samp>5</samp>&rsquo;, again &lsquo;<samp>5</samp>&rsquo;, and &lsquo;<samp>6</samp>&rsquo;.  The
+expression <code>i++</code> has the value 5, which is the value of <code>i</code>
+at the time, but it increments <code>i</code> from 5 to 6 just a little
+later.
 </p>
 <p>How much later is &ldquo;just a little later&rdquo;?  The compiler has some
 flexibility in deciding that.  The rule is that the increment has to
@@ -3124,21 +3160,21 @@ by the end of the statement.  See <a href="#Sequence-Points">Sequence Points</a>
 of <code>i</code>, the crucial thing is that the value of <code>i++</code> is the
 value that <code>i</code> has <em>before</em> incrementing it.
 </p>
-<p>If a unary operator precedes a postincrement or postincrement expression,
-the increment nests inside:
+<p>If a unary operator precedes a postincrement or postdecrement expression,
+the post-whatever expression nests inside:
 </p>
 <div class="example">
 <pre class="example">-a++   <span class="roman">is equivalent to</span>   -(a++)
 </pre></div>
 
-<p>That&rsquo;s the only order that makes sense; <code>-a</code> is not an lvalue, so
-it can&rsquo;t be incremented.
+<p>The other order would not even make sense, here; <code>-a</code> is not an
+lvalue, so it can&rsquo;t be incremented.
 </p>
 <p>The most common use of postincrement is with arrays.  Here&rsquo;s an
 example of using postincrement to access one element of an array and
 advance the index for the next access.  Compare this with the example
 <code>avg_of_double</code> (see <a href="#Array-Example">An Example with Arrays</a>), which is almost the same
-but doesn&rsquo;t use postincrement.
+but doesn&rsquo;t use postincrement for that.
 </p>
 <div class="example">
 <pre class="example">double
@@ -3306,14 +3342,14 @@ in any context where an integer-valued expression is allowed.
 <dd><p>Unary operator for logical &ldquo;not.&rdquo;  The value is 1 (true) if
 <var>exp</var> is 0 (false), and 0 (false) if <var>exp</var> is nonzero (true).
 </p>
-<p><strong>Warning:</strong> if <code>exp</code> is anything but an lvalue or a
+<p><strong>Warning:</strong> If <var>exp</var> is anything but an lvalue or a
 function call, you should write parentheses around it.
 </p>
 </dd>
 <dt><span>&lsquo;<samp><var>left</var> &amp;&amp; <var>right</var></samp>&rsquo;</span></dt>
 <dd><p>The logical &ldquo;and&rdquo; binary operator computes <var>left</var> and, if necessary,
 <var>right</var>.  If both of the operands are true, the &lsquo;<samp>&amp;&amp;</samp>&rsquo; expression
-gives the value 1 (which is true).  Otherwise, the &lsquo;<samp>&amp;&amp;</samp>&rsquo; expression
+gives the value 1 (true).  Otherwise, the &lsquo;<samp>&amp;&amp;</samp>&rsquo; expression
 gives the value 0 (false).  If <var>left</var> yields a false value,
 that determines the overall result, so <var>right</var> is not computed.
 </p>
@@ -3327,7 +3363,7 @@ that determines the overall result, so <var>right</var> is not computed.
 </p></dd>
 </dl>
 
-<p><strong>Warning:</strong> never rely on the relative precedence of &lsquo;<samp>&amp;&amp;</samp>&rsquo;
+<p><strong>Warning:</strong> Never rely on the relative precedence of &lsquo;<samp>&amp;&amp;</samp>&rsquo;
 and &lsquo;<samp>||</samp>&rsquo;.  When you use them together, always use parentheses to
 specify explicitly how they nest, as shown here:
 </p>
@@ -3368,8 +3404,8 @@ that, this code never tries to divide by zero.
 </pre></div>
 
 <p>A truth value is simply a number, so using <code>r</code> as a truth value
-tests whether it is nonzero.  But <code>r</code>&rsquo;s meaning as en expression
-is not a truth value&mdash;it is a number to divide by.  So it is better
+tests whether it is nonzero.  But <code>r</code>&rsquo;s meaning as an expression
+is not a truth value&mdash;it is a number to divide by.  So it is clearer
 style to write the explicit <code>!= 0</code>.
 </p>
 <p>Here&rsquo;s another equivalent way to write it:
@@ -3378,7 +3414,7 @@ style to write the explicit <code>!= 0</code>.
 <pre class="example">if (!(r == 0) &amp;&amp; x % r == 0)
 </pre></div>
 
-<p>This illustrates the unary &lsquo;<samp>!</samp>&rsquo; operator, and the need to
+<p>This illustrates the unary &lsquo;<samp>!</samp>&rsquo; operator, as well as the need to
 write parentheses around its operand.
 </p>
 <hr>
@@ -3420,7 +3456,8 @@ statements might be necessary for clarity.
 <code>nonempty</code>:
 </p>
 <div class="example">
-<pre class="example">if ((temp1 = list_next (list))
+<pre class="example">if (list
+    &amp;&amp; (temp1 = list_next (list))
     &amp;&amp; (temp2 = list_next (temp1)))
  <span class="roman">&hellip;</span>
 </pre></div>
@@ -3468,16 +3505,30 @@ of them.
 <p>Here&rsquo;s an example: the absolute value of a number <code>x</code>
 can be written as <code>(x &gt;= 0 ? x : -x)</code>.
 </p>
-<p><strong>Warning:</strong> The conditional expression operators have rather low
+<p><strong>Warning:</strong> The conditional expression has rather low
 syntactic precedence.  Except when the conditional expression is used
 as an argument in a function call, write parentheses around it.  For
 clarity, always write parentheses around it if it extends across more
 than one line.
 </p>
-<p>Assignment operators and the comma operator (see <a href="#Comma-Operator">Comma Operator</a>)
-have lower precedence than conditional expression operators, so write
-parentheses around those when they appear inside a conditional
-expression.  See <a href="#Order-of-Execution">Order of Execution</a>.
+<p><strong>Warning:</strong> Assignment operators and the comma operator
+(see <a href="#Comma-Operator">Comma Operator</a>) have lower precedence than conditional
+expressions, so write parentheses around those when they appear inside
+a conditional expression.  See <a href="#Order-of-Execution">Order of Execution</a>.
+</p>
+<p><strong>Warning:</strong> When nesting a conditional expression within another
+conditional expression, unless a pair of matching delimiters surrounds
+the inner conditional expression for some other reason, write
+parentheses around it:
+</p>
+<div class="example">
+<pre class="example">((foo &gt; 0 ? test1 : test2) ? (ifodd (foo) ? 5 : 10)
+                           : (ifodd (whatever) ? 5 : 10));
+</pre></div>
+
+<p>In the first operand, those parentheses are necessary to prevent
+incorrect parsing.  In the second and third operands, the computer may
+not need the parentheses, but they will help human beings.
 </p>
 <hr>
 </div>
@@ -3502,8 +3553,8 @@ result type is a similar pointer whose target type combines all the
 type qualifiers (see <a href="#Type-Qualifiers">Type Qualifiers</a>) of both branches.
 </p>
 <p>If one branch has type <code>void *</code> and the other is a pointer to an
-object (not to a function), the conditional converts the <code>void *</code>
-branch to the type of the other.
+object (not to a function), the conditional converts the latter to
+<code>void *</code>.
 </p>
 <p>If one branch is an integer constant with value zero and the other is
 a pointer, the conditional converts zero to the pointer&rsquo;s type.
@@ -3581,9 +3632,9 @@ Next: <a href="#Clean-Comma" accesskey="n" rel="next">Clean Use of the Comma Ope
 </div>
 <span id="The-Uses-of-the-Comma-Operator"></span><h4 class="subsection">8.5.1 The Uses of the Comma Operator</h4>
 
-<p>With commas, you can put several expressions into a place that
-requires just one expression&mdash;for example, in the header of a
-<code>for</code> statement.  This statement
+<p>With commas, you can put several expressions into a place that allows
+one expression&mdash;for example, in the header of a <code>for</code> statement.
+This statement
 </p>
 <div class="example">
 <pre class="example">for (i = 0, j = 10, k = 20; i &lt; n; i++)
@@ -3641,7 +3692,7 @@ not an instance of the comma operator.  Note the difference between
 <p>which uses the comma operator and passes just one argument
 (with value 6).
 </p>
-<p><strong>Warning:</strong> don&rsquo;t use the comma operator around an argument
+<p><strong>Warning:</strong> Don&rsquo;t use the comma operator within an argument
 of a function unless it makes the code more readable.  When you do so,
 don&rsquo;t put part of another argument on the same line.  Instead, add a
 line break to make the parentheses around the comma operator easier to
@@ -3729,9 +3780,9 @@ combination of operations leads to a well-defined nesting.  We state
 only part of the full precedence ordering here because it is bad
 practice for C code to depend on the other cases.  For cases not
 specified in this chapter, always use parentheses to make the nesting
-explicit.<a id="DOCF2" href="#FOOT2"><sup>2</sup></a>
+explicit.<a id="DOCF3" href="#FOOT3"><sup>3</sup></a>
 </p>
-<p>You can depend on this subsequence of the precedence ordering
+<p>Clean code can depend on this subsequence of the precedence ordering
 (stated from highest precedence to lowest):
 </p>
 <ol>
@@ -3739,7 +3790,7 @@ explicit.<a id="DOCF2" href="#FOOT2"><sup>2</sup></a>
 &lsquo;<samp>-&gt;</samp>&rsquo;), array subscripting, function calls, and unary postfix
 operators.
 
-</li><li> Unary prefix operators.
+</li><li> Unary prefix operations.
 
 </li><li> Multiplication, division, and remainder (they have the same precedence).
 
@@ -3747,7 +3798,7 @@ operators.
 
 </li><li> Comparisons&mdash;but watch out!
 
-</li><li> Logical operators &lsquo;<samp>&amp;&amp;</samp>&rsquo; and &lsquo;<samp>||</samp>&rsquo;&mdash;but watch out!
+</li><li> Logical operations &lsquo;<samp>&amp;&amp;</samp>&rsquo; and &lsquo;<samp>||</samp>&rsquo;&mdash;but watch out!
 
 </li><li> Conditional expression with &lsquo;<samp>?</samp>&rsquo; and &lsquo;<samp>:</samp>&rsquo;.
 
@@ -3757,33 +3808,34 @@ operators.
 </li></ol>
 
 <p>Two of the lines in the above list say &ldquo;but watch out!&rdquo;  That means
-that the line covers operators with subtly different precedence.
-Never depend on the grammar of C to decide how two comparisons nest;
-instead, always use parentheses to specify their nesting.
+that the line covers operations with subtly different precedence.  When
+you use tro comparison operations together, don&rsquo;t depend on the
+grammar of C to control how they nest.  Instead, always use
+parentheses to show their nesting.
 </p>
-<p>You can let several &lsquo;<samp>&amp;&amp;</samp>&rsquo; operators associate, or several
-&lsquo;<samp>||</samp>&rsquo; operators, but always use parentheses to show how &lsquo;<samp>&amp;&amp;</samp>&rsquo;
+<p>You can let several &lsquo;<samp>&amp;&amp;</samp>&rsquo; operations associate, or several
+&lsquo;<samp>||</samp>&rsquo; operations, but always use parentheses to show how &lsquo;<samp>&amp;&amp;</samp>&rsquo;
 and &lsquo;<samp>||</samp>&rsquo; nest with each other.  See <a href="#Logical-Operators">Logical Operators</a>.
 </p>
-<p>There is one other precedence ordering that code can depend on:
+<p>There is one other precedence ordering that clean code can depend on:
 </p>
 <ol>
-<li> Unary postfix operators.
+<li> Unary postfix operations.
 
-</li><li> Bitwise and shift operators&mdash;but watch out!
+</li><li> Bitwise and shift operations&mdash;but watch out!
 
 </li><li> Conditional expression with &lsquo;<samp>?</samp>&rsquo; and &lsquo;<samp>:</samp>&rsquo;.
 </li></ol>
 
-<p>The caveat for bitwise and shift operators is like that for logical
-operators: you can let multiple uses of one bitwise operator
+<p>The caveat for bitwise and shift operations is like that for logical
+operators: you can let multiple uses of one bitwise operation
 associate, but always use parentheses to control nesting of dissimilar
-operators.
+operations.
 </p>
 <p>These lists do not specify any precedence ordering between the bitwise
-and shift operators of the second list and the binary operators above
-conditional expressions in the first list.  When they come together,
-parenthesize them.  See <a href="#Bitwise-Operations">Bitwise Operations</a>.
+and shift operations of the second list and the binary operations
+above conditional expressions in the first list.  When they come
+together, parenthesize them.  See <a href="#Bitwise-Operations">Bitwise Operations</a>.
 </p>
 <hr>
 </div>
@@ -3853,13 +3905,17 @@ Next: <a href="#Sequence-Points" accesskey="n" rel="next">Sequence Points</a>, P
 <span id="Associativity-and-Ordering-1"></span><h3 class="section">10.2 Associativity and Ordering</h3>
 <span id="index-associativity-and-ordering"></span>
 
-<p>An associative binary operator, such as <code>+</code>, when used repeatedly
-can combine any number of operands.  The operands&rsquo; values may be
-computed in any order.
+
+<p>The bitwise binary operators, <code>&amp;</code>, <code>|</code> and <code>^</code>, are
+associative.  The arithmetic binary operators <code>+</code> and <code>*</code>
+are associative if the operand type is unsigned.  An associative
+binary operator, when used repeatedly, can combine any number of
+operands.  The operands&rsquo; values may be computed in any order, and
+since the operation is associative, they can be combined in any order
+too.
 </p>
-<p>If the values are integers and overflow can be ignored, they may be
-combined in any order.  Thus, given four functions that return
-<code>unsigned int</code>, calling them and adding their results as here
+<p>Thus, given four functions that return <code>unsigned int</code>, calling
+them and adding their results as here
 </p>
 <div class="example">
 <pre class="example">(foo () + bar ()) + (baz () + quux ())
@@ -3867,24 +3923,25 @@ combined in any order.  Thus, given four functions that return
 
 <p>may add up the results in any order.
 </p>
-<p>By contrast, arithmetic on signed integers, in which overflow is significant,
-is not always associative (see <a href="#Integer-Overflow">Integer Overflow</a>).  Thus, the
-additions must be done in the order specified, obeying parentheses and
-left-association.  That means computing <code>(foo () + bar ())</code> and
+<p>By contrast, arithmetic on signed integers is not always associative
+because there is the possibility of overflow (see <a href="#Integer-Overflow">Integer Overflow</a>).  Thus, the additions must be done in the order specified,
+obeying parentheses (or left-association in the absence of
+parentheses).  That means computing <code>(foo () + bar ())</code> and
 <code>(baz () + quux ())</code> first (in either order), then adding the
 two.
 </p>
+
 <p>The same applies to arithmetic on floating-point values, since that
 too is not really associative.  However, the GCC option
 <samp>-funsafe-math-optimizations</samp> allows the compiler to change the
 order of calculation when an associative operation (associative in
 exact mathematics) combines several operands.  The option takes effect
 when compiling a module (see <a href="#Compilation">Compilation</a>).  Changing the order
-of association can enable the program to pipeline the floating point
-operations.
+of association can enable GCC to optiimize the floating-point
+ooerations better.
 </p>
-<p>In all these cases, the four function calls can be done in any order.
-There is no right or wrong about that.
+<p>In all these examples, the four function calls can be done in any
+order.  There is no right or wrong about that.
 </p>
 <hr>
 </div>
@@ -3913,9 +3970,9 @@ that expression are carried out before any execution of the
 next operand.
 
 <p>The commas that separate arguments in a function call are <em>not</em>
-comma operators, and they do not create sequence points.  The rule
-for function arguments and the rule for operands are different
-(see <a href="#Ordering-of-Operands">Ordering of Operands</a>).
+comma operators, and they do not create sequence points.  The
+sequence-point rule for function arguments and the rule for operands
+(see <a href="#Ordering-of-Operands">Ordering of Operands</a>) are different.
 </p>
 </li><li> Just before calling a function.  All side effects specified by the
 argument expressions are carried out before calling the function.
@@ -4187,7 +4244,7 @@ Next: <a href="#Narrow-Integers" accesskey="n" rel="next">Narrow Integers</a>, P
 <span id="index-unsigned"></span>
 
 <p>An unsigned integer type can represent only positive numbers and zero.
-A signed type can represent both positive and negative number, in a
+A signed type can represent both positive and negative numbers, in a
 range spread almost equally on both sides of zero.  For instance,
 <code>unsigned char</code> holds numbers from 0 to 255 (on most computers),
 while <code>signed char</code> holds numbers from -128 to 127.  Each of
@@ -4200,11 +4257,14 @@ other than <code>char</code> are signed by default; with them, <code>signed</cod
 is a no-op.
 </p>
 <p>Plain <code>char</code> may be signed or unsigned; this depends on the
-compiler, the machine in use, and its operating system.
+compiler, the machine in use, and its operating system.  It is not
+<em>the same type</em> as either <code>signed char</code> or <code>unsigned
+char</code>, but it is always equivalent to one of those two.
 </p>
-<p>In many programs, it makes no difference whether <code>char</code> is
-signed.  When it does matter, don&rsquo;t leave it to chance; write
-<code>signed char</code> or <code>unsigned char</code>.<a id="DOCF3" href="#FOOT3"><sup>3</sup></a>
+<p>In many programs, it makes no difference whether the type <code>char</code>
+is signed.  When signedness does matter for a certain vslue, don&rsquo;t
+leave it to chance; declare it as <code>signed char</code> or <code>unsigned
+char</code> instead.<a id="DOCF4" href="#FOOT4"><sup>4</sup></a>
 </p>
 <hr>
 </div>
@@ -4223,10 +4283,11 @@ arithmetic.  There is literally no reason to declare a local variable
 </p>
 <p>In particular, if the value is really a character, you should declare
 the variable <code>int</code>.  Not <code>char</code>!  Using that narrow type can
-force the compiler to truncate values for conversion, which is a
-waste.  Furthermore, some functions return either a character value,
-or -1 for &ldquo;no character.&rdquo;  Using <code>int</code> makes it possible
-to distinguish -1 from a character by sign.
+force the compiled code to truncate values to <code>char</code> before
+conversion, which is a waste.  Furthermore, some functions return
+either a character value or -1 for &ldquo;no character.&rdquo;  Using
+type <code>int</code> makes it possible to distinguish -1 from any
+character, by sign.
 </p>
 <p>The narrow integer types are useful as parts of other objects, such as
 arrays and structures.  Compare these array declarations, whose sizes
@@ -4266,7 +4327,7 @@ the variable&rsquo;s type.
 value is unchanged.  The only exception is when converting a negative
 value (in a signed type, obviously) to a wider unsigned type.  In that
 case, the result is a positive value with the same bits
-(see <a href="#Integers-in-Depth">Integers in Depth</a>).
+(see <a href="#Integers-in-Depth">Integers in Depth</a>), padded on the left with zeros.
 </p>
 <span id="index-truncation"></span>
 <p>Converting to a narrower type, also called <em>truncation</em>, involves
@@ -4434,7 +4495,7 @@ imaginary-valued constant is an ordinary real-valued constant followed
 by &lsquo;<samp>i</samp>&rsquo;.
 </p>
 <p>To declare numeric variables as complex, use the <code>_Complex</code>
-keyword.<a id="DOCF4" href="#FOOT4"><sup>4</sup></a>  The
+keyword.<a id="DOCF5" href="#FOOT5"><sup>5</sup></a>  The
 standard C complex data types are floating point,
 </p>
 <div class="example">
@@ -4451,6 +4512,7 @@ but the order shown above seems most logical.
 </p>
 <p>GNU C supports constants for complex values; for instance, <code>4.0 +
 3.0i</code> has the value 4 + 3i as type <code>_Complex double</code>.
+&lsquo;<samp>j</samp>&rsquo; is equivalent to &lsquo;<samp>i</samp>&rsquo;, as a numeric suffix.
 See <a href="#Imaginary-Constants">Imaginary Constants</a>.
 </p>
 <p>To pull the real and imaginary parts of the number back out, GNU C
@@ -4476,11 +4538,11 @@ which means negating the imaginary part of a complex number:
 </p>
 <div class="example">
 <pre class="example">_Complex double foo = 4.0 + 3.0i;
-_Complex double bar = ~foo; /* <span class="roman"><code>bar</code> is now 4 - 3i.</span> */
+_Complex double bar = ~foo; /* <span class="roman"><code>bar</code> is now 4.0 - 3.0i.</span> */
 </pre></div>
 
 <p>For standard C compatibility, you can use the appropriate library
-function: <code>conjf</code>, <code>conj</code>, or <code>confl</code>.
+function: <code>conjf</code>, <code>conj</code>, or <code>conjl</code>.
 </p>
 <hr>
 </div>
@@ -4583,13 +4645,14 @@ Therefore, the type designator for this type is <code>int</code>.
 </p>
 <p>Following this procedure, the designator for any primitive type is
 simply the set of keywords which specifies that type in a declaration.
-The same is true for compound types such as structures, unions, and
-enumerations.
+The same is true for structure types, union types, and
+enumeration types.
 </p>
+
 <p>Designators for pointer types do follow the rule of deleting the
 variable name and semicolon, but the result is not so simple.
 See <a href="#Pointer-Type-Designators">Pointer-Type Designators</a>, as part of the chapter about
-pointers.  See <a href="#Array-Type-Designators">Array Type Designators</a>), for designators for array
+pointers.  See <a href="#Array-Type-Designators">Array Type Designators</a>, for designators for array
 types.
 </p>
 <p>To understand what type a designator stands for, imagine a variable
@@ -4716,10 +4779,10 @@ properly represent the value,
 <p>and that isn&rsquo;t excluded by the following rules.
 </p>
 <p>If the constant has &lsquo;<samp>l</samp>&rsquo; or &lsquo;<samp>L</samp>&rsquo; as a suffix, that excludes the
-first two types (non-<code>long</code>).
+first two types (those that are not <code>long</code>).
 </p>
 <p>If the constant has &lsquo;<samp>ll</samp>&rsquo; or &lsquo;<samp>LL</samp>&rsquo; as a suffix, that excludes
-first four types (non-<code>long long</code>).
+first four types (those that are not <code>long long</code>).
 </p>
 <p>If the constant has &lsquo;<samp>u</samp>&rsquo; or &lsquo;<samp>U</samp>&rsquo; as a suffix, that excludes
 the signed types.
@@ -4733,6 +4796,11 @@ hexadecimal), that excludes the unsigned types.
 <pre class="example">3000000000u      // <span class="roman">three billion as <code>unsigned int</code>.</span>
 0LL              // <span class="roman">zero as a <code>long long int</code>.</span>
 0403l            // <span class="roman">259 as a <code>long int</code>.</span>
+2147483648       // <span class="roman">This is of type <code>long long int</code>.</span>
+                 // <span class="roman">on typical 32-bit machines,</span>
+                 // <span class="roman">since it won&rsquo;t fit in 32 bits as a signed number.</span>
+2147483648U      // <span class="roman">This is of type <code>unsigned int</code>,</span>
+                 // <span class="roman">since it fits in 32 unsigned bits.</span>
 </pre></div>
 
 <p>Suffixes in integer constants are rarely used.  When the precise type
@@ -4751,9 +4819,11 @@ Next: <a href="#Imaginary-Constants" accesskey="n" rel="next">Imaginary Constant
 <span id="index-floating_002dpoint-constants"></span>
 <span id="index-constants_002c-floating_002dpoint"></span>
 
-<p>A floating-point constant must have either a decimal point, an
+<p>A floating-point decimal constant must have either a decimal point, an
 exponent-of-ten, or both; they distinguish it from an integer
-constant.
+constant.  Just adding the floating-point suffix, &lsquo;<samp>f</samp>&rsquo;, to an
+integer does not make a valid floating-point constant, and adding
+&lsquo;<samp>l</samp>&rsquo; would instead make it a long integer.
 </p>
 <p>To indicate an exponent, write &lsquo;<samp>e</samp>&rsquo; or &lsquo;<samp>E</samp>&rsquo;.  The exponent
 value follows.  It is always written as a decimal number; it can
@@ -4802,9 +4872,11 @@ at the end.  For example,
 <p>Likewise, &lsquo;<samp>l</samp>&rsquo; or &lsquo;<samp>L</samp>&rsquo; at the end forces the constant
 to type <code>long double</code>.
 </p>
-<p>You can use exponents in hexadecimal floating constants, but since
-&lsquo;<samp>e</samp>&rsquo; would be interpreted as a hexadecimal digit, the character
-&lsquo;<samp>p</samp>&rsquo; or &lsquo;<samp>P</samp>&rsquo; (for &ldquo;power&rdquo;) indicates an exponent.
+<span id="index-hexadecimal-floating-constants"></span>
+<p>There are also <em>hexadecimal floating constants</em>.  These
+<em>must</em> have an exponent, but since &lsquo;<samp>e</samp>&rsquo; would be interpreted
+as a hexadecimal digit, the character &lsquo;<samp>p</samp>&rsquo; or &lsquo;<samp>P</samp>&rsquo; (for
+&ldquo;power&rdquo;) indicates the exponent.
 </p>
 <p>The exponent in a hexadecimal floating constant is an optionally signed
 decimal integer that specifies a power of 2 (<em>not</em> 10 or 16) to
@@ -4854,7 +4926,7 @@ The four alternative suffix letters are all equivalent.
 <span id="index-_005fComplex_005fI"></span>
 <p>The other way to write an imaginary constant is to multiply a real
 constant by <code>_Complex_I</code>, which represents the imaginary number
-i.  Standard C doesn&rsquo;t support suffixing with &lsquo;<samp>i</samp>&rsquo; or &lsquo;<samp>j</samp>&rsquo;, so
+i.  Standard C doesn&rsquo;t support suffixes for imaginary constants, so
 this clunky method is needed.
 </p>
 <p>To write a complex constant with a nonzero real part and a nonzero
@@ -4875,6 +4947,7 @@ can include multiple imaginary constants, or none.  For example:
 foo = 2.0i + 4.0 + 3.0i; /* <span class="roman">Imaginary part is 5.0.</span> */
 bar = 4.0 + 12.0; /* <span class="roman">Imaginary part is 0.0.</span> */
 quux = 3.0i + 15.0i; /* <span class="roman">Real part is 0.0.</span> */
+buux = 3.0i + 15.0j; /* <span class="roman">Equal to <code>quux</code>.</span> */
 </pre></div>
 
 <p>See <a href="#Complex-Data-Types">Complex Data Types</a>.
@@ -4897,7 +4970,7 @@ See <a href="#Preprocessing-Tokens">Preprocessing Tokens</a>.
 won&rsquo;t be combined into a single number-like construct.  For example,
 <code>0xE+12</code> is a preprocessing number that is not a valid numeric
 constant, so it is a syntax error.  If what we want is the three
-tokens <code>0xE&nbsp;+&nbsp;12<!-- /@w --></code>, we have to insert two spaces as separators.
+tokens <code>0xE&nbsp;+&nbsp;12<!-- /@w --></code>, we have to insert spaces as separators.
 </p>
 <hr>
 </div>
@@ -4944,12 +5017,14 @@ constant looks like <code>'\\'</code>.
 <span id="index-_005cr"></span>
 <span id="index-escape-_0028ASCII-character_0029"></span>
 <span id="index-_005ce"></span>
-<p>Here are all the escape sequences that represent specific
-characters in a character constant.  The numeric values shown are
-the corresponding ASCII character codes, as decimal numbers.
+<p>Here are all the escape sequences that represent specific characters
+in a character constant.  The numeric values shown are the
+corresponding ASCII character codes, as decimal numbers.  The comments
+give the characters&rsquo; conventional or traditional namss, as well as the
+appearance for graphical characters.
 </p>
 <div class="example">
-<pre class="example">'\a' &rArr; 7       /* <span class="roman">alarm, <kbd>CTRL-g</kbd></span> */
+<pre class="example">'\a' &rArr; 7       /* <span class="roman">alarm, bell, <kbd>CTRL-g</kbd></span> */
 '\b' &rArr; 8       /* <span class="roman">backspace, <tt class="key">BS</tt>, <kbd>CTRL-h</kbd></span> */
 '\t' &rArr; 9       /* <span class="roman">tab, <tt class="key">TAB</tt>, <kbd>CTRL-i</kbd></span> */
 '\n' &rArr; 10      /* <span class="roman">newline, <kbd>CTRL-j</kbd></span> */
@@ -4964,13 +5039,15 @@ the corresponding ASCII character codes, as decimal numbers.
 </pre></div>
 
 <p>&lsquo;<samp>\e</samp>&rsquo; is a GNU C extension; to stick to standard C, write
-&lsquo;<samp>\33</samp>&rsquo;.  (The number after &lsquo;<samp>backslash</samp>&rsquo; is octal.)  To specify
+&lsquo;<samp>\33</samp>&rsquo;.  (The number after &lsquo;<samp>\</samp>&rsquo; is octal.)  To specify
 a character constant using decimal, use a cast; for instance,
 <code>(unsigned char) 27</code>.
 </p>
 <p>You can also write octal and hex character codes as
 &lsquo;<samp>\<var>octalcode</var></samp>&rsquo; or &lsquo;<samp>\x<var>hexcode</var></samp>&rsquo;.  Decimal is not an
-option here, so octal codes do not need to start with &lsquo;<samp>0</samp>&rsquo;.
+option here, so octal codes do not need to start with &lsquo;<samp>0</samp>&rsquo;.  An
+octal code is limited to three octal digits, and any non-octal
+character terminates it.
 </p>
 <p>The character constant&rsquo;s value has type <code>int</code>.  However, the
 character code is treated initially as a <code>char</code> value, which is
@@ -5008,8 +5085,8 @@ zeroth element (see <a href="#Accessing-Array-Elements">Accessing Array Elements
 have type <code>char *</code> because it points to an element of type
 <code>char</code>.  <code>char *</code> is an example of a type designator for a
 pointer type (see <a href="#Pointer-Type-Designators">Pointer-Type Designators</a>).  That type is used
-for strings generally, not just the strings expressed as constants
-in a program.
+for operating on strings generally, not just the strings expressed as
+constants.
 </p>
 <p>Thus, the string constant <code>&quot;Foo!&quot;</code> is almost
 equivalent to declaring an array like this
@@ -5018,8 +5095,8 @@ equivalent to declaring an array like this
 <pre class="example">char string_array_1[] = {'F', 'o', 'o', '!', '\0' };
 </pre></div>
 
-<p>and then using <code>string_array_1</code> in the program.  There
-are two differences, however:
+<p>and then using <code>string_array_1</code> in the program (which converts it
+to type <code>char *</code>).  There are two differences, however:
 </p>
 <ul>
 <li> The string constant doesn&rsquo;t define a name for the array.
@@ -5082,7 +5159,7 @@ o!&quot;
 <p>Be careful to avoid passing a string constant to a function that
 modifies the string it receives.  The memory where the string constant
 is stored may be read-only, which would cause a fatal <code>SIGSEGV</code>
-signal that normally terminates the function (see <a href="#Signals">Signals</a>.  Even
+signal that normally terminates the function (see <a href="#Signals">Signals</a>).  Even
 worse, the memory may not be read-only.  Then the function might
 modify the string constant, thus spoiling the contents of other string
 constants that are supposed to contain the same value and are unified
@@ -5125,21 +5202,27 @@ Next: <a href="#Wide-Character-Constants" accesskey="n" rel="next">Wide Characte
 <span id="Unicode-Character-Codes-1"></span><h3 class="section">12.9 Unicode Character Codes</h3>
 <span id="index-Unicode-character-codes"></span>
 <span id="index-universal-character-names"></span>
+<span id="index-code-point"></span>
 
-<p>You can specify Unicode characters, for individual character constants
-or as part of string constants (see <a href="#String-Constants">String Constants</a>), using
-escape sequences; and even in C identifiers.  Use the &lsquo;<samp>\u</samp>&rsquo; escape
-sequence with a 16-bit hexadecimal Unicode character code.  If the
-code value is too big for 16 bits, use the &lsquo;<samp>\U</samp>&rsquo; escape sequence
-with a 32-bit hexadecimal Unicode character code.  (These codes are
-called <em>universal character names</em>.)  For example,
+<p>You can specify Unicode characters using escape sequences called
+<em>universal character names</em> that start with &lsquo;<samp>\u</samp>&rsquo; and
+&lsquo;<samp>\U</samp>&rsquo;.  They are valid in C for individual character constants,
+inside string constants (see <a href="#String-Constants">String Constants</a>), and even in
+identifiers.  These escape sequence includes a hexadecimal Unicode
+character code, also called a <em>code point</em> in Unicode terminology.
+</p>
+<p>Use the &lsquo;<samp>\u</samp>&rsquo; escape sequence with a 16-bit hexadecimal Unicode
+character code.  If the character&rsquo;s numeric code is too big for 16
+bits, use the &lsquo;<samp>\U</samp>&rsquo; escape sequence with a 32-bit hexadecimal
+Unicode character code.  Here are some examples.
 </p>
 <div class="example">
-<pre class="example">\u6C34      /* <span class="roman">16-bit code (UTF-16)</span> */
-\U0010ABCD  /* <span class="roman">32-bit code (UTF-32)</span> */
+<pre class="example">\u6C34      /* <span class="roman">16-bit code (Chinese for &ldquo;water&rdquo;), UTF-16</span> */
+\U0010ABCD  /* <span class="roman">32-bit code, UTF-32</span> */
 </pre></div>
 
-<p>One way to use these is in UTF-8 string constants (see <a href="#UTF_002d8-String-Constants">UTF-8 String Constants</a>).  For instance,
+<p>One way to use these is in UTF-8 string constants (see <a href="#UTF_002d8-String-Constants">UTF-8 String Constants</a>).  For instance, here we use two of them, each preceded by
+a space.
 </p>
 <div class="example">
 <pre class="example">u8&quot;fóó \u6C34 \U0010ABCD&quot;
@@ -5148,7 +5231,7 @@ called <em>universal character names</em>.)  For example,
 <p>You can also use them in wide character constants (see <a href="#Wide-Character-Constants">Wide Character Constants</a>), like this:
 </p>
 <div class="example">
-<pre class="example">u'\u6C34'      /* <span class="roman">16-bit code</span> */
+<pre class="example">u'\u6C34'      /* <span class="roman">16-bit code (water)</span> */
 U'\U0010ABCD'  /* <span class="roman">32-bit code</span> */
 </pre></div>
 
@@ -5156,7 +5239,7 @@ U'\U0010ABCD'  /* <span class="roman">32-bit code</span> */
 this:
 </p>
 <div class="example">
-<pre class="example">u&quot;\u6C34\u6C33&quot;  /* <span class="roman">16-bit code</span> */
+<pre class="example">u&quot;\u6C34\u706B&quot;  /* <span class="roman">16-bit codes (water, fire)</span> */
 U&quot;\U0010ABCD&quot;    /* <span class="roman">32-bit code</span> */
 </pre></div>
 
@@ -5166,11 +5249,11 @@ U&quot;\U0010ABCD&quot;    /* <span class="roman">32-bit code</span> */
 <pre class="example">int foo\u6C34bar = 0;
 </pre></div>
 
-<p>Codes in the range of <code>D800</code> through <code>DFFF</code> are not valid
-in Unicode.  Codes less than <code>00A0</code> are also forbidden, except for
-<code>0024</code>, <code>0040</code>, and <code>0060</code>; these characters are
-actually ASCII control characters, and you can specify them with other
-escape sequences (see <a href="#Character-Constants">Character Constants</a>).
+<p>Codes in the range of <code>D800</code> through <code>DFFF</code> are limited to
+very specialized uses, too specialized to explain here.  Codes less
+than <code>00A0</code> are invalid, except for <code>0024</code>, <code>0040</code>, and
+<code>0060</code>; these characters are actually ASCII control characters,
+and you can specify them with other escape sequences (see <a href="#Character-Constants">Character Constants</a>).
 </p>
 <hr>
 </div>
@@ -5243,7 +5326,7 @@ pointer will be.
 <dt><span><code>char16_t</code></span></dt>
 <dd><p>This is a 16-bit Unicode wide string constant: each element is a
 16-bit Unicode character code with type <code>char16_t</code>, so the string
-has the pointer type <code>char16_t&nbsp;*</code>.  (That is a type designator;
+has the array type <code>char16_t[]</code>.  (That is a type designator;
 see <a href="#Pointer-Type-Designators">Pointer-Type Designators</a>.)  The constant is written as
 &lsquo;<samp>u</samp>&rsquo; (which must be lower case) followed (with no intervening
 space) by a string constant with the usual syntax.
@@ -5251,7 +5334,7 @@ space) by a string constant with the usual syntax.
 </dd>
 <dt><span><code>char32_t</code></span></dt>
 <dd><p>This is a 32-bit Unicode wide string constant: each element is a
-32-bit Unicode character code, and the string has type <code>char32_t&nbsp;*</code>.
+32-bit Unicode character code, and the string has type <code>char32_t[]</code>.
 It&rsquo;s written as &lsquo;<samp>U</samp>&rsquo; (which must be upper case) followed (with no
 intervening space) by a string constant with the usual syntax.
 </p>
@@ -5260,7 +5343,7 @@ intervening space) by a string constant with the usual syntax.
 <dd><p>This is the original kind of wide string constant.  It&rsquo;s written as
 &lsquo;<samp>L</samp>&rsquo; (which must be upper case) followed (with no intervening
 space) by a string constant with the usual syntax, and the string has
-type <code>wchar_t&nbsp;*</code>.
+type <code>wchar_t[]</code>.
 </p>
 <p>The width of the data type <code>wchar_t</code> depends on the target
 platform, which makes this kind of wide string somewhat less useful
@@ -5300,8 +5383,9 @@ a C program, use <code>sizeof</code>.  There are two ways to use it:
 <dd><p>This gives the size of <var>expression</var>, based on its data type.  It
 does not calculate the value of <var>expression</var>, only its size, so if
 <var>expression</var> includes side effects or function calls, they do not
-happen.  Therefore, <code>sizeof</code> is always a compile-time operation
-that has zero run-time cost.
+happen.  Therefore, <code>sizeof</code> with an expression as argument is
+always a compile-time operation that has zero run-time cost, unless it
+applies to a variable-size array.
 </p>
 <p>A value that is a bit field (see <a href="#Bit-Fields">Bit Fields</a>) is not allowed as an
 operand of <code>sizeof</code>.
@@ -5317,13 +5401,13 @@ i = sizeof a + 10;
 <p>sets <code>i</code> to 18 on most computers because <code>a</code> occupies 8 bytes.
 </p>
 <p>Here&rsquo;s how to determine the number of elements in an array
-<code>array</code>:
+<code>arr</code>:
 </p>
 <div class="example">
-<pre class="example">(sizeof array / sizeof array[0])
+<pre class="example">(sizeof arr / sizeof arr[0])
 </pre></div>
 
-<p>The expression <code>sizeof array</code> gives the size of the array, not
+<p>The expression <code>sizeof arr</code> gives the size of the array, not
 the size of a pointer to an element.  However, if <var>expression</var> is
 a function parameter that was declared as an array, that
 variable really has a pointer type (see <a href="#Array-Parm-Pointer">Array parameters are pointers</a>), so
@@ -5340,8 +5424,12 @@ For example,
 
 <p>is equivalent to the previous example.
 </p>
-<p>You can&rsquo;t apply <code>sizeof</code> to an incomplete type (see <a href="#Incomplete-Types">Incomplete Types</a>), nor <code>void</code>.  Using it on a function type gives 1 in GNU
-C, which makes adding an integer to a function pointer work as desired
+<p><strong>Warning:</strong> If <var>type</var> contains expressions which have side
+effects, those expressions are actually computed and any side effects
+in them do occur.
+</p>
+<p>You can&rsquo;t apply <code>sizeof</code> to an incomplete type (see <a href="#Incomplete-Types">Incomplete Types</a>).  Using it on a function type or <code>void</code> gives 1 in GNU C,
+which makes adding an integer to these pointer types work as desired
 (see <a href="#Pointer-Arithmetic">Pointer Arithmetic</a>).
 </p></dd>
 </dl>
@@ -5372,10 +5460,10 @@ Specifically,
 
 <p>you must write it that way, with parentheses.
 </p>
-<p>The data type of the value of the <code>sizeof</code> operator is always one
-of the unsigned integer types; which one of those types depends on the
-machine.  The header file <code>stddef.h</code> defines the typedef name
-<code>size_t</code> as an alias for this type.  See <a href="#Defining-Typedef-Names">Defining Typedef Names</a>.
+<p>The data type of the value of the <code>sizeof</code> operator is always an
+unsigned integer type; which one of those types depends on the
+machine.  The header file <code>stddef.h</code> defines <code>size_t</code> as a
+name for such a type.  See <a href="#Defining-Typedef-Names">Defining Typedef Names</a>.
 </p>
 <hr>
 </div>
@@ -5473,7 +5561,7 @@ double a[5];
 <code>&amp;i</code> is a &ldquo;pointer to <code>int</code>.&rdquo;
 
 </li><li> <code>a</code> has type <code>double[5]</code>; we say <code>&amp;a</code> is a &ldquo;pointer to
-arrays of five <code>double</code>s.&rdquo;
+an array of five <code>double</code>s.&rdquo;
 
 </li><li> <code>a[3]</code> has type <code>double</code>; we say <code>&amp;a[3]</code> is a &ldquo;pointer
 to <code>double</code>.&rdquo;
@@ -5595,8 +5683,32 @@ them later.  Here&rsquo;s a simple example to illustrate the practice:
 (pointing at <code>i</code>), and use it later to get the value of the
 object it points at (the value in <code>i</code>).
 </p>
-<p>If anyone can provide a useful example which is this basic,
-I would be grateful.
+<p>Here is another example of using a pointer to a variable.
+</p>
+<div class="example">
+<pre class="example">/* <span class="roman">Define global variable <code>i</code>.</span>  */
+int i = 2;
+
+int
+foo (void)
+{
+  /* <span class="roman">Save global variable <code>i</code>&rsquo;s address.</span>  */
+  int *global_i = &amp;i;
+
+  /* <span class="roman">Declare local <code>i</code>, shadowing the global <code>i</code>.</span>  */
+  int i = 5;
+
+  /* <span class="roman">Print value of global <code>i</code> and value of local <code>i</code>.</span>  */
+  printf (&quot;global i: %d\nlocal i: %d\n&quot;, *global_i, i);
+  return i;
+}
+</pre></div>
+
+<p>Of course, in a real program it would be much cleaner to use different
+names for these two variables, rather than calling both of them
+<code>i</code>.  But it is hard to illustrate this syntaxtical point with
+clean code.  If anyone can provide a useful example to illustrate
+this point with, that would be welcome.
 </p>
 <hr>
 </div>
@@ -7197,7 +7309,7 @@ If an alternative is shorter than the union as a whole, it occupies
 the first part of the union&rsquo;s storage, leaving the last part unused
 <em>for that alternative</em>.
 </p>
-<p><strong>Warning:</strong> if the code stores data using one union alternative
+<p><strong>Warning:</strong> If the code stores data using one union alternative
 and accesses it with another, the results depend on the kind of
 computer in use.  Only wizards should try to do this.  However, when
 you need to do this, a union is a clean way to do it.
@@ -7809,6 +7921,8 @@ Next: <a href="#Array-Type-Designators" accesskey="n" rel="next">Array Type Desi
 
 <p>A string in C is a sequence of elements of type <code>char</code>,
 terminated with the null character, the character with code zero.
+However, the C code that operates on strings normally uses
+the pointer type <code>char *</code> to do it.
 </p>
 <p>Programs often need to use strings with specific, fixed contents.  To
 write one in a C program, use a <em>string constant</em> such as
@@ -7850,6 +7964,7 @@ that the length does not exceed its size.  For example,
 set_message (char *text)
 {
   int i;
+  /* <span class="roman">Recall that <code>message</code> is declared above.</span>  */
   for (i = 0; i &lt; sizeof (message); i++)
     {
       message[i] = text[i];
@@ -8215,7 +8330,7 @@ Utilities</a> in <cite>The GNU C Library Reference Manual</cite>.)
 and is remembered for the scope of the array in case it is used in
 <code>sizeof</code>.
 </p>
-<p><strong>Warning:</strong> don&rsquo;t allocate a variable-length array if the size
+<p><strong>Warning:</strong> Don&rsquo;t allocate a variable-length array if the size
 might be very large (more than 100,000), or in a recursive function,
 because that is likely to cause stack overflow.  Allocate the array
 dynamically instead (see <a href="#Dynamic-Memory-Allocation">Dynamic Memory Allocation</a>).
@@ -8877,7 +8992,7 @@ process_all_elements (struct list_if_tuples *list)
     {
       /* <span class="roman">Process all the elements in this node&rsquo;s vector,</span>
          <span class="roman">stopping when we reach one that is null.</span>  */
-      for (i = 0; i &lt; list-&gt;length; i++
+      for (i = 0; i &lt; list-&gt;length; i++)
         {
           /* <span class="roman">Null element terminates this node&rsquo;s vector.</span>  */
           if (list-&gt;contents[i] == NULL)
@@ -9684,7 +9799,7 @@ ptr = &amp;&amp;foo;
 </pre></div>
 
 <p>To use these values requires a way to jump to one.  This is done
-with the computed goto statement<a id="DOCF5" href="#FOOT5"><sup>5</sup></a>, <code>goto *<var>exp</var>;</code>.  For example,
+with the computed goto statement<a id="DOCF6" href="#FOOT6"><sup>6</sup></a>, <code>goto *<var>exp</var>;</code>.  For example,
 </p>
 <div class="example">
 <pre class="example">goto *ptr;
@@ -10316,7 +10431,7 @@ declaration, and its visibility continues until the end of the block.
 variable&rsquo;s storage exists only from the declaration to the end of the
 block.  Execution of the declaration allocates the storage, computes
 the initial value, and stores it in the variable.  The end of the
-block deallocates the storage.<a id="DOCF6" href="#FOOT6"><sup>6</sup></a>
+block deallocates the storage.<a id="DOCF7" href="#FOOT7"><sup>7</sup></a>
 </p>
 <p><strong>Warning:</strong> Two declarations for the same local variable
 in the same scope are an error.
@@ -12743,7 +12858,7 @@ too (they are pointers to types that are not compatible).
 </p>
 <p>If two types are compatible ignoring the qualifiers, we call them
 <em>nearly compatible</em>.  (If they are array types, we ignore
-qualifiers on the element types.<a id="DOCF7" href="#FOOT7"><sup>7</sup></a>)
+qualifiers on the element types.<a id="DOCF8" href="#FOOT8"><sup>8</sup></a>)
 Comparison of pointers is valid if the pointers&rsquo; target types are
 nearly compatible.  Likewise, the two branches of a conditional
 expression may be pointers to nearly compatible target types.
@@ -12926,7 +13041,7 @@ type it has, with these exceptions:
 <ul>
 <li> Some narrow numeric values are <em>promoted</em> to a wider type.  If the
 expression is a narrow integer, such as <code>char</code> or <code>short</code>,
-the call converts it automatically to <code>int</code> (see <a href="#Integer-Types">Integer Data Types</a>).<a id="DOCF8" href="#FOOT8"><sup>8</sup></a>
+the call converts it automatically to <code>int</code> (see <a href="#Integer-Types">Integer Data Types</a>).<a id="DOCF9" href="#FOOT9"><sup>9</sup></a>
 
 <p>In this example, the expression <code>c</code> is passed as an <code>int</code>:
 </p>
@@ -13222,6 +13337,13 @@ or warnings.
 <p>Except for expansion of predefined macros, all these operations happen
 only if you use preprocessing directives to request them.
 </p>
+<span id="index-preprocessing-operators"></span>
+<p>Preprocessing does not recognize the operators of the C language
+itself, outside of the operand of the <code>#if</code> directive
+(see <a href="#if">The <code>#if</code> directive</a>).  However, it supports three <em>preprocessing
+operators</em> of its own: <code>#</code> (see <a href="#Stringification">Stringification</a>), <code>##</code>
+(see <a href="#Concatenation">Concatenation</a>) and <code>defined</code> (see <a href="#if">The <code>#if</code> directive</a>).
+</p>
 <hr>
 </div>
 <div class="section" id="Directives">
@@ -13322,7 +13444,7 @@ The distinction between lexically valid and invalid floating-point
 numbers, for example, doesn&rsquo;t matter at this stage.  The use of
 preprocessing numbers makes it possible to split an identifier at any
 position and get exactly two tokens, and reliably paste them together
-using the <code>##</code> operator (see <a href="#Concatenation">Concatenation</a>).
+using the <code>##</code> preprocessing operator (see <a href="#Concatenation">Concatenation</a>).
 </p>
 </dd>
 <dt><span>punctuator</span></dt>
@@ -13788,7 +13910,7 @@ keywords.  This can be useful if you wish to hide a keyword such as
 However, the preprocessing operator <code>defined</code> (see <a href="#defined">The <code>defined</code> test</a>)
 can never be defined as a macro.
 </p>
-<p>The operator <code>#</code> is used in macros for stringification of an
+<p>The preprocessing operator <code>#</code> is used in macros for stringification of an
 argument (see <a href="#Stringification">Stringification</a>), and <code>##</code> is used for
 concatenation of arguments into larger tokens (see <a href="#Concatenation">Concatenation</a>)
 </p>
@@ -14137,7 +14259,7 @@ Next: <a href="#Concatenation" accesskey="n" rel="next">Concatenation</a>, Previ
 </div>
 <span id="Stringification-1"></span><h4 class="subsection">26.5.4 Stringification</h4>
 <span id="index-stringification"></span>
-<span id="index-_0023-operator"></span>
+<span id="index-_0023-preprocessing-operator"></span>
 
 <p>Sometimes you may want to convert a macro argument into a string
 constant.  Parameters are not replaced inside string constants, but
@@ -14229,7 +14351,7 @@ Next: <a href="#Variadic-Macros" accesskey="n" rel="next">Variadic Macros</a>, P
 <span id="index-concatenation"></span>
 <span id="index-token-pasting"></span>
 <span id="index-token-concatenation"></span>
-<span id="index-_0023_0023-operator"></span>
+<span id="index-_0023_0023-preprocessing-operator"></span>
 
 <p>It is often useful to merge two tokens into one while expanding macros.
 This is called <em>token pasting</em> or <em>token concatenation</em>.  The
@@ -14272,7 +14394,7 @@ concatenated.
 <p>It is an error to use <code>##</code> at the beginning or end of a macro
 body.
 </p>
-<p>Multiple <code>##</code> operators are handled left-to-right, so that
+<p>Multiple <code>##</code> preprocessing operators are handled left-to-right, so that
 &lsquo;<samp>1 ## e ## -2</samp>&rsquo; pastes into &lsquo;<samp>1e-2</samp>&rsquo;.  (Right-to-left
 processing would first generate &lsquo;<samp>e-2</samp>&rsquo;, which is an invalid token.)
 When <code>#</code> and <code>##</code> are used together, they are all handled
@@ -14348,11 +14470,12 @@ have this expansion:
      &rarr;  fprintf (stderr, &quot;%s:%d: &quot;, input_file, lineno)
 </pre></div>
 
-<p>The variable argument is completely macro-expanded before it is inserted
-into the macro expansion, just like an ordinary argument.  You may use
-the <code>#</code> and <code>##</code> operators to stringify the variable argument
-or to paste its leading or trailing token with another token.  (But see
-below for an important special case for <code>##</code>.)
+<p>The variable argument is completely macro-expanded before it is
+inserted into the macro expansion, just like an ordinary argument.
+You may use the <code>#</code> and <code>##</code> preprocessing operators to
+stringify the variable argument or to paste its leading or trailing
+token with another token.  (But see below for an important special
+case for <code>##</code>.)
 </p>
 <p><strong>Warning:</strong> don&rsquo;t use the identifier <code><span class="nolinebreak">__VA_ARGS__</span><!-- /@w --></code>
 for anything other than this.
@@ -14360,7 +14483,7 @@ for anything other than this.
 <p>If your macro is complicated, you may want a more descriptive name for
 the variable argument than <code><span class="nolinebreak">__VA_ARGS__</span><!-- /@w --></code>.  You can write an
 argument name immediately before the &lsquo;<samp>&hellip;</samp>&rsquo;; that name is used
-for the variable argument.<a id="DOCF9" href="#FOOT9"><sup>9</sup></a>  The
+for the variable argument.<a id="DOCF10" href="#FOOT10"><sup>10</sup></a>  The
 <code>eprintf</code> macro above could be written thus:
 </p>
 <div class="example">
@@ -14389,7 +14512,7 @@ an extra comma in the expansion:
 </p>
 <p>To get rid of that comma, the <code>##</code> token paste operator has a
 special meaning when placed between a comma and a variable
-argument.<a id="DOCF10" href="#FOOT10"><sup>10</sup></a>  If you write
+argument.<a id="DOCF11" href="#FOOT11"><sup>11</sup></a>  If you write
 </p>
 <div class="example">
 <pre class="example">#define eprintf(format, &hellip;) \
@@ -14564,8 +14687,9 @@ facilities of the standard C library.
 <dt><span><code>__COUNTER__</code></span></dt>
 <dd><p>This macro expands to sequential integral values starting from 0.  In
 other words, each time the program uses this macro, it generates the
-next successive integer.  This, with the <code>##</code> operator, provides
-a convenient means for macros to generate unique identifiers.
+next successive integer.  This, with the <code>##</code> preprocessing
+operator, provides a convenient means for macros to generate unique
+identifiers.
 </p>
 </dd>
 <dt><span><code>__GNUC__</code></span></dt>
@@ -15239,7 +15363,7 @@ Next: <a href="#Diagnostics" accesskey="n" rel="next">Diagnostics</a>, Previous:
 or not to include a chunk of code in the final token stream that is
 compiled.  Preprocessing conditionals can test arithmetic expressions,
 or whether a name is defined as a macro, or both together using the
-special <code>defined</code> operator.
+special <code>defined</code> preprocessing operator.
 </p>
 <p>A preprocessing conditional in C resembles in some ways an <code>if</code>
 statement in C, but it is important to understand the difference between
@@ -15443,8 +15567,8 @@ short-circuiting rules of standard C.
 </li><li> Macros.  All macros in the expression are expanded before actual
 computation of the expression&rsquo;s value begins.
 
-</li><li> Uses of the <code>defined</code> operator, which lets you check whether macros
-are defined in the middle of an <code>#if</code>.
+</li><li> Uses of the <code>defined</code> preprocessing operator, which lets you
+check whether macros are defined in the middle of an <code>#if</code>.
 
 </li><li> Identifiers that are not macros, which are all considered to be the
 number zero.  This allows you to write <code>#if&nbsp;MACRO<!-- /@w --></code> instead of
@@ -15482,7 +15606,7 @@ Next: <a href="#else" accesskey="n" rel="next">The <code>#else</code> directive<
 <span id="The-defined-test"></span><h4 class="subsubsection">26.6.2.3 The <code>defined</code> test</h4>
 
 <span id="index-defined"></span>
-<p>The special operator <code>defined</code> is used in <code>#if</code> and
+<p>The preprocessing operator <code>defined</code> is used in <code>#if</code> and
 <code>#elif</code> expressions to test whether a certain name is defined as a
 macro.  <code>defined <var>name</var></code> and <code>defined (<var>name</var>)</code> are
 both expressions whose value is 1 if <var>name</var> is defined as a macro at
@@ -15792,7 +15916,7 @@ Next: <a href="#Maximum-and-Minimum-Values" accesskey="n" rel="next">Maximum and
 occupy a single unit of storage, typically either as an 8-bit
 <code>char</code>, a 16-bit <code>short int</code>, a 32-bit <code>int</code>, or
 possibly, a 64-bit <code>long long int</code>.  Whether a <code>long int</code> is
-a 32-bit or a 64-bit value is system dependent.<a id="DOCF11" href="#FOOT11"><sup>11</sup></a>
+a 32-bit or a 64-bit value is system dependent.<a id="DOCF12" href="#FOOT12"><sup>12</sup></a>
 </p>
 <span id="index-CHAR_005fBIT"></span>
 <p>The macro <code>CHAR_BIT</code>, defined in <samp>limits.h</samp>, gives the number
@@ -19885,8 +20009,8 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><th align="left">Index Entry</th><td>&nbsp;</td><th align="left"> Section</th></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th id="Concept-Index_cp_symbol-1">#</th><td></td><td></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_0023-operator"><code>#</code> operator</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Stringification">Stringification</a></td></tr>
-<tr><td></td><td valign="top"><a href="#index-_0023_0023-operator"><code>##</code> operator</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Concatenation">Concatenation</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_0023-preprocessing-operator"><code>#</code> preprocessing operator</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Stringification">Stringification</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-_0023_0023-preprocessing-operator"><code>##</code> preprocessing operator</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Concatenation">Concatenation</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th id="Concept-Index_cp_symbol-2">?</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-_003f_003a-side-effect">?: side effect</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Conditional-Branches">Conditional Branches</a></td></tr>
@@ -19978,6 +20102,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td valign="top"><a href="#index-character-set">character set</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Characters">Characters</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-CHAR_005fBIT"><code>CHAR_BIT</code></a>:</td><td>&nbsp;</td><td valign="top"><a href="#Integer-Representations">Integer Representations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-cloning">cloning</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Label-Value-Caveats">Label Value Caveats</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-code-point">code point</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Unicode-Character-Codes">Unicode Character Codes</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-combining-variable-declarations">combining variable declarations</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Combining-Variable-Declarations">Combining Variable Declarations</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-comma-operator">comma operator</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Comma-Operator">Comma Operator</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-command_002dline-parameters">command-line parameters</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Command_002dline-Parameters">Command-line Parameters</a></td></tr>
@@ -20161,6 +20286,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><th id="Concept-Index_cp_letter-H">H</th><td></td><td></td></tr>
 <tr><td></td><td valign="top"><a href="#index-handler-_0028for-signal_0029">handler (for signal)</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Signals">Signals</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-header-file">header file</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Header-Files">Header Files</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-hexadecimal-floating-constants">hexadecimal floating constants</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Floating-Constants">Floating Constants</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-hexadecimal-floating_002dpoint-constants">hexadecimal floating-point constants</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Exact-Floating-Constants">Exact Floating Constants</a></td></tr>
 <tr><td colspan="4"> <hr></td></tr>
 <tr><th id="Concept-Index_cp_letter-I">I</th><td></td><td></td></tr>
@@ -20343,6 +20469,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td valign="top"><a href="#index-preprocessing">preprocessing</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Preprocessing">Preprocessing</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-preprocessing-directives">preprocessing directives</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Directives">Directives</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-preprocessing-numbers">preprocessing numbers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Preprocessing-Tokens">Preprocessing Tokens</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-preprocessing-operators">preprocessing operators</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Preproc-Overview">Preproc Overview</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-preprocessing-tokens">preprocessing tokens</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Preprocessing-Tokens">Preprocessing Tokens</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-prescan-of-macro-arguments">prescan of macro arguments</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Argument-Prescan">Argument Prescan</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-primitive-types">primitive types</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Primitive-Types">Primitive Types</a></td></tr>
@@ -20606,48 +20733,53 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <h4 class="footnotes-heading">Footnotes</h4>
 
 <h5><a id="FOOT1" href="#DOCF1">(1)</a></h5>
+<p>Computing an expression and ignoring the result can
+be useful in peculiar cases.  For instance, dereferencing a pointer
+and ignoring the value is a way to cause a fault if a pointer value is
+invalid.  See <a href="#Signals">Signals</a>.  But you may need to declare the pointer
+target <code>volatile</code> or the dereference may be optimized away.
+See <a href="#volatile"><code>volatile</code> Variables and Fields</a>.</p>
+<h5><a id="FOOT2" href="#DOCF2">(2)</a></h5>
 <p>On some obscure systems, GNU C uses
 UTF-EBCDIC instead of UTF-8, but that is not worth describing in this
 manual.</p>
-<h5><a id="FOOT2" href="#DOCF2">(2)</a></h5>
+<h5><a id="FOOT3" href="#DOCF3">(3)</a></h5>
 <p>Personal note from Richard Stallman: I wrote GCC
 without remembering anything about the C precedence order beyond
 what&rsquo;s stated here.  I studied the full precedence table to write the
 parser, and promptly forgot it again.  If you need to look up the full
 precedence order to understand some C code, add enough parentheses so
 nobody else needs to do that.</p>
-<h5><a id="FOOT3" href="#DOCF3">(3)</a></h5>
-<p>Personal note from
-Richard Stallman: Eating with hackers at a fish restaurant, I ordered
-Arctic Char.  When my meal arrived, I noted that the chef had not
-signed it.  So I complained, &ldquo;This char is unsigned&mdash;I wanted a
-signed char!&rdquo;  Or rather, I would have said this if I had thought of
-it fast enough.</p>
 <h5><a id="FOOT4" href="#DOCF4">(4)</a></h5>
+<p>Personal note from Richard Stallman: Eating
+with hackers at a fish restaurant, I ordered arctic char.  When my
+meal arrived, I noted that the chef had not signed it.  So I told
+other hackers, &ldquo;This char is unsigned&mdash;I wanted a signed char!&rdquo;</p>
+<h5><a id="FOOT5" href="#DOCF5">(5)</a></h5>
 <p>For compatibility with older versions of GNU C, the
 keyword <code>__complex__</code> is also allowed.  Going forward, however,
 use the new <code>_Complex</code> keyword as defined in ISO C11.</p>
-<h5><a id="FOOT5" href="#DOCF5">(5)</a></h5>
+<h5><a id="FOOT6" href="#DOCF6">(6)</a></h5>
 <p>The analogous feature in
 Fortran is called an assigned goto, but that name seems inappropriate in
 C, since you can do more with label addresses than store them in special label
 variables.</p>
-<h5><a id="FOOT6" href="#DOCF6">(6)</a></h5>
+<h5><a id="FOOT7" href="#DOCF7">(7)</a></h5>
 <p>Due to compiler optimizations,
 allocation and deallocation don&rsquo;t necessarily really happen at
 those times.</p>
-<h5><a id="FOOT7" href="#DOCF7">(7)</a></h5>
-<p>This is a GNU C extension.</p>
 <h5><a id="FOOT8" href="#DOCF8">(8)</a></h5>
+<p>This is a GNU C extension.</p>
+<h5><a id="FOOT9" href="#DOCF9">(9)</a></h5>
 <p>On an embedded controller where <code>char</code>
 or <code>short</code> is the same width as <code>int</code>, <code>unsigned char</code>
 or <code>unsigned short</code> promotes to <code>unsigned int</code>, but that
 never occurs in GNU C on real computers.</p>
-<h5><a id="FOOT9" href="#DOCF9">(9)</a></h5>
-<p>GNU C extension.</p>
 <h5><a id="FOOT10" href="#DOCF10">(10)</a></h5>
 <p>GNU C extension.</p>
 <h5><a id="FOOT11" href="#DOCF11">(11)</a></h5>
+<p>GNU C extension.</p>
+<h5><a id="FOOT12" href="#DOCF12">(12)</a></h5>
 <p>In theory,
 any of these types could have some other size, bit it&rsquo;s not worth even
 a minute to cater to that possibility.  It never happens on
