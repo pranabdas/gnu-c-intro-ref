@@ -1752,7 +1752,7 @@ subsequent chapters.
 Some characters that are generally considered punctuation have a
 different sort of meaning in the C language.  C uses double-quote
 @samp{"} to delimit string constants (@pxref{String Constants}) and
-@samp{'} to delimit constants (@pxref{String Constants}).  The
+@samp{'} to delimit character constants (@pxref{String Constants}).  The
 characters @samp{$} and @samp{_} can be part of an identifier or a
 keyword.
 
@@ -2879,8 +2879,8 @@ the post-whatever expression nests inside:
 -a++   @r{is equivalent to}   -(a++)
 @end example
 
-The other order would not even make sense, here; @code{-a} is not an
-lvalue, so it can't be incremented.
+In some cases, for instance this one, the other order would not even
+make sense; @code{-a} is not an lvalue, so it can't be incremented.
 
 The most common use of postincrement is with arrays.  Here's an
 example of using postincrement to access one element of an array and
@@ -3467,7 +3467,7 @@ Sequential execution (the comma operator, @samp{,}).
 
 Two of the lines in the above list say ``but watch out!''  That means
 that the line covers operations with subtly different precedence.  When
-you use tro comparison operations together, don't depend on the
+you use two comparison operations together, don't depend on the
 grammar of C to control how they nest.  Instead, always use
 parentheses to show their nesting.
 
