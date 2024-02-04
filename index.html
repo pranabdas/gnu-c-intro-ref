@@ -1956,7 +1956,7 @@ subsequent chapters.
 <p>Some characters that are generally considered punctuation have a
 different sort of meaning in the C language.  C uses double-quote
 &lsquo;<samp>&quot;</samp>&rsquo; to delimit string constants (see <a href="#String-Constants">String Constants</a>) and
-&lsquo;<samp>'</samp>&rsquo; to delimit constants (see <a href="#String-Constants">String Constants</a>).  The
+&lsquo;<samp>'</samp>&rsquo; to delimit character constants (see <a href="#String-Constants">String Constants</a>).  The
 characters &lsquo;<samp>$</samp>&rsquo; and &lsquo;<samp>_</samp>&rsquo; can be part of an identifier or a
 keyword.
 </p>
@@ -2930,7 +2930,7 @@ called an <em>lvalue</em>, because it is a location that can hold a value.
 <li> A variable.
 
 </li><li> A pointer-dereference expression (see <a href="#Pointer-Dereference">Dereferencing Pointers</a>) using
-unary &lsquo;<samp>*</samp>&rsquo;.
+unary &lsquo;<samp>*</samp>&rsquo;, if its type is not a non-function type.
 
 </li><li> A structure field reference (see <a href="#Structures">Structures</a>) using &lsquo;<samp>.</samp>&rsquo;, if
 the structure value is an lvalue.
@@ -2944,7 +2944,11 @@ as for structure fields.
 </li><li> An array-element reference using &lsquo;<samp>[<span class="roman">&hellip;</span>]</samp>&rsquo;, if the array
 is an lvalue.
 
-</li><li> A structure or union constructor.
+</li><li> A string constant (see <a href="#String-Constants">String Constants</a>).
+
+</li><li> An array constructor (see <a href="#Constructing-Array-Values">Constructing Array Values</a>).
+
+</li><li> A structure or union constructor (see <a href="#Structure-Constructors">Structure Constructors</a>).
 </li></ul>
 
 <p>If an expression&rsquo;s outermost operation is any other operator, that
@@ -3167,8 +3171,8 @@ the post-whatever expression nests inside:
 <pre class="example">-a++   <span class="roman">is equivalent to</span>   -(a++)
 </pre></div>
 
-<p>The other order would not even make sense, here; <code>-a</code> is not an
-lvalue, so it can&rsquo;t be incremented.
+<p>In some cases, for instance this one, the other order would not even
+make sense; <code>-a</code> is not an lvalue, so it can&rsquo;t be incremented.
 </p>
 <p>The most common use of postincrement is with arrays.  Here&rsquo;s an
 example of using postincrement to access one element of an array and
@@ -3286,7 +3290,7 @@ like this:
 </pre></div>
 
 <p>However, putting the assignment in a separate statement is usually clearer
-unless the assignment is very short, because it reduces nesting.
+(unless the assignment is very short), because it reduces nesting.
 </p>
 <hr>
 </div>
@@ -3809,7 +3813,7 @@ operators.
 
 <p>Two of the lines in the above list say &ldquo;but watch out!&rdquo;  That means
 that the line covers operations with subtly different precedence.  When
-you use tro comparison operations together, don&rsquo;t depend on the
+you use two comparison operations together, don&rsquo;t depend on the
 grammar of C to control how they nest.  Instead, always use
 parentheses to show their nesting.
 </p>
@@ -4384,10 +4388,10 @@ platform, too.  Even for GNU C, there is no general rule.
 </p>
 <p>In theory, all of the integer types&rsquo; sizes can vary.  <code>char</code> is
 always considered one &ldquo;byte&rdquo; for C, but it is not necessarily an
-8-bit byte; on some platforms it may be more than 8 bits.  ISO C
-specifies only that none of these types is narrower than the ones
-above it in the list in <a href="#Basic-Integers">Basic Integers</a>, and that <code>short</code>
-has at least 16 bits.
+8-bit byte; on some platforms it may be more than 8 bits.  <code>short
+int</code> and <code>int</code> are at least two bytes long (it may be longer).
+<code>long int</code> is at least four bytes long, and <code>long long int</code>
+at least eight bytes long.
 </p>
 <p>It is possible that in the future GNU C will support platforms where
 <code>int</code> is 64 bits long.  In practice, however, on today&rsquo;s real
@@ -5249,11 +5253,16 @@ U&quot;\U0010ABCD&quot;    /* <span class="roman">32-bit code</span> */
 <pre class="example">int foo\u6C34bar = 0;
 </pre></div>
 
-<p>Codes in the range of <code>D800</code> through <code>DFFF</code> are limited to
-very specialized uses, too specialized to explain here.  Codes less
-than <code>00A0</code> are invalid, except for <code>0024</code>, <code>0040</code>, and
-<code>0060</code>; these characters are actually ASCII control characters,
-and you can specify them with other escape sequences (see <a href="#Character-Constants">Character Constants</a>).
+<p>Codes in the range of D800 through DFFF are invalid in universal
+character names.  Trying to write them using &lsquo;<samp>\u</samp>&rsquo; causes an
+error.  Unicode calls them &ldquo;surrogate code points&rdquo; and uses them in
+UTF-16 for purposes too specialized to explain here.
+</p>
+<p>Codes less than 00A0 are likewise invalid in universal character
+names, and likewise cause errors, except for 0024 (&lsquo;<samp>$</samp>&rsquo;), 0040
+(&lsquo;<samp>@</samp>&rsquo;), and 0060 (&lsquo;<samp>`</samp>&rsquo;).  Character codes which can&rsquo;t be
+represented with universal character names can be specified with octal
+or hexadecimal escape sequences (see <a href="#Character-Constants">Character Constants</a>).
 </p>
 <hr>
 </div>
@@ -6411,10 +6420,13 @@ Next: <a href="#Arrays" accesskey="n" rel="next">Arrays</a>, Previous: <a href="
 <span id="index-structures"></span>
 <span id="index-struct"></span>
 <span id="index-fields-in-structures"></span>
+<span id="index-compound-type"></span>
 
 <p>A <em>structure</em> is a user-defined data type that holds various
 <em>fields</em> of data.  Each field has a name and a data type specified
-in the structure&rsquo;s definition.
+in the structure&rsquo;s definition.  Because a structure combines various
+fields, each of its own type, we call a structure type a
+<em>compound type</em>.
 </p>
 <p>Here we define a structure suitable for storing a linked list of
 integers.  Each list item will hold one integer, plus a pointer
@@ -20121,6 +20133,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td valign="top"><a href="#index-complex-constants">complex constants</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Imaginary-Constants">Imaginary Constants</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-complex-numbers">complex numbers</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Complex-Data-Types">Complex Data Types</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-compound-statement">compound statement</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Blocks">Blocks</a></td></tr>
+<tr><td></td><td valign="top"><a href="#index-compound-type">compound type</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Structures">Structures</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-computed-gotos">computed gotos</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Labels-as-Values">Labels as Values</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-computed-includes">computed includes</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Computed-Includes">Computed Includes</a></td></tr>
 <tr><td></td><td valign="top"><a href="#index-concatenation">concatenation</a>:</td><td>&nbsp;</td><td valign="top"><a href="#Concatenation">Concatenation</a></td></tr>
