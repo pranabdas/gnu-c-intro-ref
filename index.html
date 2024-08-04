@@ -412,7 +412,7 @@ published digitally later.
       <li><a id="toc-Static-Functions-1" href="#Static-Functions">22.1.3 Static Functions</a></li>
       <li><a id="toc-Arrays-as-Parameters-1" href="#Arrays-as-Parameters">22.1.4 Arrays as Parameters</a>
       <ul class="no-bullet">
-        <li><a id="toc-Array-parameters-are-pointers" href="#Array-Parm-Pointer">22.1.4.1 Array parameters are pointers</a></li>
+        <li><a id="toc-Array-parameters-are-pointers" href="#Array-Params-are-Ptrs">22.1.4.1 Array parameters are pointers</a></li>
         <li><a id="toc-Passing-array-arguments" href="#Passing-Array-Args">22.1.4.2 Passing array arguments</a></li>
         <li><a id="toc-Type-qualifiers-on-array-parameters" href="#Array-Parm-Qualifiers">22.1.4.3 Type qualifiers on array parameters</a></li>
       </ul></li>
@@ -3941,8 +3941,8 @@ too is not really associative.  However, the GCC option
 order of calculation when an associative operation (associative in
 exact mathematics) combines several operands.  The option takes effect
 when compiling a module (see <a href="#Compilation">Compilation</a>).  Changing the order
-of association can enable GCC to optiimize the floating-point
-ooerations better.
+of association can enable GCC to optimize the floating-point
+operations better.
 </p>
 <p>In all these examples, the four function calls can be done in any
 order.  There is no right or wrong about that.
@@ -4032,7 +4032,7 @@ it might see the old value or it might see the incremented value.
 
 <p><code>x</code> will certainly be incremented but the incremented value may
 be replaced with the old value.  That&rsquo;s because the incrementation and
-the assignment may occur in either oder.  If the incrementation of
+the assignment may occur in either order.  If the incrementation of
 <code>x</code> occurs after the assignment to <code>x</code>, the incremented
 value will remain in place.  But if the incrementation happens first,
 the assignment will put the not-yet-incremented value back into
@@ -5260,7 +5260,7 @@ UTF-16 for purposes too specialized to explain here.
 </p>
 <p>Codes less than 00A0 are likewise invalid in universal character
 names, and likewise cause errors, except for 0024 (&lsquo;<samp>$</samp>&rsquo;), 0040
-(&lsquo;<samp>@</samp>&rsquo;), and 0060 (&lsquo;<samp>`</samp>&rsquo;).  Character codes which can&rsquo;t be
+(&lsquo;<samp>@</samp>&rsquo;), and 0060 (&lsquo;<samp>`</samp>&rsquo;).  Characters which can&rsquo;t be
 represented with universal character names can be specified with octal
 or hexadecimal escape sequences (see <a href="#Character-Constants">Character Constants</a>).
 </p>
@@ -5419,7 +5419,7 @@ i = sizeof a + 10;
 <p>The expression <code>sizeof arr</code> gives the size of the array, not
 the size of a pointer to an element.  However, if <var>expression</var> is
 a function parameter that was declared as an array, that
-variable really has a pointer type (see <a href="#Array-Parm-Pointer">Array parameters are pointers</a>), so
+variable really has a pointer type (see <a href="#Array-Params-are-Ptrs">Array parameters are pointers</a>), so
 the result is the size of that pointer.
 </p>
 </dd>
@@ -6425,8 +6425,8 @@ Next: <a href="#Arrays" accesskey="n" rel="next">Arrays</a>, Previous: <a href="
 <p>A <em>structure</em> is a user-defined data type that holds various
 <em>fields</em> of data.  Each field has a name and a data type specified
 in the structure&rsquo;s definition.  Because a structure combines various
-fields, each of its own type, we call a structure type a
-<em>compound type</em>.
+fields, each of its own type, we call a structure type a <em>compound
+type</em>.  (Union types are also compound types; see <a href="#Unions">Unions</a>.)
 </p>
 <p>Here we define a structure suitable for storing a linked list of
 integers.  Each list item will hold one integer, plus a pointer
@@ -7234,7 +7234,7 @@ a = b;            /* <span class="roman">Error!</span> */
 struct record r1, r2;
 </pre></div>
 
-<p>structure assigment such as <code>r1 = r2</code> copies array fields&rsquo;
+<p>structure assignment such as <code>r1 = r2</code> copies array fields&rsquo;
 contents just as it copies all the other fields.
 </p>
 <p>This is the only way in C that you can operate on the whole contents
@@ -7263,7 +7263,9 @@ Next: <a href="#Packing-With-Unions" accesskey="n" rel="next">Packing With Union
 
 <p>A <em>union type</em> defines alternative ways of looking at the same
 piece of memory.  Each alternative view is defined with a data type,
-and identified by a name.  A union definition looks like this:
+and identified by a name.  Because a union combines various types, it
+is considered a <em>compound type</em>, like structures
+(see <a href="#Structures">Structures</a>).  A union definition looks like this:
 </p>
 <div class="example">
 <pre class="example">union <var>name</var>
@@ -11305,12 +11307,12 @@ a special way.
 </p>
 
 <ul class="section-toc">
-<li><a href="#Array-Parm-Pointer" accesskey="1">Array parameters are pointers</a></li>
+<li><a href="#Array-Params-are-Ptrs" accesskey="1">Array parameters are pointers</a></li>
 <li><a href="#Passing-Array-Args" accesskey="2">Passing array arguments</a></li>
 <li><a href="#Array-Parm-Qualifiers" accesskey="3">Type qualifiers on array parameters</a></li>
 </ul>
 <hr>
-<div class="subsubsection" id="Array-Parm-Pointer">
+<div class="subsubsection" id="Array-Params-are-Ptrs">
 <div class="header">
 <p>
 Next: <a href="#Passing-Array-Args" accesskey="n" rel="next">Passing array arguments</a>, Up: <a href="#Arrays-as-Parameters" accesskey="u" rel="up">Arrays as Parameters</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
@@ -11366,7 +11368,7 @@ clobber4 (int *array)
 <div class="subsubsection" id="Passing-Array-Args">
 <div class="header">
 <p>
-Next: <a href="#Array-Parm-Qualifiers" accesskey="n" rel="next">Type qualifiers on array parameters</a>, Previous: <a href="#Array-Parm-Pointer" accesskey="p" rel="prev">Array parameters are pointers</a>, Up: <a href="#Arrays-as-Parameters" accesskey="u" rel="up">Arrays as Parameters</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Array-Parm-Qualifiers" accesskey="n" rel="next">Type qualifiers on array parameters</a>, Previous: <a href="#Array-Params-are-Ptrs" accesskey="p" rel="prev">Array parameters are pointers</a>, Up: <a href="#Arrays-as-Parameters" accesskey="u" rel="up">Arrays as Parameters</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <span id="Passing-array-arguments"></span><h4 class="subsubsection">22.1.4.2 Passing array arguments</h4>
 
@@ -16820,7 +16822,7 @@ exact, and unwanted rounding errors are introduced.
 <p>As computers usually represent numbers in a base other than 10,
 numbers often must be converted to and from different bases, and
 rounding errors can occur during conversion.  This problem is solved
-in C using hexademical floating-point constants.  For example,
+in C using hexadecimal floating-point constants.  For example,
 <code>+0x1.fffffcp-1</code> is the number that is the IEEE 754 32-bit value
 closest to, but below, <code>1.0</code>. The significand is represented as a
 hexadecimal fraction, and the <em>power of two</em> is written in
