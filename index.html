@@ -6222,7 +6222,7 @@ sum_array_till_0 (int *p)
 <code>for</code> statement.
 </p>
 <p><code>*p++</code> uses postincrement (<code>++</code>;
-see <a href="#Postincrement_002fPostdecrement">Postincrement and Postdecrement</a>) on the pointer <code>p</code>.  that
+see <a href="#Postincrement_002fPostdecrement">Postincrement and Postdecrement</a>) on the pointer <code>p</code>.  That
 expression parses as <code>*(p++)</code>, because a postfix operator always
 takes precedence over a prefix operator.  Therefore, it dereferences
 the entering value of <code>p</code>, then increments <code>p</code> afterwards.
@@ -7247,7 +7247,7 @@ as an array, because
 </pre></div>
 
 <p>would convert the array objects (as always) to pointers to the zeroth
-elements of the arrays (of type <code>struct record *</code>), and the
+elements of the arrays (of type <code>int *</code>), and the
 assignment would be invalid because the left operand is not an lvalue.
 </p>
 <hr>
