@@ -12489,8 +12489,7 @@ last step is to @dfn{link} the many object files together into a
 single executable for the whole program.
 
 The full details of how to compile C programs (and other programs)
-with GCC are documented in xxxx.
-@c ??? ref
+with GCC are available via @url{https://gcc.gnu.org/onlinedocs/}.
 Here we give only a simple introduction.
 
 These commands compile two compilation modules, @file{foo.c} and
