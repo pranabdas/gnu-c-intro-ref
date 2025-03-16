@@ -10350,7 +10350,7 @@ by specifying the field name prefixed with a dot:
 <div class="example">
 <pre class="example-preformatted">struct point { int x; int y; };
 
-struct point foo = { .y = 42; };
+struct point foo = { .y = 42 };
 </pre></div>
 
 <p>The same syntax works for union variables as well:
@@ -12566,8 +12566,9 @@ Previous: <a href="#Nested-Functions" accesskey="p" rel="prev">Nested Functions<
 <a class="index-entry-id" id="index-inline"></a>
 
 <p>To declare a function inline, use the <code class="code">inline</code> keyword in its
-definition.  Here&rsquo;s a simple function that takes a pointer-to-<code class="code">int</code>
-and increments the integer stored there&mdash;declared inline.
+definition.  Here&rsquo;s code to define functions to access two fields
+in a structure, and inlines them so that there is no cost to accessing
+them by calling the functions.
 </p>
 <div class="example">
 <pre class="example-preformatted">struct list
@@ -12588,7 +12589,7 @@ list_second (struct list *p)
 }
 </pre></div>
 
-<p>optimized compilation can substitute the inline function&rsquo;s body for
+<p>Optimized compilation can substitute the inline function&rsquo;s body for
 any call to it.  This is called <em class="emph">inlining</em> the function.  It
 makes the code that contains the call run faster, significantly so if
 the inline function is small.
@@ -17612,7 +17613,7 @@ last step is to <em class="dfn">link</em> the many object files together into a
 single executable for the whole program.
 </p>
 <p>The full details of how to compile C programs (and other programs)
-with GCC are documented in xxxx.
+with GCC are available via <a class="url" href="https://gcc.gnu.org/onlinedocs/">https://gcc.gnu.org/onlinedocs/</a>.
 Here we give only a simple introduction.
 </p>
 <p>These commands compile two compilation modules, <samp class="file">foo.c</samp> and
