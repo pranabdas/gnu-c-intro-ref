@@ -2529,7 +2529,7 @@ construct that stores a new value into a place where values can be
 stored---for instance, in a variable.  Such places are called
 @dfn{lvalues} (@pxref{Lvalues}) because they are locations that hold a value.
 
-An assignment in C is an expression because it has a value; we call
+In C, an assignment is an expression because it has a value; we call
 it an @dfn{assignment expression}.  A simple assignment looks like
 
 @example
@@ -6795,7 +6795,13 @@ Using the cast as the right-hand side of an assignment to a variable of
 union type is equivalent to storing in an alternative of the union:
 
 @example
+/* @r{Define the union @code{foo}.}  */
+union foo @{ int i; double d; @};
+
+/* @r{Declare the union-valued varuable, @code{u}.}  */
 union foo u;
+
+int x;  double y;
 
 u = (union foo) x   @r{means}   u.i = x
 
@@ -12488,9 +12494,11 @@ compilation modules, making an @dfn{object file} for that module.  The
 last step is to @dfn{link} the many object files together into a
 single executable for the whole program.
 
-The full details of how to compile C programs (and other programs)
-with GCC are available via @url{https://gcc.gnu.org/onlinedocs/}.
-Here we give only a simple introduction.
+For, the full details of how to compile C programs (and other
+languages' programs) with GCC, see @ref{Top,,, gcc, Using the GNU
+Compiler Collection}.  On the Web, all is available through
+@url{https://gcc.gnu.org/onlinedocs/}.  Here we give only a simple
+introduction.
 
 These commands compile two compilation modules, @file{foo.c} and
 @file{bar.c}, running the compiler for each module:
