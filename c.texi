@@ -406,7 +406,7 @@ Statements
 
 Variables
 
-* Variable Declarations::        Name a variable and and reserve space for it.
+* Variable Declarations::        Name a variable and reserve space for it.
 * Initializers::                 Assigning initial values to variables.
 * Designated Inits::             Assigning initial values to array elements
                                    at particular array indices.
@@ -9197,7 +9197,7 @@ They are assigned fixed, distinct memory locations, so they retain
 their values for the whole execution of the program.
 
 @menu
-* Variable Declarations::        Name a variable and and reserve space for it.
+* Variable Declarations::        Name a variable and reserve space for it.
 * Initializers::                 Assigning initial values to variables.
 * Designated Inits::             Assigning initial values to array elements
                                    at particular array indices.
