@@ -3887,7 +3887,7 @@ compiler, the machine in use, and its operating system.  It is not
 char}, but it is always equivalent to one of those two.
 
 In many programs, it makes no difference whether the type @code{char}
-is signed.  When signedness does matter for a certain vslue, don't
+is signed.  When signedness does matter for a certain value, don't
 leave it to chance; declare it as @code{signed char} or @code{unsigned
 char} instead.@footnote{Personal note from Richard Stallman: Eating
 with hackers at a fish restaurant, I ordered arctic char.  When my
