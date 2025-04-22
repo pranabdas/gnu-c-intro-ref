@@ -1755,8 +1755,8 @@ subsequent chapters.
 Some characters that are generally considered punctuation have a
 different sort of meaning in the C language.  C uses double-quote
 @samp{"} to delimit string constants (@pxref{String Constants}) and
-@samp{'} to delimit character constants (@pxref{String Constants}).  The
-characters @samp{$} and @samp{_} can be part of an identifier or a
+@samp{'} to delimit character constants (@pxref{Character Constants}).
+The characters @samp{$} and @samp{_} can be part of an identifier or a
 keyword.
 
 Most operators in C consist of one or two characters that can't be
