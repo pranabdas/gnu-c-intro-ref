@@ -4582,7 +4582,7 @@ constant looks like @code{'\\'}.
 Here are all the escape sequences that represent specific characters
 in a character constant.  The numeric values shown are the
 corresponding ASCII character codes, as decimal numbers.  The comments
-give the characters' conventional or traditional namss, as well as the
+give the characters' conventional or traditional names, as well as the
 appearance for graphical characters.
 
 @example
