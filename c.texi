@@ -6213,6 +6213,8 @@ consecutive bytes within the structure.  However, if a field's type
 demands more alignment than it would get that way, C gives it the
 alignment it requires by leaving a gap after the previous field.
 
+@cindex structure alignment
+@cindex alignment of structures
 Once all the fields have been laid out, it is possible to determine
 the structure's alignment and size.  The structure's alignment is the
 maximum alignment of any of the fields in it.  Then the structure's
