@@ -1,7 +1,8 @@
 \input texinfo
 
 
-@c Copyright (C) 2022, 2023 Richard Stallman and Free Software Foundation, Inc.
+@c Copyright (C) 2022, 2023, 2025 Richard Stallman
+@c   and Free Software Foundation, Inc.
 
 @c (The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
 
@@ -22,7 +23,8 @@
 @copying
 This is Edition @value{VERSION}.
 
-Copyright @copyright{} 2022, 2023 Richard Stallman and Free Software Foundation, Inc.
+Copyright @copyright{} 2022, 2023, 2025 Richard Stallman
+and Free Software Foundation, Inc.
 
 (The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
 
