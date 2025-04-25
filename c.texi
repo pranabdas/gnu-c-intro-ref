@@ -8233,6 +8233,12 @@ computes @var{test} and, if it is true (nonzero), that means to go
 back and start over with @var{body}.  If @var{test} is false (zero),
 then the loop stops repeating and execution moves on past it.
 
+@strong{Warning:} Human beings tend to confuse the @code{do}--@code{while}
+statement with the @code{while} statement using the null statement
+as its @var{body} (@pxref{Null Statement}).  To avoid that, consistently
+mark such constructs with a specific comment or with clearly different
+indent styles.
+
 @node break Statement
 @subsection @code{break} Statement
 @cindex @code{break} statement
