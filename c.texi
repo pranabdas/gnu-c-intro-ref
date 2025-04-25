@@ -8268,7 +8268,7 @@ innermost loop containing it.
 @example
 struct list_if_tuples
 @{
-  struct list_if_tuples next;
+  struct list_if_tuples *next;
   int length;
   data *contents;
 @};
