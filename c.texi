@@ -8453,7 +8453,7 @@ for (int i = 0, j = 1, *p = NULL; i < n; ++i, ++j, ++p)
 
 @noindent
 The scope of these variables is the @code{for} statement as a whole.
-See @ref{Variable Declarations} for a explanation of @var{basetype}.
+See @ref{Variable Declarations} for an explanation of @var{basetype}.
 
 Variables declared in @code{for} statements should have initializers.
 Omitting the initialization gives the variables unpredictable initial
