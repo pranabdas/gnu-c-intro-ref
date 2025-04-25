@@ -8011,7 +8011,7 @@ that is true (nonzero), then it executes the statement
 nothing.
 
 This is a @dfn{complex statement} because it contains a component
-@var{if-true-substatement} that is a nested statement.  It must be one
+@var{execute-if-true} that is a nested statement.  It must be one
 and only one statement.  The way to put multiple statements there is
 to group them into a @dfn{block} (@pxref{Blocks}).
 
