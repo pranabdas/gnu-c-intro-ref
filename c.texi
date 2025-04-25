@@ -6987,8 +6987,7 @@ definition for the structure type.
 
 When several structure types contain pointers to each other, you can
 define the types in any order because pointers to types that come
-later are incomplete types.  Thus,
-Here is an example.
+later are incomplete types.  Here is an example.
 
 @example
 /* @r{An employee record points to a group.}  */
