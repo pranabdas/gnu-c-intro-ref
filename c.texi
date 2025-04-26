@@ -9833,11 +9833,12 @@ the same variable in this way, and that is sufficient for all of them
 to use the variable.
 
 @c @opindex -fno-common
-@c @opindex --warn_common
+@c @opindex -fcommon
 In programs that are very large or have many contributors, it may be
 wise to adopt the convention of never using tentative definitions.
 You can use the compilation option @option{-fno-common} to make them
-an error, or @option{--warn-common} to warn about them.
+an error, or @option{-fcommon} to enable them.  The default depends
+on the version of GCC and its target.
 
 If a file-scope variable gets its space through a tentative
 definition, it starts out containing all zeros.
