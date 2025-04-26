@@ -10417,7 +10417,7 @@ check for calls in the same compilation module.
 
 @node Arrays as Parameters
 @subsection Arrays as Parameters
-@cindex array as parameters
+@cindex arrays as parameters
 @cindex functions with array parameters
 
 Arrays in C are not first-class objects: it is impossible to copy
