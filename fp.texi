@@ -2,8 +2,8 @@
 @c Copyright @copyright{} 2022, 2023, 2025 Richard Stallman
 @c   and Free Software Foundation, Inc.
 
-This is part of the GNU C Intro and Reference Manual
-and covered by its license.
+@c This is part of the GNU C Intro and Reference Manual
+@c and covered by its license.
 
 @node    Floating Point in Depth
 @chapter Floating Point in Depth
