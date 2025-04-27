@@ -11285,10 +11285,10 @@ in-scope variable for the length in the function definition:
 struct entry
 tester (char data[*][*]);
 @r{@dots{}}
-int dataLength = 20;
+int data_length = 20;
 @r{@dots{}}
 struct entry
-tester (char data[dataLength][dataLength])
+tester (char data[data_length][data_length])
 @{
   @r{@dots{}}
 @}
