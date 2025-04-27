@@ -11090,7 +11090,7 @@ the arguments for @code{main} and call that.
 
 @menu
 * Values from main::         Returning values from the main function.
-* Command-line Parameters::  Accessing command-line parameters
+* Command-Line Parameters::  Accessing command-line parameters
                                provided to the program.
 * Environment Variables::    Accessing system environment variables.
 @end menu
@@ -11135,8 +11135,8 @@ values; for example, comparison programs including @code{cmp} and
 @code{diff} return 1 to indicate a mismatch, and 2 to indicate that
 the comparison couldn't be performed.
 
-@node Command-line Parameters
-@subsection Accessing Command-line Parameters
+@node Command-Line Parameters
+@subsection Accessing Command-Line Parameters
 @cindex command-line parameters
 @cindex parameters, command-line
 
