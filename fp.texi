@@ -282,7 +282,7 @@ conditions: once set, they remain set until the program explicitly
 clears them.
 
 The conditions include @emph{invalid operand},
-@emph{division-by_zero}, @emph{inexact result} (i.e., one that
+@emph{division by zero}, @emph{inexact result} (i.e., one that
 required rounding), @emph{underflow}, and @emph{overflow}.  Some
 extended floating-point designs offer several additional exception
 flags.  The functions @code{feclearexcept}, @code{feraiseexcept},
