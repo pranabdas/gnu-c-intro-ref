@@ -12354,7 +12354,7 @@ The macro @code{CHAR_BIT}, defined in @file{limits.h}, gives the number
 of bits in type @code{char}.  On any real operating system, the value
 is 8.
 
-The fixed sizes of numeric types necessarily limits their @dfn{range
+The fixed sizes of numeric types necessarily limit their @dfn{range
 of values}, and the particular encoding of integers decides what that
 range is.
 
