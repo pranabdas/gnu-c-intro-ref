@@ -627,7 +627,7 @@ code that uses it.  These macros are most commonly used to give
 symbolic names to numeric constants.
 
 @findex #define
-The way to define macros with the @code{#define} directive.
+The way to define macros is with the @code{#define} directive.
 @code{#define} is followed by the name of the macro and then the token
 sequence it should be an abbreviation for, which is variously referred
 to as the macro's @dfn{body}, @dfn{expansion} or @dfn{replacement
