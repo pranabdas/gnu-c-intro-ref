@@ -12471,6 +12471,7 @@ Since there are three ways to specify a @code{char} type, there are
 also three limits: @code{CHAR_MAX}, @code{SCHAR_MAX}, and
 @code{UCHAR_MAX}.
 
+@findex INT_MIN
 For each type that is or might be signed, there is another symbol that
 gives the minimum value it can hold.  (Just replace @code{MAX} with
 @code{MIN} in the names listed above.)  There is no minimum limit
