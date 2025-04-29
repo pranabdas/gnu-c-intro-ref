@@ -13204,6 +13204,7 @@ field or through multiple levels of fields.  If @var{t} is
 @code{double}, this would include @code{struct s @{ union @{ double
 d[2]; int i[4]; @} u; int i; @};} because there's a @code{double}
 inside it somewhere.
+@c For structures, shouldn't it be the first field?
 
 @item
 A character type.
