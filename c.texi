@@ -12922,6 +12922,9 @@ Static assertions are permitted wherever a statement or declaration is
 permitted, including at top level in the file, and also inside the
 definition of a type.
 
+@strong{Note:} The @code{==} used instead of @code{>=} probably makes
+the program wrong but not invalid.
+
 @example
 union y
 @{
