@@ -12712,12 +12712,12 @@ Equivalent to @code{#warning}.  Its advantage is that the
 Equivalent to @code{#error}.  Its advantage is that the
 @code{_Pragma} form can be included in a macro definition.
 
-@item #pragma GCC message @var{message}
-@itemx _Pragma ("GCC message @var{message}")
+@item #pragma message @var{message}
+@itemx _Pragma ("message @var{message}")
 Similar to @samp{GCC warning} and @samp{GCC error}, this simply prints an
 informational message, and could be used to include additional warning
 or error text without triggering more warnings or errors.  (Note that
-unlike @samp{warning} and @samp{error}, @samp{message} does not include
+unlike @samp{GCC warning} and @samp{GCC error}, @samp{message} does not include
 @samp{GCC} as part of the pragma.)
 @end table
 
