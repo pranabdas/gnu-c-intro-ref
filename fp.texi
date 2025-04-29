@@ -1630,7 +1630,7 @@ tried to expose the reader to some of the key ideas, and to warn
 of easily overlooked pitfalls that can soon lead to nonsensical
 results.  There are a few good references that we recommend
 for further reading, and for finding other important material
-about computer arithmetic:
+about computer arithmetic.
 
 We include URLs for these references when we were given them, when
 they are morally legitimate to recommend; we have omitted the URLs
