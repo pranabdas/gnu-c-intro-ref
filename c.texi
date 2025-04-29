@@ -13214,7 +13214,7 @@ What do these rules say about the example in this subsection?
 For @code{foo.size} (equivalently, @code{a->size}), @var{t} is
 @code{int}.  The type @code{float} is not allowed as an aliasing type
 by those rules, so @code{b->size} is not supposed to alias with
-elements of @code{j}.  Based on that assumption, GNU C makes a
+elements of @code{a}.  Based on that assumption, GNU C makes a
 permitted optimization that was not, in this case, consistent with
 what the programmer intended the program to do.
 
