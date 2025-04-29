@@ -834,9 +834,9 @@ results necessarily involve a @dfn{double rounding}: first to the
 then to the 53-bit significand when the register contents are
 stored to memory.  Here is an example in decimal arithmetic where
 such a double rounding results in the wrong answer: round
-@code{1_234_999} from seven to five to four digits. The result is
-@code{1_235_000}, whereas the correct representation to four
-significant digits is @code{1_234_000}.
+@code{1_234_999} from seven to five to three digits. The result is
+@code{1_240_000}, whereas the correct representation to three
+significant digits is @code{1_230_000}.
 
 @cindex -ffloat-store
 One way to reduce the use of the 80-bit format is to declare variables
