@@ -1,5 +1,6 @@
 \input texinfo
 
+
 @c Copyright (C) 2022, 2023 Richard Stallman and Free Software Foundation, Inc.
 
 @c (The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
@@ -346,7 +347,7 @@ Pointers
 Structures
 
 * Referencing Fields::           Accessing field values in a structure object.
-* Arrays as Fields::             Accessing field values in a structure object.
+* Arrays as Fields::             Accessing arrays as structure fields.
 * Dynamic Memory Allocation::    Allocating space for objects
                                    while the program is running.
 * Field Offset::                 Memory layout of fields within a structure.
@@ -2577,7 +2578,8 @@ is not a valid lvalue.
 
 @strong{Warning:} Write parentheses around an assignment if you nest
 it inside another expression, unless that containing expression is a
-comma-separated series or another assignment.
+comma-separated series or another assignment.  For example,
+see @ref{Logicals and Assignments}, and @ref{Uses of Comma}.
 
 @menu
 * Simple Assignment::            The basics of storing a value.
@@ -2648,7 +2650,7 @@ A variable.
 
 @item
 A pointer-dereference expression (@pxref{Pointer Dereference}) using
-unary @samp{*}, if its type is not a non-function type.
+unary @samp{*}, if its type is not a function type.
 
 @item
 A structure field reference (@pxref{Structures}) using @samp{.}, if
@@ -4755,7 +4757,7 @@ You can specify Unicode characters using escape sequences called
 @dfn{universal character names} that start with @samp{\u} and
 @samp{\U}.  They are valid in C for individual character constants,
 inside string constants (@pxref{String Constants}), and even in
-identifiers.  These escape sequence includes a hexadecimal Unicode
+identifiers.  These escape sequences include a hexadecimal Unicode
 character code, also called a @dfn{code point} in Unicode terminology.
 
 Use the @samp{\u} escape sequence with a 16-bit hexadecimal Unicode
@@ -5956,7 +5958,7 @@ GNU C does not require this.
 
 @menu
 * Referencing Fields::           Accessing field values in a structure object.
-* Arrays as Fields::             Accessing field values in a structure object.
+* Arrays as Fields::             Accessing arrays as structure fields.
 * Dynamic Memory Allocation::    Allocating space for objects
                                    while the program is running.
 * Field Offset::                 Memory layout of fields within a structure.
@@ -6949,7 +6951,9 @@ incomplete type.
 
 However, you can define a pointer to an incomplete type, and declare a
 variable or field with such a pointer type.  In general, you can do
-everything with such pointers except dereference them.  For example:
+everything with such pointers except dereference them, increment or
+decrement them, or do pointer arithmetic with them (not even @code{p +
+0}).  For example:
 
 @example
 extern void bar (struct mysterious_value *);
@@ -10753,7 +10757,7 @@ defaults the return type to @code{int}.
 This is bad practice; if you see it, fix it.
 
 Calling a function that is undeclared has the effect of an creating
-@dfn{implicit} declaration in the innermost containing scope,
+an @dfn{implicit} declaration in the innermost containing scope,
 equivalent to this:
 
 @example
