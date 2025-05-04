@@ -2808,7 +2808,7 @@ construct that stores a new value into a place where values can be
 stored&mdash;for instance, in a variable.  Such places are called
 <em class="dfn">lvalues</em> (see <a class="pxref" href="#Lvalues">Lvalues</a>) because they are locations that hold a value.
 </p>
-<p>An assignment in C is an expression because it has a value; we call
+<p>In C, an assignment is an expression because it has a value; we call
 it an <em class="dfn">assignment expression</em>.  A simple assignment looks like
 </p>
 <div class="example">
@@ -2853,7 +2853,8 @@ is not a valid lvalue.
 </p>
 <p><strong class="strong">Warning:</strong> Write parentheses around an assignment if you nest
 it inside another expression, unless that containing expression is a
-comma-separated series or another assignment.
+comma-separated series or another assignment.  For example,
+see <a class="ref" href="#Logicals-and-Assignments">Logical Operators and Assignments</a>, and <a class="ref" href="#Uses-of-Comma">The Uses of the Comma Operator</a>.
 </p>
 
 <ul class="mini-toc">
@@ -2930,7 +2931,7 @@ called an <em class="dfn">lvalue</em>, because it is a location that can hold a 
 <li>A variable.
 
 </li><li>A pointer-dereference expression (see <a class="pxref" href="#Pointer-Dereference">Dereferencing Pointers</a>) using
-unary &lsquo;<samp class="samp">*</samp>&rsquo;, if its type is not a non-function type.
+unary &lsquo;<samp class="samp">*</samp>&rsquo;, if its type is not a function type.
 
 </li><li>A structure field reference (see <a class="pxref" href="#Structures">Structures</a>) using &lsquo;<samp class="samp">.</samp>&rsquo;, if
 the structure value is an lvalue.
@@ -5212,7 +5213,7 @@ Next: <a href="#Wide-Character-Constants" accesskey="n" rel="next">Wide Characte
 <em class="dfn">universal character names</em> that start with &lsquo;<samp class="samp">\u</samp>&rsquo; and
 &lsquo;<samp class="samp">\U</samp>&rsquo;.  They are valid in C for individual character constants,
 inside string constants (see <a class="pxref" href="#String-Constants">String Constants</a>), and even in
-identifiers.  These escape sequence includes a hexadecimal Unicode
+identifiers.  These escape sequences include a hexadecimal Unicode
 character code, also called a <em class="dfn">code point</em> in Unicode terminology.
 </p>
 <p>Use the &lsquo;<samp class="samp">\u</samp>&rsquo; escape sequence with a 16-bit hexadecimal Unicode
@@ -7421,7 +7422,13 @@ specified is a union type.  You can specify the type either with
 union type is equivalent to storing in an alternative of the union:
 </p>
 <div class="example">
-<pre class="example-preformatted">union foo u;
+<pre class="example-preformatted">/* <span class="r">Define the union <code class="code">foo</code>.</span>  */
+union foo { int i; double d; };
+
+/* <span class="r">Declare the union-valued varuable, <code class="code">u</code>.</span>  */
+union foo u;
+
+int x;  double y;
 
 u = (union foo) x   <span class="r">means</span>   u.i = x
 
@@ -7583,7 +7590,9 @@ incomplete type.
 </p>
 <p>However, you can define a pointer to an incomplete type, and declare a
 variable or field with such a pointer type.  In general, you can do
-everything with such pointers except dereference them.  For example:
+everything with such pointers except dereference them, increment or
+decrement them, or do pointer arithmetic with them (not even <code class="code">p +
+0</code>).  For example:
 </p>
 <div class="example">
 <pre class="example-preformatted">extern void bar (struct mysterious_value *);
@@ -11664,7 +11673,7 @@ Then the type defaults to <code class="code">int</code>.  For example:
 This is bad practice; if you see it, fix it.
 </p>
 <p>Calling a function that is undeclared has the effect of an creating
-<em class="dfn">implicit</em> declaration in the innermost containing scope,
+an <em class="dfn">implicit</em> declaration in the innermost containing scope,
 equivalent to this:
 </p>
 <div class="example">
@@ -17612,9 +17621,11 @@ compilation modules, making an <em class="dfn">object file</em> for that module.
 last step is to <em class="dfn">link</em> the many object files together into a
 single executable for the whole program.
 </p>
-<p>The full details of how to compile C programs (and other programs)
-with GCC are available via <a class="url" href="https://gcc.gnu.org/onlinedocs/">https://gcc.gnu.org/onlinedocs/</a>.
-Here we give only a simple introduction.
+<p>For, the full details of how to compile C programs (and other
+languages&rsquo; programs) with GCC, see <cite class="cite"><a data-manual="gcc" href="https://gcc.gnu.org/onlinedocs/gcc/index.html#Top">Using the GNU
+Compiler Collection</a></cite>.  On the Web, all is available through
+<a class="url" href="https://gcc.gnu.org/onlinedocs/">https://gcc.gnu.org/onlinedocs/</a>.  Here we give only a simple
+introduction.
 </p>
 <p>These commands compile two compilation modules, <samp class="file">foo.c</samp> and
 <samp class="file">bar.c</samp>, running the compiler for each module:
