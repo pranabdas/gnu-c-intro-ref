@@ -12509,7 +12509,7 @@ compilation modules, making an @dfn{object file} for that module.  The
 last step is to @dfn{link} the many object files together into a
 single executable for the whole program.
 
-For, the full details of how to compile C programs (and other
+For the full details of how to compile C programs (and other
 languages' programs) with GCC, see @ref{Top,,, gcc, Using the GNU
 Compiler Collection}.  On the Web, all is available through
 @url{https://gcc.gnu.org/onlinedocs/}.  Here we give only a simple
