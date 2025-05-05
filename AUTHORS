@@ -18,6 +18,8 @@ Ineiev
     Add AUTHORS, THANKS, NEWS, README, ChangeLog, Makefile.am,
     configure.ac, version.texi.
 
-    Tiny changes in c.texi.
+    Minor changes in c.texi.
+
+    Tiny changes in cpp.texi, fp.texi.
 
     Cleanup in Makefile.
