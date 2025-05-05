@@ -10766,7 +10766,7 @@ static foo (double x);
 defaults the return type to @code{int}.
 This is bad practice; if you see it, fix it.
 
-Calling a function that is undeclared has the effect of an creating
+Calling a function that is undeclared has the effect of creating
 an @dfn{implicit} declaration in the innermost containing scope,
 equivalent to this:
 
