@@ -6804,7 +6804,7 @@ union type is equivalent to storing in an alternative of the union:
 /* @r{Define the union @code{foo}.}  */
 union foo @{ int i; double d; @};
 
-/* @r{Declare the union-valued varuable, @code{u}.}  */
+/* @r{Declare the union-valued variable, @code{u}.}  */
 union foo u;
 
 int x;  double y;
