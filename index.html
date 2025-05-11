@@ -5,7 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- This is Edition 0.0-git.
 
-Copyright © 2022, 2023 Richard Stallman and Free Software Foundation, Inc.
+Copyright © 2022, 2023, 2025 Richard Stallman
+and Free Software Foundation, Inc.
 
 (The work of Trevis Rothwell and Nelson Beebe has been assigned to the FSF.)
 
@@ -477,7 +478,7 @@ published digitally later.
     <li><a id="toc-The-main-Function-1" href="#The-main-Function">22.6 The <code class="code">main</code> Function</a>
     <ul class="toc-numbered-mark">
       <li><a id="toc-Returning-Values-from-main" href="#Values-from-main">22.6.1 Returning Values from <code class="code">main</code></a></li>
-      <li><a id="toc-Accessing-Command_002dline-Parameters" href="#Command_002dline-Parameters">22.6.2 Accessing Command-line Parameters</a></li>
+      <li><a id="toc-Accessing-Command_002dLine-Parameters" href="#Command_002dLine-Parameters">22.6.2 Accessing Command-Line Parameters</a></li>
       <li><a id="toc-Accessing-Environment-Variables" href="#Environment-Variables">22.6.3 Accessing Environment Variables</a></li>
     </ul></li>
     <li><a id="toc-Advanced-Function-Features" href="#Advanced-Definitions">22.7 Advanced Function Features</a>
@@ -1956,8 +1957,8 @@ subsequent chapters.
 <p>Some characters that are generally considered punctuation have a
 different sort of meaning in the C language.  C uses double-quote
 &lsquo;<samp class="samp">&quot;</samp>&rsquo; to delimit string constants (see <a class="pxref" href="#String-Constants">String Constants</a>) and
-&lsquo;<samp class="samp">'</samp>&rsquo; to delimit character constants (see <a class="pxref" href="#String-Constants">String Constants</a>).  The
-characters &lsquo;<samp class="samp">$</samp>&rsquo; and &lsquo;<samp class="samp">_</samp>&rsquo; can be part of an identifier or a
+&lsquo;<samp class="samp">'</samp>&rsquo; to delimit character constants (see <a class="pxref" href="#Character-Constants">Character Constants</a>).
+The characters &lsquo;<samp class="samp">$</samp>&rsquo; and &lsquo;<samp class="samp">_</samp>&rsquo; can be part of an identifier or a
 keyword.
 </p>
 <p>Most operators in C consist of one or two characters that can&rsquo;t be
@@ -4267,7 +4268,7 @@ compiler, the machine in use, and its operating system.  It is not
 char</code>, but it is always equivalent to one of those two.
 </p>
 <p>In many programs, it makes no difference whether the type <code class="code">char</code>
-is signed.  When signedness does matter for a certain vslue, don&rsquo;t
+is signed.  When signedness does matter for a certain value, don&rsquo;t
 leave it to chance; declare it as <code class="code">signed char</code> or <code class="code">unsigned
 char</code> instead.<a class="footnote" id="DOCF4" href="#FOOT4"><sup>4</sup></a>
 </p>
@@ -5025,7 +5026,7 @@ constant looks like <code class="code">'\\'</code>.
 <p>Here are all the escape sequences that represent specific characters
 in a character constant.  The numeric values shown are the
 corresponding ASCII character codes, as decimal numbers.  The comments
-give the characters&rsquo; conventional or traditional namss, as well as the
+give the characters&rsquo; conventional or traditional names, as well as the
 appearance for graphical characters.
 </p>
 <div class="example">
@@ -6788,6 +6789,8 @@ consecutive bytes within the structure.  However, if a field&rsquo;s type
 demands more alignment than it would get that way, C gives it the
 alignment it requires by leaving a gap after the previous field.
 </p>
+<a class="index-entry-id" id="index-structure-alignment"></a>
+<a class="index-entry-id" id="index-alignment-of-structures"></a>
 <p>Once all the fields have been laid out, it is possible to determine
 the structure&rsquo;s alignment and size.  The structure&rsquo;s alignment is the
 maximum alignment of any of the fields in it.  Then the structure&rsquo;s
@@ -7425,7 +7428,7 @@ union type is equivalent to storing in an alternative of the union:
 <pre class="example-preformatted">/* <span class="r">Define the union <code class="code">foo</code>.</span>  */
 union foo { int i; double d; };
 
-/* <span class="r">Declare the union-valued varuable, <code class="code">u</code>.</span>  */
+/* <span class="r">Declare the union-valued variable, <code class="code">u</code>.</span>  */
 union foo u;
 
 int x;  double y;
@@ -7631,8 +7634,7 @@ Next: <a href="#Type-Tags" accesskey="n" rel="next">Type Tags</a>, Previous: <a 
 
 <p>When several structure types contain pointers to each other, you can
 define the types in any order because pointers to types that come
-later are incomplete types.  Thus,
-Here is an example.
+later are incomplete types.  Here is an example.
 </p>
 <div class="example">
 <pre class="example-preformatted">/* <span class="r">An employee record points to a group.</span>  */
@@ -8717,7 +8719,7 @@ that is true (nonzero), then it executes the statement
 nothing.
 </p>
 <p>This is a <em class="dfn">complex statement</em> because it contains a component
-<var class="var">if-true-substatement</var> that is a nested statement.  It must be one
+<var class="var">execute-if-true</var> that is a nested statement.  It must be one
 and only one statement.  The way to put multiple statements there is
 to group them into a <em class="dfn">block</em> (see <a class="pxref" href="#Blocks">Blocks</a>).
 </p>
@@ -8968,6 +8970,12 @@ computes <var class="var">test</var> and, if it is true (nonzero), that means to
 back and start over with <var class="var">body</var>.  If <var class="var">test</var> is false (zero),
 then the loop stops repeating and execution moves on past it.
 </p>
+<p><strong class="strong">Warning:</strong> Human beings tend to confuse the <code class="code">do</code>&ndash;<code class="code">while</code>
+statement with the <code class="code">while</code> statement using the null statement
+as its <var class="var">body</var> (see <a class="pxref" href="#Null-Statement">Null Statement</a>).  To avoid that, consistently
+mark such constructs with a specific comment or with clearly different
+indent styles.
+</p>
 <hr>
 </div>
 <div class="subsection-level-extent" id="break-Statement">
@@ -9003,7 +9011,7 @@ innermost loop containing it.
 <div class="example">
 <pre class="example-preformatted">struct list_if_tuples
 {
-  struct list_if_tuples next;
+  struct list_if_tuples *next;
   int length;
   data *contents;
 };
@@ -9206,7 +9214,7 @@ the same <var class="var">basetype</var> (<code class="code">int</code>, in this
 </pre></div>
 
 <p>The scope of these variables is the <code class="code">for</code> statement as a whole.
-See <a class="ref" href="#Variable-Declarations">Variable Declarations</a> for a explanation of <var class="var">basetype</var>.
+See <a class="ref" href="#Variable-Declarations">Variable Declarations</a> for an explanation of <var class="var">basetype</var>.
 </p>
 <p>Variables declared in <code class="code">for</code> statements should have initializers.
 Omitting the initialization gives the variables unpredictable initial
@@ -10673,7 +10681,8 @@ to use the variable.
 <p>In programs that are very large or have many contributors, it may be
 wise to adopt the convention of never using tentative definitions.
 You can use the compilation option <samp class="option">-fno-common</samp> to make them
-an error, or <samp class="option">--warn-common</samp> to warn about them.
+an error, or <samp class="option">-fcommon</samp> to enable them.  The default depends
+on the version of GCC and its target.
 </p>
 <p>If a file-scope variable gets its space through a tentative
 definition, it starts out containing all zeros.
@@ -11306,7 +11315,7 @@ check for calls in the same compilation module.
 Next: <a href="#Structs-as-Parameters" accesskey="n" rel="next">Functions That Accept Structure Arguments</a>, Previous: <a href="#Static-Functions" accesskey="p" rel="prev">Static Functions</a>, Up: <a href="#Function-Definitions" accesskey="u" rel="up">Function Definitions</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <h4 class="subsection" id="Arrays-as-Parameters-1"><span>22.1.4 Arrays as Parameters<a class="copiable-link" href="#Arrays-as-Parameters-1"> &para;</a></span></h4>
-<a class="index-entry-id" id="index-array-as-parameters"></a>
+<a class="index-entry-id" id="index-arrays-as-parameters"></a>
 <a class="index-entry-id" id="index-functions-with-array-parameters"></a>
 
 <p>Arrays in C are not first-class objects: it is impossible to copy
@@ -11672,7 +11681,7 @@ Then the type defaults to <code class="code">int</code>.  For example:
 <p>defaults the return type to <code class="code">int</code>.
 This is bad practice; if you see it, fix it.
 </p>
-<p>Calling a function that is undeclared has the effect of an creating
+<p>Calling a function that is undeclared has the effect of creating
 an <em class="dfn">implicit</em> declaration in the innermost containing scope,
 equivalent to this:
 </p>
@@ -12026,14 +12035,14 @@ the arguments for <code class="code">main</code> and call that.
 
 <ul class="mini-toc">
 <li><a href="#Values-from-main" accesskey="1">Returning Values from <code class="code">main</code></a></li>
-<li><a href="#Command_002dline-Parameters" accesskey="2">Accessing Command-line Parameters</a></li>
+<li><a href="#Command_002dLine-Parameters" accesskey="2">Accessing Command-Line Parameters</a></li>
 <li><a href="#Environment-Variables" accesskey="3">Accessing Environment Variables</a></li>
 </ul>
 <hr>
 <div class="subsection-level-extent" id="Values-from-main">
 <div class="nav-panel">
 <p>
-Next: <a href="#Command_002dline-Parameters" accesskey="n" rel="next">Accessing Command-line Parameters</a>, Up: <a href="#The-main-Function" accesskey="u" rel="up">The <code class="code">main</code> Function</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Command_002dLine-Parameters" accesskey="n" rel="next">Accessing Command-Line Parameters</a>, Up: <a href="#The-main-Function" accesskey="u" rel="up">The <code class="code">main</code> Function</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <h4 class="subsection" id="Returning-Values-from-main"><span>22.6.1 Returning Values from <code class="code">main</code><a class="copiable-link" href="#Returning-Values-from-main"> &para;</a></span></h4>
 <a class="index-entry-id" id="index-returning-values-from-main"></a>
@@ -12076,12 +12085,12 @@ the comparison couldn&rsquo;t be performed.
 </p>
 <hr>
 </div>
-<div class="subsection-level-extent" id="Command_002dline-Parameters">
+<div class="subsection-level-extent" id="Command_002dLine-Parameters">
 <div class="nav-panel">
 <p>
 Next: <a href="#Environment-Variables" accesskey="n" rel="next">Accessing Environment Variables</a>, Previous: <a href="#Values-from-main" accesskey="p" rel="prev">Returning Values from <code class="code">main</code></a>, Up: <a href="#The-main-Function" accesskey="u" rel="up">The <code class="code">main</code> Function</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<h4 class="subsection" id="Accessing-Command_002dline-Parameters"><span>22.6.2 Accessing Command-line Parameters<a class="copiable-link" href="#Accessing-Command_002dline-Parameters"> &para;</a></span></h4>
+<h4 class="subsection" id="Accessing-Command_002dLine-Parameters"><span>22.6.2 Accessing Command-Line Parameters<a class="copiable-link" href="#Accessing-Command_002dLine-Parameters"> &para;</a></span></h4>
 <a class="index-entry-id" id="index-command_002dline-parameters"></a>
 <a class="index-entry-id" id="index-parameters_002c-command_002dline"></a>
 
@@ -12127,7 +12136,7 @@ main (int argc, char *argv[])
 <div class="subsection-level-extent" id="Environment-Variables">
 <div class="nav-panel">
 <p>
-Previous: <a href="#Command_002dline-Parameters" accesskey="p" rel="prev">Accessing Command-line Parameters</a>, Up: <a href="#The-main-Function" accesskey="u" rel="up">The <code class="code">main</code> Function</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
+Previous: <a href="#Command_002dLine-Parameters" accesskey="p" rel="prev">Accessing Command-Line Parameters</a>, Up: <a href="#The-main-Function" accesskey="u" rel="up">The <code class="code">main</code> Function</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Symbol-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <h4 class="subsection" id="Accessing-Environment-Variables"><span>22.6.3 Accessing Environment Variables<a class="copiable-link" href="#Accessing-Environment-Variables"> &para;</a></span></h4>
 <a class="index-entry-id" id="index-environment-variables"></a>
@@ -12246,10 +12255,10 @@ in-scope variable for the length in the function definition:
 <pre class="example-preformatted">struct entry
 tester (char data[*][*]);
 <span class="r">...</span>
-int dataLength = 20;
+int data_length = 20;
 <span class="r">...</span>
 struct entry
-tester (char data[dataLength][dataLength])
+tester (char data[data_length][data_length])
 {
   <span class="r">...</span>
 }
@@ -13290,9 +13299,6 @@ int y = 5;
 </p>
 
 
-<p>This is part of the GNU C Intro and Reference Manual
-and covered by its license.
-</p>
 <hr>
 </div>
 <div class="chapter-level-extent" id="Preprocessing">
@@ -13969,7 +13975,7 @@ code that uses it.  These macros are most commonly used to give
 symbolic names to numeric constants.
 </p>
 <a class="index-entry-id" id="index-_0023define"></a>
-<p>The way to define macros with the <code class="code">#define</code> directive.
+<p>The way to define macros is with the <code class="code">#define</code> directive.
 <code class="code">#define</code> is followed by the name of the macro and then the token
 sequence it should be an abbreviation for, which is variously referred
 to as the macro&rsquo;s <em class="dfn">body</em>, <em class="dfn">expansion</em> or <em class="dfn">replacement
@@ -15947,7 +15953,7 @@ a 32-bit or a 64-bit value is system dependent.<a class="footnote" id="DOCF12" h
 of bits in type <code class="code">char</code>.  On any real operating system, the value
 is 8.
 </p>
-<p>The fixed sizes of numeric types necessarily limits their <em class="dfn">range
+<p>The fixed sizes of numeric types necessarily limit their <em class="dfn">range
 of values</em>, and the particular encoding of integers decides what that
 range is.
 </p>
@@ -16068,6 +16074,7 @@ corresponding unsigned limits <code class="code">USHRT_MAX</code>, <code class="
 also three limits: <code class="code">CHAR_MAX</code>, <code class="code">SCHAR_MAX</code>, and
 <code class="code">UCHAR_MAX</code>.
 </p>
+<a class="index-entry-id" id="index-INT_005fMIN"></a>
 <p>For each type that is or might be signed, there is another symbol that
 gives the minimum value it can hold.  (Just replace <code class="code">MAX</code> with
 <code class="code">MIN</code> in the names listed above.)  There is no minimum limit
@@ -16084,9 +16091,7 @@ that value.  Its definition is written to avoid overflow.
 </p>
 
 
-<p>This is part of the GNU C Intro and Reference Manual
-and covered by its license.
-</p>
+
 <hr>
 </div>
 </div>
@@ -16396,7 +16401,7 @@ conditions: once set, they remain set until the program explicitly
 clears them.
 </p>
 <p>The conditions include <em class="emph">invalid operand</em>,
-<em class="emph">division-by_zero</em>, <em class="emph">inexact result</em> (i.e., one that
+<em class="emph">division by zero</em>, <em class="emph">inexact result</em> (i.e., one that
 required rounding), <em class="emph">underflow</em>, and <em class="emph">overflow</em>.  Some
 extended floating-point designs offer several additional exception
 flags.  The functions <code class="code">feclearexcept</code>, <code class="code">feraiseexcept</code>,
@@ -17449,7 +17454,7 @@ tried to expose the reader to some of the key ideas, and to warn
 of easily overlooked pitfalls that can soon lead to nonsensical
 results.  There are a few good references that we recommend
 for further reading, and for finding other important material
-about computer arithmetic:
+about computer arithmetic.
 </p>
 <p>We include URLs for these references when we were given them, when
 they are morally legitimate to recommend; we have omitted the URLs
@@ -17621,7 +17626,7 @@ compilation modules, making an <em class="dfn">object file</em> for that module.
 last step is to <em class="dfn">link</em> the many object files together into a
 single executable for the whole program.
 </p>
-<p>For, the full details of how to compile C programs (and other
+<p>For the full details of how to compile C programs (and other
 languages&rsquo; programs) with GCC, see <cite class="cite"><a data-manual="gcc" href="https://gcc.gnu.org/onlinedocs/gcc/index.html#Top">Using the GNU
 Compiler Collection</a></cite>.  On the Web, all is available through
 <a class="url" href="https://gcc.gnu.org/onlinedocs/">https://gcc.gnu.org/onlinedocs/</a>.  Here we give only a simple
@@ -17835,12 +17840,12 @@ from a system header file.  See <a data-manual="gcc" href="https://gcc.gnu.org/o
 <code class="code">_Pragma</code> form can be included in a macro definition.
 </p>
 </dd>
-<dt><code class="code">#pragma GCC message <var class="var">message</var></code></dt>
-<dt><code class="code">_Pragma (&quot;GCC message <var class="var">message</var>&quot;)</code></dt>
+<dt><code class="code">#pragma message <var class="var">message</var></code></dt>
+<dt><code class="code">_Pragma (&quot;message <var class="var">message</var>&quot;)</code></dt>
 <dd><p>Similar to &lsquo;<samp class="samp">GCC warning</samp>&rsquo; and &lsquo;<samp class="samp">GCC error</samp>&rsquo;, this simply prints an
 informational message, and could be used to include additional warning
 or error text without triggering more warnings or errors.  (Note that
-unlike &lsquo;<samp class="samp">warning</samp>&rsquo; and &lsquo;<samp class="samp">error</samp>&rsquo;, &lsquo;<samp class="samp">message</samp>&rsquo; does not include
+unlike &lsquo;<samp class="samp">GCC warning</samp>&rsquo; and &lsquo;<samp class="samp">GCC error</samp>&rsquo;, &lsquo;<samp class="samp">message</samp>&rsquo; does not include
 &lsquo;<samp class="samp">GCC</samp>&rsquo; as part of the pragma.)
 </p></dd>
 </dl>
@@ -18068,6 +18073,9 @@ _Static_assert ((sizeof (long int) == 8),
 <p>Static assertions are permitted wherever a statement or declaration is
 permitted, including at top level in the file, and also inside the
 definition of a type.
+</p>
+<p><strong class="strong">Note:</strong> The <code class="code">==</code> used instead of <code class="code">&gt;=</code> probably makes
+the program wrong but not invalid.
 </p>
 <div class="example">
 <pre class="example-preformatted">union y
@@ -18373,7 +18381,7 @@ inside it somewhere.
 <p>For <code class="code">foo.size</code> (equivalently, <code class="code">a-&gt;size</code>), <var class="var">t</var> is
 <code class="code">int</code>.  The type <code class="code">float</code> is not allowed as an aliasing type
 by those rules, so <code class="code">b-&gt;size</code> is not supposed to alias with
-elements of <code class="code">j</code>.  Based on that assumption, GNU C makes a
+elements of <code class="code">a</code>.  Based on that assumption, GNU C makes a
 permitted optimization that was not, in this case, consistent with
 what the programmer intended the program to do.
 </p>
@@ -19878,6 +19886,7 @@ Next: <a href="#Concept-Index" accesskey="n" rel="next">Concept Index</a>, Previ
 <tr><td></td><td class="printindex-index-entry"><a href="#index-inline"><code>inline</code></a></td><td class="printindex-index-section"><a href="#Inline-Function-Definitions">Inline Function Definitions</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-int"><code>int</code></a></td><td class="printindex-index-section"><a href="#Basic-Integers">Basic Integers</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-INT_005fMAX"><code>INT_MAX</code></a></td><td class="printindex-index-section"><a href="#Maximum-and-Minimum-Values">Maximum and Minimum Values</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-INT_005fMIN"><code>INT_MIN</code></a></td><td class="printindex-index-section"><a href="#Maximum-and-Minimum-Values">Maximum and Minimum Values</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Symbol-Index_fn_letter-L">L</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-LDBL_005fDECIMAL_005fDIG"><code>LDBL_DECIMAL_DIG</code></a></td><td class="printindex-index-section"><a href="#Floating-Type-Specs">Floating Type Specs</a></td></tr>
@@ -20070,6 +20079,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td class="printindex-index-entry"><a href="#index-address-of-a-label">address of a label</a></td><td class="printindex-index-section"><a href="#Labels-as-Values">Labels as Values</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-address_002dof-operator">address-of operator</a></td><td class="printindex-index-section"><a href="#Address-of-Data">Address of Data</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-aliasing-_0028of-storage_0029">aliasing (of storage)</a></td><td class="printindex-index-section"><a href="#Aliasing">Aliasing</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-alignment-of-structures">alignment of structures</a></td><td class="printindex-index-section"><a href="#Structure-Layout">Structure Layout</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-alignment-of-type">alignment of type</a></td><td class="printindex-index-section"><a href="#Type-Alignment">Type Alignment</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-allocating-memory-dynamically">allocating memory dynamically</a></td><td class="printindex-index-section"><a href="#Dynamic-Memory-Allocation">Dynamic Memory Allocation</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-allocation-file_002dscope-variables">allocation file-scope variables</a></td><td class="printindex-index-section"><a href="#Allocating-File_002dScope">Allocating File-Scope</a></td></tr>
@@ -20079,7 +20089,6 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td class="printindex-index-entry"><a href="#index-arithmetic-operators">arithmetic operators</a></td><td class="printindex-index-section"><a href="#Arithmetic">Arithmetic</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-arithmetic_002c-pointer">arithmetic, pointer</a></td><td class="printindex-index-section"><a href="#Pointer-Arithmetic">Pointer Arithmetic</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-array">array</a></td><td class="printindex-index-section"><a href="#Arrays">Arrays</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-array-as-parameters">array as parameters</a></td><td class="printindex-index-section"><a href="#Arrays-as-Parameters">Arrays as Parameters</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-array-elements_002c-accessing">array elements, accessing</a></td><td class="printindex-index-section"><a href="#Accessing-Array-Elements">Accessing Array Elements</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-array-example">array example</a></td><td class="printindex-index-section"><a href="#Array-Example">Array Example</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-array-fields_002c-flexible">array fields, flexible</a></td><td class="printindex-index-section"><a href="#Flexible-Array-Fields">Flexible Array Fields</a></td></tr>
@@ -20093,6 +20102,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td class="printindex-index-entry"><a href="#index-array_002c-layout-in-memory">array, layout in memory</a></td><td class="printindex-index-section"><a href="#Multidimensional-Arrays">Multidimensional Arrays</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-array_002c-multidimensional">array, multidimensional</a></td><td class="printindex-index-section"><a href="#Multidimensional-Arrays">Multidimensional Arrays</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-arrays-and-pointers">arrays and pointers</a></td><td class="printindex-index-section"><a href="#Pointers-and-Arrays">Pointers and Arrays</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-arrays-as-parameters">arrays as parameters</a></td><td class="printindex-index-section"><a href="#Arrays-as-Parameters">Arrays as Parameters</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-assigning-function-pointers">assigning function pointers</a></td><td class="printindex-index-section"><a href="#Assigning-Function-Pointers">Assigning Function Pointers</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-assigning-structures">assigning structures</a></td><td class="printindex-index-section"><a href="#Structure-Assignment">Structure Assignment</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-assignment-expressions">assignment expressions</a></td><td class="printindex-index-section"><a href="#Assignment-Expressions">Assignment Expressions</a></td></tr>
@@ -20137,7 +20147,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td class="printindex-index-entry"><a href="#index-code-point">code point</a></td><td class="printindex-index-section"><a href="#Unicode-Character-Codes">Unicode Character Codes</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-combining-variable-declarations">combining variable declarations</a></td><td class="printindex-index-section"><a href="#Combining-Variable-Declarations">Combining Variable Declarations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-comma-operator">comma operator</a></td><td class="printindex-index-section"><a href="#Comma-Operator">Comma Operator</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-command_002dline-parameters">command-line parameters</a></td><td class="printindex-index-section"><a href="#Command_002dline-Parameters">Command-line Parameters</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-command_002dline-parameters">command-line parameters</a></td><td class="printindex-index-section"><a href="#Command_002dLine-Parameters">Command-Line Parameters</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-commenting-out-code">commenting out code</a></td><td class="printindex-index-section"><a href="#Deleted-Code">Deleted Code</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-comments">comments</a></td><td class="printindex-index-section"><a href="#Comments">Comments</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-common-type">common type</a></td><td class="printindex-index-section"><a href="#Common-Type">Common Type</a></td></tr>
@@ -20474,7 +20484,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td class="printindex-index-entry"><a href="#index-parameter-list">parameter list</a></td><td class="printindex-index-section"><a href="#Function-Parameter-Variables">Function Parameter Variables</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-parameter-variables-in-functions">parameter variables in functions</a></td><td class="printindex-index-section"><a href="#Function-Parameter-Variables">Function Parameter Variables</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-parameters-lists_002c-variable-length">parameters lists, variable length</a></td><td class="printindex-index-section"><a href="#Variable-Number-of-Arguments">Variable Number of Arguments</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-parameters_002c-command_002dline">parameters, command-line</a></td><td class="printindex-index-section"><a href="#Command_002dline-Parameters">Command-line Parameters</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-parameters_002c-command_002dline">parameters, command-line</a></td><td class="printindex-index-section"><a href="#Command_002dLine-Parameters">Command-Line Parameters</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-parentheses-in-macro-bodies">parentheses in macro bodies</a></td><td class="printindex-index-section"><a href="#Operator-Precedence-Problems">Operator Precedence Problems</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-pitfalls-of-macros">pitfalls of macros</a></td><td class="printindex-index-section"><a href="#Macro-Pitfalls">Macro Pitfalls</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-pointer-arithmetic">pointer arithmetic</a></td><td class="printindex-index-section"><a href="#Pointer-Arithmetic">Pointer Arithmetic</a></td></tr>
@@ -20595,6 +20605,7 @@ Previous: <a href="#Symbol-Index" accesskey="p" rel="prev">Index of Symbols and 
 <tr><td></td><td class="printindex-index-entry"><a href="#index-string">string</a></td><td class="printindex-index-section"><a href="#Strings">Strings</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-string-constants">string constants</a></td><td class="printindex-index-section"><a href="#String-Constants">String Constants</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-stringification">stringification</a></td><td class="printindex-index-section"><a href="#Stringification">Stringification</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-structure-alignment">structure alignment</a></td><td class="printindex-index-section"><a href="#Structure-Layout">Structure Layout</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-structure-assignment">structure assignment</a></td><td class="printindex-index-section"><a href="#Structure-Assignment">Structure Assignment</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-structure-constructors">structure constructors</a></td><td class="printindex-index-section"><a href="#Structure-Constructors">Structure Constructors</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-structure-field-offset">structure field offset</a></td><td class="printindex-index-section"><a href="#Field-Offset">Field Offset</a></td></tr>
