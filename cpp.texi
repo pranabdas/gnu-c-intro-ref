@@ -316,8 +316,9 @@ ordinary text characters, not escape characters: character escape
 sequences such as used in string constants in C are not meaningful
 here.  Thus, @code{@w{#include "x\n\\y"}} specifies a filename
 containing three backslashes.  By the same token, there is no way to
-escape @samp{"} or @samp{>} to include it in the header file name if
-it would instead end the file name.
+escape @samp{"} or @samp{>} to include it in the header file name
+rather than end the file name.  We recommend not using those two
+characters in the names of files to be included.
 
 Some systems interpret @samp{\} as a file name component separator.
 All these systems also interpret @samp{/} the same way.  It is most
