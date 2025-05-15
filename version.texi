@@ -1,1 +1,1 @@
-@set VERSION 0.0-git
+@set VERSION 0.1-git

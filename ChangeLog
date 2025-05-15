@@ -1,3 +1,11 @@
+2025-05-15  Ineiev  <ineiev@gnu.org>
+
+	Release 0.1.
+
+	* configure.ac: Set release to 0.1.
+	* version.texi (EDITION, VERSION): Set VERSION to 0.1-git.
+	* NEWS: Update.
+
 2025-05-02  Richard Stallman  <rms@gnu.org>
 
 	* c.texi: Fix typos.
