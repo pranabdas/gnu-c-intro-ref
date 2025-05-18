@@ -3,7 +3,7 @@
 <!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<!-- This is Edition 0.0-git.
+<!-- This is Edition 0.1-git.
 
 Copyright © 2022, 2023, 2025 Richard Stallman
 and Free Software Foundation, Inc.
@@ -13637,8 +13637,9 @@ ordinary text characters, not escape characters: character escape
 sequences such as used in string constants in C are not meaningful
 here.  Thus, <code class="code">#include&nbsp;&quot;x\n\\y&quot;<!-- /@w --></code> specifies a filename
 containing three backslashes.  By the same token, there is no way to
-escape &lsquo;<samp class="samp">&quot;</samp>&rsquo; or &lsquo;<samp class="samp">&gt;</samp>&rsquo; to include it in the header file name if
-it would instead end the file name.
+escape &lsquo;<samp class="samp">&quot;</samp>&rsquo; or &lsquo;<samp class="samp">&gt;</samp>&rsquo; to include it in the header file name
+rather than end the file name.  We recommend not using those two
+characters in the names of files to be included.
 </p>
 <p>Some systems interpret &lsquo;<samp class="samp">\</samp>&rsquo; as a file name component separator.
 All these systems also interpret &lsquo;<samp class="samp">/</samp>&rsquo; the same way.  It is most
