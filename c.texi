@@ -6131,8 +6131,8 @@ add_to_mylist (int my_int)
   struct intlistlink *p = alloc_intlistlink ();
 
   p->datum = my_int;
-  p->next = mylist;
-  mylist = p;
+  p->next = my_list;
+  my_list = p;
 @}
 @end example
 
@@ -6159,9 +6159,9 @@ freeing its elements.  To make sure it won't, it is best to clear out
 the variable where the list was stored, like this:
 
 @example
-free_intlist (mylist);
+free_intlist (my_list);
 
-mylist = NULL;
+my_list = NULL;
 @end example
 
 @node Field Offset

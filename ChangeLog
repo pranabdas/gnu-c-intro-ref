@@ -1,3 +1,7 @@
+2025-12-10  Ineiev  <ineiev@gnu.org>
+
+	* c.texi (Dynamic Memory Allocation): Fix variable name.
+
 2025-05-15  Ineiev  <ineiev@gnu.org>
 
 	Release 0.1.
