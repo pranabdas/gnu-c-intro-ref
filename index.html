@@ -6693,8 +6693,8 @@ add_to_mylist (int my_int)
   struct intlistlink *p = alloc_intlistlink ();
 
   p-&gt;datum = my_int;
-  p-&gt;next = mylist;
-  mylist = p;
+  p-&gt;next = my_list;
+  my_list = p;
 }
 </pre></div>
 
@@ -6721,9 +6721,9 @@ freeing its elements.  To make sure it won&rsquo;t, it is best to clear out
 the variable where the list was stored, like this:
 </p>
 <div class="example">
-<pre class="example-preformatted">free_intlist (mylist);
+<pre class="example-preformatted">free_intlist (my_list);
 
-mylist = NULL;
+my_list = NULL;
 </pre></div>
 
 <hr>
