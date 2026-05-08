@@ -8268,15 +8268,15 @@ When there are nested loops, the @code{break} statement exits from the
 innermost loop containing it.
 
 @example
-struct list_if_tuples
+struct list_of_tuples
 @{
-  struct list_if_tuples *next;
+  struct list_of_tuples *next;
   int length;
   data *contents;
 @};
 
 void
-process_all_elements (struct list_if_tuples *list)
+process_all_elements (struct list_of_tuples *list)
 @{
   while (list)
     @{
@@ -8499,7 +8499,7 @@ for (;*p; ++p)
 
 @noindent
 Executing @samp{continue;} skips the loop body but it does not
-skip the @var{advance} expression, @code{p++}.
+skip the @var{advance} expression, @code{++p}.
 
 We could also write it like this:
 
