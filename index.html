@@ -9009,15 +9009,15 @@ character or newline.
 innermost loop containing it.
 </p>
 <div class="example">
-<pre class="example-preformatted">struct list_if_tuples
+<pre class="example-preformatted">struct list_of_tuples
 {
-  struct list_if_tuples *next;
+  struct list_of_tuples *next;
   int length;
   data *contents;
 };
 
 void
-process_all_elements (struct list_if_tuples *list)
+process_all_elements (struct list_of_tuples *list)
 {
   while (list)
     {
@@ -9263,7 +9263,7 @@ in the line except for spaces.  All it does with spaces is skip them.
 </pre></div>
 
 <p>Executing &lsquo;<samp class="samp">continue;</samp>&rsquo; skips the loop body but it does not
-skip the <var class="var">advance</var> expression, <code class="code">p++</code>.
+skip the <var class="var">advance</var> expression, <code class="code">++p</code>.
 </p>
 <p>We could also write it like this:
 </p>
