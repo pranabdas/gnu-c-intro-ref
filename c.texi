@@ -12374,7 +12374,9 @@ is that number back again.  We will revisit that peculiarity shortly.
 For example, a two's-complement signed 8-bit integer can represent all
 decimal numbers from @minus{}128 to +127.  Negating @minus{}128 ought
 to give +128, but that value won't fit in 8 bits, so the operation
-yields @minus{}128.
+yields @minus{}128.  (In C, the unary @minus promotes to @code{int}, so
+@code{@minus@var{x}} yields +128 unless the result is cast back
+to @code{signed char}.  @xref{Operand Promotions})
 
 Decades ago, there were computers that used other representations for
 signed integers, but they are long gone and not worth any effort to

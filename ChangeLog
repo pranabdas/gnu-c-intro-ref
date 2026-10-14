@@ -1,5 +1,12 @@
 2026-05-08  Ineiev  <ineiev@gnu.org>
 
+	* c.texi (Integer Representations): Add a note on operand promotions
+	of -((signed char)-128).  Per c-manual@,
+	<ebccb03a-4b34-4502-a670-1d63999ce4d3@gmail.com>
+	* THANKS: Update.
+
+2026-05-08  Ineiev  <ineiev@gnu.org>
+
 	* c.texi: Fix typos.
 	(break Statement): Change "list_if_tuples" to "list_of_tuples".
 	(continue Statement): The advance expression was erroneously
